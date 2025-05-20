@@ -10,6 +10,9 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-navigation/bottom-tabs": "^7.3.10",
+    "@react-navigation/elements": "^2.4.2",
+    "@react-navigation/native": "^7.1.6",
     "react": "19.0.0",
     "react-native": "0.78.2"
   },

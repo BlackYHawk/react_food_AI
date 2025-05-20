@@ -8,15 +8,6 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
   Colors,
   DebugInstructions,
   Header,
@@ -24,9 +15,21 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import {ScrollView, StatusBar, Text, View, useColorScheme, StyleSheet} from 'react-native';
+
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
+
+/*
+ * To keep the template simple and small we're adding padding to prevent view
+ * from rendering under the System UI.
+ * For bigger apps the reccomendation is to use `react-native-safe-area-context`:
+ * https://github.com/AppAndFlow/react-native-safe-area-context
+ *
+ * You can read more about it here:
+ * https://github.com/react-native-community/discussions-and-proposals/discussions/827
+ */
 
 function Section({children, title}: SectionProps): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -54,13 +57,8 @@ function Section({children, title}: SectionProps): React.JSX.Element {
   );
 }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+export default function App() {
   /*
    * To keep the template simple and small we're adding padding to prevent view
    * from rendering under the System UI.
@@ -70,6 +68,11 @@ function App(): React.JSX.Element {
    * You can read more about it here:
    * https://github.com/react-native-community/discussions-and-proposals/discussions/827
    */
+  const isDarkMode = useColorScheme() === 'dark';
+
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
   const safePadding = '5%';
 
   return (
@@ -81,7 +84,7 @@ function App(): React.JSX.Element {
       <ScrollView
         style={backgroundStyle}>
         <View style={{paddingRight: safePadding}}>
-          <Header/>
+          <Header />
         </View>
         <View
           style={{
@@ -127,5 +130,3 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
-
-export default App;
