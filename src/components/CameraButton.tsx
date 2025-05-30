@@ -3,11 +3,10 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
-  Animated,
-  Alert,
+  Animated
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { launchCamera } from 'react-native-image-picker';
 
 const CameraButton = () => {
   const [scaleValue] = useState(new Animated.Value(1));
@@ -27,18 +26,6 @@ const CameraButton = () => {
   };
 
   const handleCameraPress = () => {
-    Alert.alert(
-      '选择图片',
-      '请选择获取图片的方式',
-      [
-        { text: '取消', style: 'cancel' },
-        { text: '拍照', onPress: openCamera },
-        { text: '从相册选择', onPress: openGallery },
-      ]
-    );
-  };
-
-  const openCamera = () => {
     const options = {
       mediaType: 'photo',
       quality: 0.8,
@@ -48,21 +35,6 @@ const CameraButton = () => {
       if (response.assets && response.assets[0]) {
         // 处理拍照结果
         console.log('Camera result:', response.assets[0]);
-        // 这里添加图片识别逻辑
-      }
-    });
-  };
-
-  const openGallery = () => {
-    const options = {
-      mediaType: 'photo',
-      quality: 0.8,
-    };
-
-    launchImageLibrary(options, (response) => {
-      if (response.assets && response.assets[0]) {
-        // 处理相册选择结果
-        console.log('Gallery result:', response.assets[0]);
         // 这里添加图片识别逻辑
       }
     });
@@ -80,9 +52,8 @@ const CameraButton = () => {
           onPress={handleCameraPress}
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
-          activeOpacity={0.8}
-        >
-          <Icon name="camera-alt" size={48} color="white" />
+          activeOpacity={0.8}>
+          <Icon name="camera-alt" type="material" size={48} color="white" />
         </TouchableOpacity>
       </Animated.View>
     </View>

@@ -13,6 +13,7 @@ import QuickFunctions from '../components/QuickFunctions.tsx';
 import RecentAnalysis from '../components/RecentAnalysis.tsx';
 import { globalStyles } from '../styles/globalStyles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import i18n from '../i18n/i18n.js';
 
 const HomeScreen = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -24,12 +25,12 @@ const HomeScreen = () => {
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
       {/* Header */}
-      <View style={[styles.header, { paddingTop: safeInsets.top }]}>
+      <View style={[styles.header, {paddingTop: safeInsets.top}]}>
         <View style={styles.headerLeft}>
           <View style={styles.logo}>
             <Text style={styles.logoText}>🍽️</Text>
           </View>
-          <Text style={styles.title}>AI 食物助手</Text>
+          <Text style={styles.title}>{i18n.t('home.title')}</Text>
         </View>
         <Icon name="settings" type="ionicons" size={24} color="#999" />
       </View>
@@ -37,7 +38,7 @@ const HomeScreen = () => {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Search Bar */}
         <SearchBar
-          placeholder="搜索食物、食谱..."
+          placeholder={i18n.t('home.search.placeholder')}
           onChangeText={setSearchText}
           value={searchText}
           containerStyle={styles.searchContainer}
@@ -50,7 +51,7 @@ const HomeScreen = () => {
         {/* Main Camera Section */}
         <View style={styles.cameraSection}>
           <CameraButton />
-          <Text style={styles.cameraText}>点击拍照识别食物</Text>
+          <Text style={styles.cameraText}>{i18n.t('home.camera')}</Text>
           <QuickFunctions />
         </View>
 

@@ -1,12 +1,13 @@
 import * as React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import { Icon } from 'react-native-elements';
+import { Icon, Text } from 'react-native-elements';
 import HomeScreen from '../screens/HomeScreen.tsx';
 import RecipesScreen from '../screens/RecipesScreen.tsx';
 import NutritionScreen from '../screens/NutritionScreen.tsx';
 import ProfileScreen from '../screens/ProfileScreen.tsx';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { createStaticNavigation } from '@react-navigation/native';
+import i18n from '../i18n/i18n.js';
 
 const MainTabs = createBottomTabNavigator({
   screenOptions: ({route}) => ({
@@ -37,6 +38,26 @@ const MainTabs = createBottomTabNavigator({
     tabBarActiveTintColor: '#4CAF50',
     tabBarInactiveTintColor: '#999',
     headerShown: false,
+    tabBarLabel: ({ focused }) => {
+      let label = '';
+      switch (route.name) {
+        case 'Home':
+          label = i18n.t('tab.home');
+          break;
+        case 'Recipes':
+          label = i18n.t('tab.recipes');
+          break;
+        case 'Nutrition':
+          label = i18n.t('tab.nutrition');
+          break;
+        case 'Profile':
+          label = i18n.t('tab.profile');
+          break;
+        default:
+          label = '';
+      }
+      return <Text style={[{ color: focused ? '#4CAF50' : '#999' }, { fontSize: 12 }]}>{label}</Text>;
+    },
     tabBarStyle: {
       backgroundColor: 'white',
       borderTopColor: '#e0e0e0',
@@ -58,9 +79,9 @@ const RootStack = createNativeStackNavigator({
       screen: MainTabs,
       options: {
         headerShown: false,
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 const Navigation = createStaticNavigation(RootStack);

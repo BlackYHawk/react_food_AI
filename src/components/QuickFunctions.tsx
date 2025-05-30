@@ -1,25 +1,42 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
+import i18n from '../i18n/i18n';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 const QuickFunctions = () => {
   const functions = [
     {
       icon: 'photo',
-      label: '相册导入',
-      onPress: () => Alert.alert('功能提示', '相册导入功能'),
+      label: 'home.quickFunctions.photo',
+      onPress: () => openGallery,
     },
     {
       icon: 'history',
-      label: '历史记录',
+      label: 'home.quickFunctions.history',
       onPress: () => Alert.alert('功能提示', '历史记录功能'),
     },
     {
       icon: 'assessment',
-      label: '营养分析',
+      label: 'home.quickFunctions.assessment',
       onPress: () => Alert.alert('功能提示', '营养分析功能'),
     },
   ];
+
+  const openGallery = () => {
+    const options = {
+      mediaType: 'photo',
+      quality: 0.8,
+    };
+
+    launchImageLibrary(options, (response) => {
+      if (response.assets && response.assets[0]) {
+        // 处理相册选择结果
+        console.log('Gallery result:', response.assets[0]);
+        // 这里添加图片识别逻辑
+      }
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -33,7 +50,7 @@ const QuickFunctions = () => {
           <View style={styles.iconContainer}>
             <Icon name={func.icon} type="material" size={24} color="#4CAF50" />
           </View>
-          <Text style={styles.label}>{func.label}</Text>
+          <Text style={styles.label}>{i18n.t(func.label)}</Text>
         </TouchableOpacity>
       ))}
     </View>

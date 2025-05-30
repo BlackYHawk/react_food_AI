@@ -1,0 +1,39 @@
+{
+  "zh-CN": {
+    "tab": {
+        "home": "首页",
+        "recipes": "菜谱",
+        "nutrition": "营养分析",
+        "profile": "我的"
+    },
+    "home": {
+        "title": "AI 食物助手",
+        "search": {
+            "placeholder": "搜索食物、食谱..."
+        },
+        "camera": "点击拍照识别食物",
+        "quickFunctions": {
+          "photo": "相册导入",
+          "history": "历史记录",
+          "assessment": "营养分析"
+        }
+    },
+    "welcome": "Welcome",
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "No account?",
+    "haveAccount": "Already have an account?",
+    "logout": "Logout",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "error": "Error",
+    "success": "Success"
+  }
+}

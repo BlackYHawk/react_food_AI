@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet, FlatList} from 'react-native';
 import { ListItem } from 'react-native-elements';
 
 const RecentAnalysis = () => {
@@ -36,12 +36,12 @@ const RecentAnalysis = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>最近分析</Text>
-      {recentData.map((item) => (
+      <FlatList data={recentData}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
         <ListItem
-          key={item.id}
-          containerStyle={styles.listItem}
-          onPress={() => console.log('View details:', item.name)}
-        >
+          bottomDivider
+          containerStyle={styles.listItem} >
           <ListItem.Content style={styles.listContent}>
             <View style={styles.listRow}>
               {renderAvatar(item.icon)}
@@ -57,7 +57,7 @@ const RecentAnalysis = () => {
             </View>
           </ListItem.Content>
         </ListItem>
-      ))}
+      )} />
     </View>
   );
 };

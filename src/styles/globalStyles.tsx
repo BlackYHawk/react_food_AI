@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { ThemeProvider } from 'react-native-elements';
 
 // @ts-ignore
 export const globalStyles = StyleSheet.create({
@@ -12,3 +13,9 @@ export const globalStyles = StyleSheet.create({
   textSecondary: '#666',
   textLight: '#999',
 });
+
+export const globalTheme = {
+  Button: {
+    raised: true,
+  },
+};
