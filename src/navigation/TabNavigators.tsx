@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { TouchableOpacity } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { Icon, Text } from 'react-native-elements';
 import HomeScreen from '../screens/HomeScreen.tsx';
 import RecipesScreen from '../screens/RecipesScreen.tsx';
 import NutritionScreen from '../screens/NutritionScreen.tsx';
 import ProfileScreen from '../screens/ProfileScreen.tsx';
+import LoginScreen from '../screens/LoginScreen.tsx';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { createStaticNavigation } from '@react-navigation/native';
 import i18n from '../i18n/i18n.js';
@@ -81,9 +83,31 @@ const RootStack = createNativeStackNavigator({
         headerShown: false,
       },
     },
+    Login: {
+      screen: LoginScreen,
+      options: ({navigation}) => ({
+        headerShown: true,
+        headerBackVisible: true,
+        headerBackTitleStyle: {
+          fontSize: 16,
+        },
+        headerBackTitle: i18n.t('login.back'),
+        headerTitle: i18n.t('login.title'),
+        headerTitleStyle: {
+          fontSize: 20,
+          color: '#333',
+        },
+        headerTitleAlign: 'center',
+        headerRight: () =>
+          <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.goBack()}>
+            <Icon name="close" type="material" color="#333" size={24} />
+        </TouchableOpacity>,
+      }),
+    },
   },
 });
 
 const Navigation = createStaticNavigation(RootStack);
 
 export default Navigation;
+

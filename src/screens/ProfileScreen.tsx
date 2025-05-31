@@ -15,8 +15,12 @@ import {
   ListItem
 } from 'react-native-elements';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useNavigation} from '@react-navigation/native';
+import i18n from '../i18n/i18n';
 
 const ProfileScreen = () => {
+  const navigation = useNavigation();
+
   // Mock data
   const userData = {
     name: '陈美琪',
@@ -39,6 +43,9 @@ const ProfileScreen = () => {
   };
   const isDarkMode = useColorScheme() === 'dark';
   const safeInsets = useSafeAreaInsets();
+  const showAvatorPreview = () => {
+    navigation.navigate('Login', {});
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -51,6 +58,8 @@ const ProfileScreen = () => {
             rounded
             size={80}
             source={{ uri: userData.avatar }}
+            activeOpacity={0.7}
+            onPress={showAvatorPreview}
             containerStyle={styles.avatarContainer}
           >
             <Avatar.Accessory
@@ -68,7 +77,7 @@ const ProfileScreen = () => {
         </View>
 
         <Button
-          title="编辑资料"
+          title={i18n.t('profile.edit')}
           type="outline"
           buttonStyle={styles.editButton}
           titleStyle={styles.editButtonText}
@@ -96,7 +105,7 @@ const ProfileScreen = () => {
 
         {/* Collections Section */}
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>我的收藏</Text>
+          <Text style={styles.sectionTitle}>{i18n.t('profile.collections')}</Text>
 
           {userData.collections.map((item) => (
             <ListItem key={item.id} containerStyle={styles.listItemContainer}>
@@ -117,7 +126,7 @@ const ProfileScreen = () => {
 
         {/* History Section */}
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>浏览历史</Text>
+          <Text style={styles.sectionTitle}>{i18n.t('profile.history')}</Text>
 
           {userData.history.map((item) => (
             <ListItem key={item.id} containerStyle={styles.listItemContainer}>

@@ -18,8 +18,43 @@
           "assessment": "营养分析"
         }
     },
+    "recipes": {
+        "title": "菜谱",
+        "search": {
+            "placeholder": "搜索菜谱..."
+        },
+        "categories": {
+            "all": "全部",
+            "breakfast": "早餐",
+            "lunch": "午餐",
+            "dinner": "晚餐",
+            "snacks": "小吃"
+        }
+    },
+    "nutrition": {
+        "title": "营养分析",
+        "history": "历史记录",
+        "analysis": "营养分析",
+        "recommendations": "推荐食谱"
+    },
+    "profile": {
+      "edit": "编辑资料",
+      "collections": "我的收藏",
+      "history": "浏览历史",
+      "comment": "我的评论",
+      "rate": "获赞"
+    },
+    "login": {
+        "title": "AI 美食助手",
+        "description": "智能定制专属菜单，打造健康美味生活",
+        "agreementText": "登录即代表同意",
+        "agreementLink": "用户协议",
+        "privacyLink": "隐私政策",
+        "login": "登录",
+        "register": "注册",
+        "back": "返回"
+    },
     "welcome": "Welcome",
-    "login": "Login",
     "register": "Register",
     "email": "Email",
     "password": "Password",
