@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 32,
     height: 32,
-    backgroundColor: '#4CAF50',
+    backgroundColor: globalStyles.primaryColor,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',

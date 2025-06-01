@@ -3,10 +3,11 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
-  Animated
+  Animated,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { launchCamera } from 'react-native-image-picker';
+import { globalStyles } from '../styles/globalStyles';
 
 const CameraButton = () => {
   const [scaleValue] = useState(new Animated.Value(1));
@@ -60,6 +61,8 @@ const CameraButton = () => {
   );
 };
 
+// @ts-ignore
+// @ts-ignore
 const styles = StyleSheet.create({
   container: {
     position: 'relative',
@@ -70,7 +73,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 148,
     height: 148,
-    backgroundColor: '#4CAF50',
+    backgroundColor: globalStyles.primaryColor,
     borderRadius: 74,
     opacity: 0.2,
   },
@@ -78,7 +81,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 138,
     height: 138,
-    backgroundColor: '#4CAF50',
+    backgroundColor: globalStyles.primaryColor,
     borderRadius: 69,
     opacity: 0.3,
   },
@@ -87,7 +90,7 @@ const styles = StyleSheet.create({
     height: 128,
     borderRadius: 64,
     elevation: 8,
-    shadowColor: '#4CAF50',
+    shadowColor: globalStyles.primaryColor,
     shadowOffset: {
       width: 0,
       height: 4,
@@ -98,7 +101,7 @@ const styles = StyleSheet.create({
   button: {
     width: 128,
     height: 128,
-    backgroundColor: '#4CAF50',
+    backgroundColor: globalStyles.primaryColor,
     borderRadius: 64,
     alignItems: 'center',
     justifyContent: 'center',

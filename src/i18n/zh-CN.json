@@ -1,8 +1,9 @@
 {
   "zh-CN": {
+    "exitApp": "再按一次返回键退出应用",
     "tab": {
         "home": "首页",
-        "recipes": "菜谱",
+        "recipes": "精选",
         "nutrition": "营养分析",
         "profile": "我的"
     },

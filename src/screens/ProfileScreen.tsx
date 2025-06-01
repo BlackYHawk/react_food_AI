@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import {
   StyleSheet,
   View,
   Text,
-  ScrollView,
   Image,
   StatusBar,
   SafeAreaView, useColorScheme,
+  Animated
 } from 'react-native';
 import {
   Avatar,
@@ -17,9 +17,11 @@ import {
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import i18n from '../i18n/i18n';
+import { globalStyles, rem } from '../styles/globalStyles';
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   // Mock data
   const userData = {
@@ -35,10 +37,17 @@ const ProfileScreen = () => {
     collections: [
       { id: 1, title: '香煎三文鱼', date: '2024-01-15', image: 'https://example.com/salmon.jpg' },
       { id: 2, title: '和牛牛排', date: '2024-01-14', image: 'https://example.com/steak.jpg' },
+      { id: 3, title: '和牛牛排', date: '2024-01-14', image: 'https://example.com/steak.jpg' },
+      { id: 4, title: '和牛牛排', date: '2024-01-14', image: 'https://example.com/steak.jpg' },
+      { id: 5, title: '和牛牛排', date: '2024-01-14', image: 'https://example.com/steak.jpg' },
     ],
     history: [
       { id: 1, title: '日式拉面', time: '10:30', calories: 480, image: 'https://example.com/ramen.jpg' },
       { id: 2, title: '意大利面', time: '昨天', calories: 520, image: 'https://example.com/pasta.jpg' },
+      { id: 3, title: '意大利面', time: '昨天', calories: 520, image: 'https://example.com/pasta.jpg' },
+      { id: 4, title: '意大利面', time: '昨天', calories: 520, image: 'https://example.com/pasta.jpg' },
+      { id: 5, title: '意大利面', time: '昨天', calories: 520, image: 'https://example.com/pasta.jpg' },
+      { id: 6, title: '意大利面', time: '昨天', calories: 520, image: 'https://example.com/pasta.jpg' },
     ]
   };
   const isDarkMode = useColorScheme() === 'dark';
@@ -47,12 +56,52 @@ const ProfileScreen = () => {
     navigation.navigate('Login', {});
   };
 
+  //顶部标题栏高度
+  const headerHeight = rem(50) + safeInsets.top; // 标题栏高度
+  // 渐变动画：透明度和位移
+  const headerOpacity = scrollY.interpolate({
+    inputRange: [0, headerHeight],
+    outputRange: [0, 1],
+    extrapolate: 'clamp',
+  });
+  const headerTranslateY = scrollY.interpolate({
+    inputRange: [0, headerHeight],
+    outputRange: [-headerHeight, 0],
+    extrapolate: 'clamp',
+  });
+  // 头像区域高度
+  const profileHeight = rem(100) + safeInsets.top; // 头像区域高度
+  //头像区域动画
+  const profileOpacity = scrollY.interpolate({
+    inputRange: [0, headerHeight],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  });
+  const profileTranslateY = scrollY.interpolate({
+    inputRange: [0, headerHeight],
+    outputRange: [0, -headerHeight - rem(50)],
+    extrapolate: 'clamp',
+  });
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={globalStyles.container}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
+      {/* Animated 顶部标题栏，滑动渐变显示 */}
+      <Animated.View style={[styles.fixedHeader,
+        { height: headerHeight, paddingTop: safeInsets.top,
+          opacity: headerOpacity, transform: [{ translateY: headerTranslateY }] }]}>
+        <Text style={styles.fixedHeaderTitle}>{userData.name}</Text>
+      </Animated.View>
+
       {/* Profile Header */}
-      <View style={[styles.header, { paddingTop: safeInsets.top }]}>
+      <Animated.View
+        style={[
+          styles.fixProfileHeader,
+          { height: profileHeight, paddingTop: safeInsets.top },
+          { opacity: profileOpacity },
+          { transform: [{ translateY: profileTranslateY }] }]}
+      >
         <View style={styles.profileContainer}>
           <Avatar
             rounded
@@ -75,7 +124,6 @@ const ProfileScreen = () => {
             <Text style={styles.userId}>ID: {userData.id}</Text>
           </View>
         </View>
-
         <Button
           title={i18n.t('profile.edit')}
           type="outline"
@@ -83,11 +131,20 @@ const ProfileScreen = () => {
           titleStyle={styles.editButtonText}
           containerStyle={styles.editButtonContainer}
         />
-      </View>
+      </Animated.View>
 
-      <ScrollView style={styles.scrollContainer}>
+      <Animated.ScrollView
+        style={[styles.scrollContainer]}
+        onScroll={Animated.event([
+          { nativeEvent: { contentOffset: { y: scrollY } } }
+        ], { useNativeDriver: false })}
+        scrollEventThrottle={16}
+      >
         {/* Stats Section */}
-        <View style={styles.statsContainer}>
+        <View
+          style={[styles.statsContainer,
+            { paddingTop: profileHeight + 10}]}
+        >
           {userData.stats.map((stat) => (
             <View key={stat.id} style={styles.statItem}>
               <Icon
@@ -153,24 +210,24 @@ const ProfileScreen = () => {
             </ListItem>
           ))}
         </View>
-      </ScrollView>
+      </Animated.ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f8f8f8',
-  },
-  header: {
-    backgroundColor: '#00C984',
-    paddingTop: 20,
-    paddingBottom: 30,
-    paddingHorizontal: 20,
+  fixProfileHeader: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    backgroundColor: globalStyles.primaryColor,
+    paddingTop: rem(20),
+    paddingBottom: rem(30),
+    paddingHorizontal: rem(20),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    zIndex:5,
   },
   profileContainer: {
     flexDirection: 'row',
@@ -212,9 +269,6 @@ const styles = StyleSheet.create({
   statsContainer: {
     flexDirection: 'row',
     backgroundColor: 'white',
-    paddingVertical: 15,
-    marginTop: 10,
-    marginBottom: 15,
   },
   statItem: {
     flex: 1,
@@ -304,6 +358,20 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#00C984',
     marginTop: 4,
+  },
+  fixedHeader: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    backgroundColor: '#00C984',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
+  fixedHeaderTitle: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
