@@ -13,7 +13,7 @@ export const globalStyles = StyleSheet.create({
   textLight: '#999',
 });
 
-export const globalTheme = {
+export const standardTheme = {
   Button: {
     raised: true,
   },

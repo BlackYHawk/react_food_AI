@@ -10,7 +10,7 @@
     "home": {
         "title": "AI 食物助手",
         "search": {
-            "placeholder": "搜索食物、食谱..."
+            "placeholder": "搜索食物..."
         },
         "camera": "点击拍照识别食物",
         "quickFunctions": {
@@ -20,10 +20,7 @@
         }
     },
     "recipes": {
-        "title": "菜谱",
-        "search": {
-            "placeholder": "搜索菜谱..."
-        },
+        "title": "营养餐谱",
         "categories": {
             "all": "全部",
             "breakfast": "早餐",

@@ -1,63 +1,66 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, FlatList} from 'react-native';
-import { ListItem } from 'react-native-elements';
+import {Avatar} from 'react-native-elements';
+import ReactAxios from '../apis/reactAxios.tsx';
+import {rem} from '../styles/globalStyles.tsx';
 
 const RecentAnalysis = () => {
-  const recentData = [
+  const [recentData, setRecentData] = useState([
     {
-      id: 1,
+      id: '1',
       name: '清炒西兰花',
-      calories: '78 卡路里',
-      time: '今天 12:30',
-      icon: '🥬',
+      favorites: '78 卡路里',
+      burdens: '今天 12:30',
+      img: '🥬',
     },
     {
-      id: 2,
+      id: '2',
       name: '红烧排骨',
-      calories: '450 卡路里',
-      time: '今天 08:15',
-      icon: '🍖',
+      favorites: '450 卡路里',
+      burdens: '今天 08:15',
+      img: '🍖',
     },
     {
-      id: 3,
+      id: '3',
       name: '水煮青菜',
-      calories: '45 卡路里',
-      time: '昨天 19:20',
-      icon: '🥬',
+      favorites: '45 卡路里',
+      burdens: '昨天 19:20',
+      img: '🥬',
     },
-  ];
+  ]);
 
-  const renderAvatar = (icon) => (
-    <View style={styles.avatar}>
-      <Text style={styles.avatarText}>{icon}</Text>
-    </View>
-  );
+  const fetchRecentData = async () => {
+    try {
+      const response = await ReactAxios.getInstance().get(
+        '/api/cooklist');
+      // 假设返回的数据格式与 recentData 相同
+      console.log('Fetched recent data:', response.data);
+      setRecentData(response.data.data);
+    } catch (error) {
+      console.error('Error fetching recent data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRecentData();
+  }, []);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>最近分析</Text>
-      <FlatList data={recentData}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-        <ListItem
-          bottomDivider
-          containerStyle={styles.listItem} >
-          <ListItem.Content style={styles.listContent}>
-            <View style={styles.listRow}>
-              {renderAvatar(item.icon)}
-              <View style={styles.textContainer}>
-                <ListItem.Title style={styles.itemTitle}>
-                  {item.name}
-                </ListItem.Title>
-                <ListItem.Subtitle style={styles.itemSubtitle}>
-                  {item.calories}
-                </ListItem.Subtitle>
-              </View>
-              <Text style={styles.timeText}>{item.time}</Text>
+      <FlatList
+        data={recentData}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.listRow}>
+            <Avatar rounded source={{uri: item.img}} containerStyle={styles.avatar} />
+            <View style={styles.textContainer}>
+              <Text style={styles.itemTitle} ellipsizeMode="tail">{item.name}</Text>
+              <Text style={styles.itemSubtitle} ellipsizeMode="tail">{item.favorites}</Text>
             </View>
-          </ListItem.Content>
-        </ListItem>
-      )} />
+            <Text style={styles.timeText} numberOfLines={2} ellipsizeMode="tail" >{item.burdens}</Text>
+          </View>
+        )} />
     </View>
   );
 };
@@ -73,47 +76,39 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 16,
   },
-  listItem: {
+  listRow: {
+    flexDirection: 'row',
     backgroundColor: '#f8f9fa',
     borderRadius: 8,
     marginBottom: 8,
     paddingVertical: 12,
     paddingHorizontal: 16,
-  },
-  listContent: {
-    paddingVertical: 0,
-  },
-  listRow: {
-    flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
+    height: rem(60),
   },
   avatar: {
-    width: 40,
-    height: 40,
-    backgroundColor: '#e8f5e8',
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  avatarText: {
-    fontSize: 20,
+    width: rem(50),
+    height: rem(50),
   },
   textContainer: {
     flex: 1,
+    marginLeft: rem(10),
   },
   itemTitle: {
+    maxWidth: rem(120),
     fontSize: 16,
     fontWeight: '500',
     color: '#333',
     marginBottom: 4,
   },
   itemSubtitle: {
+    maxWidth: rem(80),
     fontSize: 14,
     color: '#666',
   },
   timeText: {
+    maxWidth: rem(60),
     fontSize: 12,
     color: '#999',
   },

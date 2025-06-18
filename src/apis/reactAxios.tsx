@@ -36,18 +36,27 @@ async function requestWithRetry<T = any>(
 
 // 响应式请求框架主接口
 class ReactAxios {
-  private instance: AxiosInstance;
+  private static instance: ReactAxios;
+  private axiosInstance: AxiosInstance;
 
-  constructor(baseURL: string, defaultHeaders: Record<string, string> = {}) {
-    this.instance = createAxiosInstance(baseURL, defaultHeaders);
+  private constructor(baseURL: string, defaultHeaders: Record<string, string> = {}) {
+    this.axiosInstance = createAxiosInstance(baseURL, defaultHeaders);
+  }
+
+  static getInstance(defaultHeaders: Record<string, string> = {}) {
+    if (!ReactAxios.instance) {
+      const baseURL = 'http://192.168.31.190:80/';
+      ReactAxios.instance = new ReactAxios(baseURL, defaultHeaders);
+    }
+    return ReactAxios.instance;
   }
 
   setHeader(key: string, value: string) {
-    this.instance.defaults.headers.common[key] = value;
+    this.axiosInstance.defaults.headers.common[key] = value;
   }
 
   removeHeader(key: string) {
-    delete this.instance.defaults.headers.common[key];
+    delete this.axiosInstance.defaults.headers.common[key];
   }
 
   async request<T = any>(
@@ -55,7 +64,7 @@ class ReactAxios {
     retryCount: number = 1,
     retryDelay: number = 1000
   ): Promise<AxiosResponse<T>> {
-    return requestWithRetry<T>(this.instance, config, retryCount, retryDelay);
+    return requestWithRetry<T>(this.axiosInstance, config, retryCount, retryDelay);
   }
 
   // 快捷方法

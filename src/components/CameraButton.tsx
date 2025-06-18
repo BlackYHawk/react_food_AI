@@ -8,6 +8,8 @@ import {
 import { Icon } from 'react-native-elements';
 import { launchCamera } from 'react-native-image-picker';
 import { globalStyles } from '../styles/globalStyles';
+import { requestPermissionWithCallback } from '../libs/permission_utils.tsx';
+import {compressImageIfNeeded} from '../libs/image_utils.tsx';
 
 const CameraButton = () => {
   const [scaleValue] = useState(new Animated.Value(1));
@@ -27,17 +29,33 @@ const CameraButton = () => {
   };
 
   const handleCameraPress = () => {
-    const options = {
-      mediaType: 'photo',
-      quality: 0.8,
-    };
+    requestPermissionWithCallback('CAMERA', {
+      success: () => {
+        const options = {
+          mediaType: 'photo',
+          cameraType: 'back',
+          quality: 0.8,
+          maxWidth: 4096,
+          maxHeight: 4096,
+        };
+        launchCamera(options, (response) => {
+          if (response.assets && response.assets[0]) {
+            // 处理拍照结果
+            console.log('Camera result:', response.assets[0]);
+            // 这里添加图片识别逻辑
+            compressImageIfNeeded(response.assets[0].uri || '').then((uri) => {
 
-    launchCamera(options, (response) => {
-      if (response.assets && response.assets[0]) {
-        // 处理拍照结果
-        console.log('Camera result:', response.assets[0]);
-        // 这里添加图片识别逻辑
-      }
+            }).catch((error) => {
+                console.error('Image compression error:', error.message);
+              });
+          } else {
+            console.error('Camera error:', response.errorMessage || 'Unknown error');
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Camera permission denied:', error.message);
+      },
     });
   };
 
@@ -61,7 +79,6 @@ const CameraButton = () => {
   );
 };
 
-// @ts-ignore
 // @ts-ignore
 const styles = StyleSheet.create({
   container: {

@@ -5,13 +5,13 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  ScrollView, useColorScheme,
+  useColorScheme,
 } from 'react-native';
 import { SearchBar, Icon } from 'react-native-elements';
 import CameraButton from '../components/CameraButton.tsx';
 import QuickFunctions from '../components/QuickFunctions.tsx';
 import RecentAnalysis from '../components/RecentAnalysis.tsx';
-import { globalStyles } from '../styles/globalStyles';
+import { globalStyles, rem } from '../styles/globalStyles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import i18n from '../i18n/i18n.js';
 
@@ -35,7 +35,7 @@ const HomeScreen = () => {
         <Icon name="settings" type="ionicons" size={24} color="#999" />
       </View>
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+      <View style={styles.content} >
         {/* Search Bar */}
         <SearchBar
           placeholder={i18n.t('home.search.placeholder')}
@@ -57,7 +57,7 @@ const HomeScreen = () => {
 
         {/* Recent Analysis */}
         <RecentAnalysis />
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 32,
-    height: 32,
+    width: 25,
+    height: 25,
     backgroundColor: globalStyles.primaryColor,
     borderRadius: 8,
     alignItems: 'center',
@@ -101,16 +101,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderTopWidth: 0,
     borderBottomWidth: 0,
-    paddingHorizontal: 24,
-    paddingVertical: 16,
+    paddingHorizontal: rem(24),
+    paddingVertical: rem(16),
   },
   searchInputContainer: {
     backgroundColor: '#f8f9fa',
     borderRadius: 25,
-    height: 48,
-    paddingHorizontal: 16,
+    height: rem(48),
+    paddingHorizontal: rem(16),
   },
   searchInput: {
+    textAlignVertical: 'center',
     fontSize: 16,
     color: '#333',
   },

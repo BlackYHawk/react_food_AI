@@ -1,43 +1,126 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   SafeAreaView,
-  TextInput,
   ScrollView,
   TouchableOpacity,
   Image,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import AnimatedIOPSlide from '../components/AnimatedIOPSlide.tsx';
+import {globalStyles} from '../styles/globalStyles.tsx';
+import i18n from '../i18n/i18n';
+import ReactAxios from '../apis/reactAxios.tsx';
 
 const RecipesScreen = () => {
   const [selectedTab, setSelectedTab] = useState('分类');
   const tabs = ['分类', '品牌', '评价', '综合', '外卖'];
   const safeInsets = useSafeAreaInsets();
+  const [iopData, setIOPData] = useState([
+    {
+      "name": "\u5c0f\u7092\u725b\u8089",
+      "id": "785855",
+      "img": "http:\/\/s1.cdn.jiaonizuocai.com\/videoImg\/201510\/1313\/561c9a314c8bb.jpg\/OTAweDYwMA",
+      "all_click": "961.2\u4e07",
+      "favorites": "6.0\u4e07",
+      "uri": "dishInfo.app?code=78602371",
+      "is_fine": 1,
+      "has_make_img": 1,
+      "is_exclusive": "2",
+      "burdens": "\u9752\u849c\u3001\u5c0f\u7c73\u6912\u3001\u725b\u91cc\u810a\u3001\u9e21\u86cb\u6e05\u3001\u9999\u83dc\u6897\u3001\u8471\u3001\u59dc"
+    }, {
+      "name": "\u7ea2\u70e7\u8089",
+      "id": "785834",
+      "img": "http:\/\/s1.cdn.jiaonizuocai.com\/videoImg\/201510\/1311\/561c79f4d4e14.jpg\/OTAweDYwMA",
+      "all_click": "3672.3\u4e07",
+      "favorites": "10.0\u4e07",
+      "uri": "dishInfo.app?code=78600271",
+      "is_fine": 1,
+      "has_make_img": 1,
+      "is_exclusive": "2",
+      "burdens": "\u4e94\u82b1\u8089"
+    }, {
+      "name": "\u7cd6\u918b\u6392\u9aa8",
+      "id": "786082",
+      "img": "http:\/\/s1.cdn.jiaonizuocai.com\/videoImg\/201509\/0722\/55ed97982b6fc.JPG\/OTAweDYwMA",
+      "all_click": "3334.9\u4e07",
+      "favorites": "20.4\u4e07",
+      "uri": "dishInfo.app?code=78625071",
+      "is_fine": 1,
+      "has_make_img": 1,
+      "is_exclusive": "2",
+      "burdens": "\u6392\u9aa8"
+    }, {
+      "name": "\u6e05\u84b8\u9c7c",
+      "id": "778816",
+      "img": "http:\/\/s1.cdn.jiaonizuocai.com\/caipu\/201508\/3113\/311354095180.jpg\/OTAweDYwMA",
+      "all_click": "1358.8\u4e07",
+      "favorites": "7.0\u4e07",
+      "uri": "dishInfo.app?code=77898471",
+      "is_fine": 1,
+      "has_make_img": 1,
+      "is_exclusive": "2",
+      "burdens": "\u8349\u9c7c"
+    }, {
+      "name": "\u897f\u7ea2\u67ff\u7092\u9e21\u86cb",
+      "id": "801048",
+      "img": "http:\/\/s1.cdn.jiaonizuocai.com\/caipu\/201601\/1914\/191406289.jpg\/OTAweDYwMA",
+      "all_click": "624.1\u4e07",
+      "favorites": "3.1\u4e07",
+      "uri": "dishInfo.app?code=80121673",
+      "is_fine": 1,
+      "has_make_img": 1,
+      "is_exclusive": "9",
+      "burdens": "\u9e21\u86cb\u3001\u9999\u83dc\u3001\u897f\u7ea2\u67ff\u3001\u8471\u3001\u5927\u849c"
+    }, {
+      "name": "\u849c\u9999\u6392\u9aa8",
+      "id": "780819",
+      "img": "http:\/\/s1.cdn.jiaonizuocai.com\/videoImg\/201509\/0722\/55eda07f5974c.JPG\/OTAweDYwMA",
+      "all_click": "949.4\u4e07",
+      "favorites": "5.7\u4e07",
+      "uri": "dishInfo.app?code=78098771",
+      "is_fine": 1,
+      "has_make_img": 1,
+      "is_exclusive": "2",
+      "burdens": "\u6392\u9aa8"
+    }, {
+      "name": "\u9c7c\u9999\u8304\u5b50",
+      "id": "775734",
+      "img": "http:\/\/s1.cdn.jiaonizuocai.com\/caipu\/201508\/1115\/042148249114.jpg\/OTAweDYwMA",
+      "all_click": "1106.6\u4e07",
+      "favorites": "9.1\u4e07",
+      "uri": "dishInfo.app?code=77590227",
+      "is_fine": 1,
+      "has_make_img": 1,
+      "is_exclusive": "2",
+      "burdens": "\u8304\u5b50\u3001\u8471\u59dc\u849c\u3001\u732a\u8089\u7cdc\u3001\u918b\u3001\u6599\u9152\u3001\u76d0\u3001\u7cd6\u3001\u751f\u62bd\u3001\u751f\u7c89\u3001\u90eb\u53bf\u8c46\u74e3\u9171\u3001\u6c34\u6dc0\u7c89"
+    },
+  ]);
+
+  const fetchIOPData = async () => {
+    try {
+      const response = await ReactAxios.getInstance().get(
+        '/api/cooklist');
+      // 假设返回的数据格式与 recentData 相同
+      console.log('Fetched recent data:', response.data);
+      setIOPData(response.data.data);
+    } catch (error) {
+      console.error('Error fetching recent data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchIOPData();
+  }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={globalStyles.container}>
       {/* Header */}
       <View style={[styles.header, { paddingTop: safeInsets.top }]}>
-        <Text style={styles.logo}>美食食谱</Text>
-        <Icon name="menu-outline" size={24} color="#333" />
-      </View>
-
-      {/* Search Bar */}
-      <View style={styles.searchContainer}>
-        <View style={styles.searchBar}>
-          <Icon name="search-outline" size={20} color="#999" style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="搜索菜品名称，材料"
-            placeholderTextColor="#999"
-          />
-        </View>
-        <TouchableOpacity style={styles.filterButton}>
-          <Icon name="filter" size={20} color="white" />
-        </TouchableOpacity>
+        <Text style={styles.title}>{i18n.t('recipes.title')}</Text>
       </View>
 
       {/* Category Tabs */}
@@ -46,8 +129,7 @@ const RecipesScreen = () => {
           <TouchableOpacity
             key={tab}
             style={[styles.tab, selectedTab === tab && styles.selectedTab]}
-            onPress={() => setSelectedTab(tab)}
-          >
+            onPress={() => setSelectedTab(tab)}>
             <Text style={[styles.tabText, selectedTab === tab && styles.selectedTabText]}>{tab}</Text>
           </TouchableOpacity>
         ))}
@@ -58,16 +140,7 @@ const RecipesScreen = () => {
         {/* Today's Recommendation */}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>今日推荐</Text>
-          <View style={styles.recommendCard}>
-            <Image
-              source={{ uri: 'https://example.com/fish_image.jpg' }}
-              style={styles.recommendImage}
-            />
-            <View style={styles.recommendInfo}>
-              <Text style={styles.recommendName}>红烧鱼</Text>
-              <Text style={styles.recommendTime}>烹饪时间: 25分钟</Text>
-            </View>
-          </View>
+          <AnimatedIOPSlide data={iopData} cardStyle={styles.recommendCard} />
         </View>
 
         {/* Popular Products */}
@@ -161,52 +234,20 @@ const RecipesScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 15,
-    paddingVertical: 10,
+    paddingHorizontal: 24,
+    paddingVertical: 16,
     backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
   },
-  logo: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#4CAF50',
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    backgroundColor: 'white',
-  },
-  searchBar: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginRight: 10,
-  },
-  searchIcon: {
-    marginRight: 8,
-  },
-  searchInput: {
-    flex: 1,
-    height: 40,
-    fontSize: 14,
-  },
-  filterButton: {
-    backgroundColor: '#4CAF50',
-    borderRadius: 5,
-    width: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
+  title: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#333',
   },
   tabContainer: {
     flexDirection: 'row',
@@ -235,7 +276,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sectionContainer: {
-    marginTop: 15,
+    marginTop: 5,
     backgroundColor: 'white',
     paddingVertical: 15,
   },
@@ -260,31 +301,7 @@ const styles = StyleSheet.create({
     margin: 15,
     marginTop: 5,
     borderRadius: 8,
-    overflow: 'hidden',
     backgroundColor: '#f9f9f9',
-  },
-  recommendImage: {
-    width: '100%',
-    height: 180,
-    borderRadius: 8,
-  },
-  recommendInfo: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    padding: 10,
-  },
-  recommendName: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  recommendTime: {
-    color: 'white',
-    fontSize: 12,
-    marginTop: 4,
   },
   horizontalList: {
     paddingLeft: 15,

@@ -58,13 +58,13 @@ const MainTabs = createBottomTabNavigator({
         default:
           label = '';
       }
-      return <Text style={[{ color: focused ? '#4CAF50' : '#999' }, { fontSize: 12 }]}>{label}</Text>;
+      return <Text style={[{ color: focused ? '#4CAF50' : '#999' }, { fontSize: 10 }]}>{label}</Text>;
     },
     tabBarStyle: {
       backgroundColor: 'white',
       borderTopColor: '#e0e0e0',
-      paddingBottom: 5,
-      height: 60,
+      paddingBottom: 2,
+      height: 65,
     },
   }),
   screens: {
