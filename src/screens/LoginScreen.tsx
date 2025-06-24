@@ -4,15 +4,22 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Image,
   SafeAreaView,
   StatusBar, useColorScheme,
 } from 'react-native';
+import {useAppSelector, useAppDispatch} from '../hooks/appHooks.tsx';
+import {register, login} from '../store/userSlice';
 import i18n from '../i18n/i18n.js';
 import LinearGradient from 'react-native-linear-gradient';
+import {Avatar} from 'react-native-elements';
 
 const LoginScreen = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const userData = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+
+  const showAvatorPreview = () => {
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -21,20 +28,22 @@ const LoginScreen = () => {
       {/* Login Card */}
       <View style={styles.loginCard}>
         {/* App Logo */}
-        <View style={styles.logoContainer}>
-          <LinearGradient
-            colors={['#FF8F59', '#FF5C5C']}
-            style={styles.logoBackground}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-          >
-            <Image
-              source={require('../assets/login_robot.png')}
-              style={styles.logoImage}
-              resizeMode="contain"
-            />
-          </LinearGradient>
-        </View>
+        <Avatar
+          rounded
+          size={80}
+          source={{ uri: userData.avatar }}
+          activeOpacity={0.7}
+          onPress={showAvatorPreview}
+          containerStyle={styles.avatarContainer}
+        >
+          <Avatar.Accessory
+            size={22}
+            color="white"
+            backgroundColor="#00C984"
+            name="camera"
+            type="font-awesome-5"
+          />
+        </Avatar>
 
         {/* App Title */}
         <Text style={styles.appTitle}>{i18n.t('login.title')}</Text>
@@ -98,21 +107,9 @@ const styles = StyleSheet.create({
     elevation: 5,
     marginTop: 40,
   },
-  logoContainer: {
-    marginTop: 20,
-    marginBottom: 15,
-  },
-  logoBackground: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logoImage: {
-    width: 40,
-    height: 40,
-    tintColor: 'white',
+  avatarContainer: {
+    borderWidth: 3,
+    borderColor: 'white',
   },
   appTitle: {
     fontSize: 22,

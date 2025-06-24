@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: rem(16),
   },
   searchInput: {
+    alignItems: 'center',
     textAlignVertical: 'center',
     fontSize: 16,
     color: '#333',

@@ -85,11 +85,11 @@ const AnimatedIOPSlide: React.FC<AnimatedIOPSlideProps> = ({data, cardStyle}) =>
     if (flatListRefs.current) {
       const flatList = flatListRefs.current[idx];
       if (flatList) {
-        flatList.measure((x, y, width, height, pageX, pageY) => {
-          // 计算当前页的高度
-          console.log("height", height);
-          setContainerHeight(height);
-        });
+        // flatList.measure((x, y, width, height, pageX, pageY) => {
+        //   // 计算当前页的高度
+        //   console.log("height", height);
+        //   setContainerHeight(height);
+        // });
       }
     }
   };

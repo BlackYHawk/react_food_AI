@@ -333,37 +333,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  bottomNav: {
-    flexDirection: 'row',
-    height: 56,
-    backgroundColor: 'white',
-    borderTopWidth: 1,
-    borderTopColor: '#f0f0f0',
-  },
-  navItem: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  activeNavItem: {
-    borderTopWidth: 2,
-    borderTopColor: '#00C984',
-  },
-  navText: {
-    fontSize: 12,
-    color: '#999',
-    marginTop: 4,
-  },
-  activeNavText: {
-    fontSize: 12,
-    color: '#00C984',
-    marginTop: 4,
-  },
   fixedHeader: {
     position: 'absolute',
     left: 0,
     right: 0,
-    backgroundColor: '#00C984',
+    backgroundColor: globalStyles.primaryColor,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
