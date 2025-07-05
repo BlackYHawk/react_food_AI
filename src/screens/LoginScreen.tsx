@@ -108,8 +108,8 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   avatarContainer: {
-    borderWidth: 3,
-    borderColor: 'white',
+    borderWidth: 1,
+    borderColor: 'gray',
   },
   appTitle: {
     fontSize: 22,

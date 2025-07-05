@@ -86,24 +86,13 @@ const RecipesScreen = () => {
       "has_make_img": 1,
       "is_exclusive": "2",
       "burdens": "\u6392\u9aa8"
-    }, {
-      "name": "\u9c7c\u9999\u8304\u5b50",
-      "id": "775734",
-      "img": "http:\/\/s1.cdn.jiaonizuocai.com\/caipu\/201508\/1115\/042148249114.jpg\/OTAweDYwMA",
-      "all_click": "1106.6\u4e07",
-      "favorites": "9.1\u4e07",
-      "uri": "dishInfo.app?code=77590227",
-      "is_fine": 1,
-      "has_make_img": 1,
-      "is_exclusive": "2",
-      "burdens": "\u8304\u5b50\u3001\u8471\u59dc\u849c\u3001\u732a\u8089\u7cdc\u3001\u918b\u3001\u6599\u9152\u3001\u76d0\u3001\u7cd6\u3001\u751f\u62bd\u3001\u751f\u7c89\u3001\u90eb\u53bf\u8c46\u74e3\u9171\u3001\u6c34\u6dc0\u7c89"
     },
   ]);
 
   const fetchIOPData = async () => {
     try {
       const response = await ReactAxios.getInstance().get(
-        '/api/cooklist');
+        '/food/cookbook-list');
       // 假设返回的数据格式与 recentData 相同
       console.log('Fetched recent data:', response.data);
       setIOPData(response.data.data);

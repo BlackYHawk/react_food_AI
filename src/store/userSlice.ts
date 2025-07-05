@@ -2,7 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const userSlice = createSlice({
   name: 'user',
-  initialState: { id:'', name: '', phone:'', avatar: '', status: 0, loginType: 0 },
+  initialState: {
+    id:'', name: '', phone:'',
+    avatar: 'https://example.com/avatar.jpg', status: 0, loginType: 0 },
   reducers: {
     register(state, action) {
       state.id = Math.random().toString(36).substring(2, 16);

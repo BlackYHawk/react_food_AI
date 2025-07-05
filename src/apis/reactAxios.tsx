@@ -45,7 +45,7 @@ class ReactAxios {
 
   static getInstance(defaultHeaders: Record<string, string> = {}) {
     if (!ReactAxios.instance) {
-      const baseURL = 'http://192.168.31.190:80/';
+      const baseURL = 'http://192.168.31.190:3000/';
       ReactAxios.instance = new ReactAxios(baseURL, defaultHeaders);
     }
     return ReactAxios.instance;

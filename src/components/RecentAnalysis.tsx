@@ -32,7 +32,7 @@ const RecentAnalysis = () => {
   const fetchRecentData = async () => {
     try {
       const response = await ReactAxios.getInstance().get(
-        '/api/cooklist');
+        '/food/cookbook-list');
       // 假设返回的数据格式与 recentData 相同
       console.log('Fetched recent data:', response.data);
       setRecentData(response.data.data);
