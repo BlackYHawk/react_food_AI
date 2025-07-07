@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import {
   StyleSheet,
   View,
   Text,
   Image,
   StatusBar,
-  SafeAreaView, useColorScheme,
+  SafeAreaView,
   Animated,
 } from 'react-native';
 import {
@@ -16,17 +16,19 @@ import {
 } from 'react-native-elements';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
-import i18n from '../i18n/i18n';
-import { globalStyles, rem } from '../styles/globalStyles';
-import userData from '../mock/profile_user_date.json';
+import i18n from '@/i18n/i18n';
+import { rem } from '@/libs/utils';
+import { useTheme } from '@/styles/ThemeProvider.tsx';
+import userData from '@/mock/profile_user_date.json';
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
   const scrollY = useRef(new Animated.Value(0)).current;
-  const isDarkMode = useColorScheme() === 'dark';
+  const { theme } = useTheme();
   const safeInsets = useSafeAreaInsets();
+
   const showAvatorPreview = () => {
-    navigation.navigate('Login', {});
+    navigation.navigate('Login');
   };
 
   //顶部标题栏高度
@@ -56,9 +58,147 @@ const ProfileScreen = () => {
     extrapolate: 'clamp',
   });
 
+  const styles = React.useMemo(() => StyleSheet.create({
+    fixProfileHeader: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      backgroundColor: theme.primaryColor,
+      paddingTop: rem(20),
+      paddingBottom: rem(30),
+      paddingHorizontal: rem(20),
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      zIndex:5,
+    },
+    profileContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    avatarContainer: {
+      borderWidth: 3,
+      borderColor: 'white',
+    },
+    userInfo: {
+      marginLeft: 15,
+    },
+    userName: {
+      color: 'white',
+      fontSize: 20,
+      fontWeight: 'bold',
+    },
+    userId: {
+      color: 'rgba(255, 255, 255, 0.8)',
+      fontSize: 14,
+      marginTop: 5,
+    },
+    editButtonContainer: {
+      borderRadius: 20,
+    },
+    editButton: {
+      borderColor: 'white',
+      borderRadius: 20,
+      paddingVertical: 5,
+      paddingHorizontal: 15,
+    },
+    editButtonText: {
+      color: 'white',
+      fontSize: 14,
+    },
+    scrollContainer: {
+      flex: 1,
+    },
+    statsContainer: {
+      flexDirection: 'row',
+      backgroundColor: theme.secondaryColor,
+    },
+    statItem: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    statIconContainer: {
+      backgroundColor: 'rgba(0, 201, 132, 0.1)',
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 5,
+    },
+    statTitle: {
+      fontSize: 12,
+      color: theme.textPrimary,
+      marginBottom: 2,
+    },
+    statCount: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: theme.textPrimary,
+    },
+    sectionContainer: {
+      backgroundColor: theme.secondaryColor,
+      marginBottom: 15,
+      paddingTop: 10,
+    },
+    sectionTitle: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: theme.textPrimary,
+      paddingHorizontal: 15,
+      marginBottom: 10,
+    },
+    listItemContainer: {
+      paddingVertical: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: '#f0f0f0',
+    },
+    itemImage: {
+      width: 60,
+      height: 60,
+      borderRadius: 8,
+    },
+    itemTitle: {
+      fontSize: 15,
+      fontWeight: 'bold',
+      color: theme.textPrimary,
+    },
+    itemDate: {
+      fontSize: 13,
+      color: '#999',
+      marginTop: 5,
+    },
+    itemTime: {
+      fontSize: 13,
+      color: '#999',
+      marginTop: 5,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    fixedHeader: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      backgroundColor: theme.primaryColor,
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 10,
+    },
+    fixedHeaderTitle: {
+      color: 'white',
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    container: {
+      flex: 1,
+      backgroundColor: theme.backgroundColor
+    }
+  }), [theme]);
+
   return (
-    <SafeAreaView style={globalStyles.container}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle={theme.textPrimary === '#fff' ? 'light-content' : 'dark-content'} />
 
       {/* Animated 顶部标题栏，滑动渐变显示 */}
       <Animated.View style={[styles.fixedHeader,
@@ -139,17 +279,12 @@ const ProfileScreen = () => {
 
           {userData.collections.map((item) => (
             <ListItem key={item.id} containerStyle={styles.listItemContainer}>
-              <Image source={{ uri: item.image }} style={styles.itemImage} />
-              <ListItem.Content>
+              <Image key="image" source={{ uri: item.image }} style={styles.itemImage} />
+              <ListItem.Content key="content">
                 <ListItem.Title style={styles.itemTitle}>{item.title}</ListItem.Title>
                 <ListItem.Subtitle style={styles.itemDate}>{item.date}</ListItem.Subtitle>
               </ListItem.Content>
-              <Icon
-                name="trash"
-                type="font-awesome-5"
-                color="#ccc"
-                size={18}
-              />
+              <Icon key="icon" name="trash" type="font-awesome-5" color="#ccc" size={18} />
             </ListItem>
           ))}
         </View>
@@ -160,166 +295,21 @@ const ProfileScreen = () => {
 
           {userData.history.map((item) => (
             <ListItem key={item.id} containerStyle={styles.listItemContainer}>
-              <Image source={{ uri: item.image }} style={styles.itemImage} />
-              <ListItem.Content>
+              <Image key="history_image" source={{ uri: item.image }} style={styles.itemImage} />
+              <ListItem.Content key="history_content">
                 <ListItem.Title style={styles.itemTitle}>{item.title}</ListItem.Title>
                 <ListItem.Subtitle style={styles.itemTime}>
-                  <Icon
-                    name="clock"
-                    type="font-awesome-5"
-                    color="#999"
-                    size={12}
-                    containerStyle={{ marginRight: 5 }}
-                  />
+                  <Icon name="clock" type="font-awesome-5" color="#999" size={12} containerStyle={{ marginRight: 5 }} />
                   {item.time} · {item.calories} 千卡
                 </ListItem.Subtitle>
               </ListItem.Content>
-              <Icon
-                name="times"
-                type="font-awesome-5"
-                color="#ccc"
-                size={18}
-              />
+              <Icon key="history_icon" name="times" type="font-awesome-5" color="#ccc" size={18} />
             </ListItem>
           ))}
         </View>
       </Animated.ScrollView>
     </SafeAreaView>
   );
-};
-
-const styles = StyleSheet.create({
-  fixProfileHeader: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    backgroundColor: globalStyles.primaryColor,
-    paddingTop: rem(20),
-    paddingBottom: rem(30),
-    paddingHorizontal: rem(20),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    zIndex:5,
-  },
-  profileContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  avatarContainer: {
-    borderWidth: 3,
-    borderColor: 'white',
-  },
-  userInfo: {
-    marginLeft: 15,
-  },
-  userName: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  userId: {
-    color: 'rgba(255, 255, 255, 0.8)',
-    fontSize: 14,
-    marginTop: 5,
-  },
-  editButtonContainer: {
-    borderRadius: 20,
-  },
-  editButton: {
-    borderColor: 'white',
-    borderRadius: 20,
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-  },
-  editButtonText: {
-    color: 'white',
-    fontSize: 14,
-  },
-  scrollContainer: {
-    flex: 1,
-  },
-  statsContainer: {
-    flexDirection: 'row',
-    backgroundColor: 'white',
-  },
-  statItem: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  statIconContainer: {
-    backgroundColor: 'rgba(0, 201, 132, 0.1)',
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 5,
-  },
-  statTitle: {
-    fontSize: 12,
-    color: '#333',
-    marginBottom: 2,
-  },
-  statCount: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  sectionContainer: {
-    backgroundColor: 'white',
-    marginBottom: 15,
-    paddingTop: 10,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-    paddingHorizontal: 15,
-    marginBottom: 10,
-  },
-  listItemContainer: {
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-  },
-  itemImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 8,
-  },
-  itemTitle: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  itemDate: {
-    fontSize: 13,
-    color: '#999',
-    marginTop: 5,
-  },
-  itemTime: {
-    fontSize: 13,
-    color: '#999',
-    marginTop: 5,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  fixedHeader: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    backgroundColor: globalStyles.primaryColor,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 10,
-  },
-  fixedHeaderTitle: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-});
+}
 
 export default ProfileScreen;

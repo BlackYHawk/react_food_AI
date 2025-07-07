@@ -5,25 +5,109 @@ import {
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
-  StatusBar, useColorScheme,
+  StatusBar,
 } from 'react-native';
-import {useAppSelector, useAppDispatch} from '../hooks/appHooks.tsx';
-import {register, login} from '../store/userSlice';
-import i18n from '../i18n/i18n.js';
-import LinearGradient from 'react-native-linear-gradient';
+import {useAppSelector} from '@/hooks/appHooks.tsx';
+import { useTheme } from '@/styles/ThemeProvider.tsx';
+
+import i18n from '@/i18n/i18n.js';
+import { LinearGradient } from 'expo-linear-gradient';
 import {Avatar} from 'react-native-elements';
 
 const LoginScreen = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const { theme } = useTheme();
   const userData = useAppSelector((state) => state.user);
-  const dispatch = useAppDispatch();
 
   const showAvatorPreview = () => {
   };
 
+  const styles = React.useMemo(() => StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingHorizontal: 20,
+      paddingBottom: 10,
+    },
+    loginCard: {
+      marginHorizontal: 20,
+      backgroundColor: theme.secondaryColor,
+      borderRadius: 15,
+      padding: 20,
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 5,
+      marginTop: 40,
+    },
+    avatarContainer: {
+      borderWidth: 1,
+      borderColor: 'gray',
+    },
+    appTitle: {
+      fontSize: 22,
+      fontWeight: 'bold',
+      marginBottom: 8,
+      color: theme.textPrimary,
+    },
+    appDescription: {
+      fontSize: 14,
+      color: theme.textSecondary,
+      textAlign: 'center',
+      marginBottom: 30,
+    },
+    loginButton: {
+      width: '100%',
+      marginBottom: 15,
+      borderRadius: 8,
+      overflow: 'hidden',
+    },
+    buttonGradient: {
+      paddingVertical: 14,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    loginButtonText: {
+      color: 'white',
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
+    registerButton: {
+      width: '100%',
+      paddingVertical: 14,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderWidth: 1,
+      borderColor: '#DDD',
+      borderRadius: 8,
+      backgroundColor: theme.backgroundColor,
+    },
+    registerButtonText: {
+      color: theme.textPrimary,
+      fontSize: 16,
+    },
+    agreementContainer: {
+      marginTop: 20,
+      marginBottom: 10,
+    },
+    agreementText: {
+      fontSize: 12,
+      color: '#999',
+      textAlign: 'center',
+    },
+    agreementLink: {
+      color: '#FF7043',
+    },
+  }), [theme]);
+
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
+      <StatusBar barStyle={theme.textPrimary === '#fff' ? 'light-content' : 'dark-content'} />
 
       {/* Login Card */}
       <View style={styles.loginCard}>
@@ -82,89 +166,5 @@ const LoginScreen = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingBottom: 10,
-  },
-  loginCard: {
-    marginHorizontal: 20,
-    backgroundColor: 'white',
-    borderRadius: 15,
-    padding: 20,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
-    marginTop: 40,
-  },
-  avatarContainer: {
-    borderWidth: 1,
-    borderColor: 'gray',
-  },
-  appTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    color: '#333',
-  },
-  appDescription: {
-    fontSize: 14,
-    color: '#666',
-    textAlign: 'center',
-    marginBottom: 30,
-  },
-  loginButton: {
-    width: '100%',
-    marginBottom: 15,
-    borderRadius: 8,
-    overflow: 'hidden',
-  },
-  buttonGradient: {
-    paddingVertical: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  loginButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  registerButton: {
-    width: '100%',
-    paddingVertical: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: '#DDD',
-    borderRadius: 8,
-    backgroundColor: 'white',
-  },
-  registerButtonText: {
-    color: '#333',
-    fontSize: 16,
-  },
-  agreementContainer: {
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  agreementText: {
-    fontSize: 12,
-    color: '#999',
-    textAlign: 'center',
-  },
-  agreementLink: {
-    color: '#FF7043',
-  },
-});
 
 export default LoginScreen;

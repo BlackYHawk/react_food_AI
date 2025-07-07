@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   Animated, ViewStyle,
 } from 'react-native';
 import PagerView from 'react-native-pager-view';
-import {rem} from '../styles/globalStyles.tsx';
+import {useTheme} from '@/styles/ThemeProvider.tsx';
 
 type Item = {
   id: string;
@@ -22,27 +22,26 @@ type AnimatedIOPSlideProps = {
   cardStyle?: ViewStyle
 };
 
-const renderGridItem = ({item}: {item: Item}) => (
-  <TouchableOpacity style={styles.gridItem}>
-    <Image source={{uri: item.img}} style={styles.gridIcon} />
-    <Text style={styles.gridText} numberOfLines={1}>
-      {item.name}
-    </Text>
-  </TouchableOpacity>
-);
-
 const AnimatedIOPSlide: React.FC<AnimatedIOPSlideProps> = ({data, cardStyle}) => {
+  const renderGridItem = ({item}: {item: Item}) => (
+    <TouchableOpacity style={styles.gridItem}>
+      <Image source={{uri: item.img}} style={styles.gridIcon} />
+      <Text style={styles.gridText} numberOfLines={1}>
+        {item.name}
+      </Text>
+    </TouchableOpacity>
+  );
+  const {theme} = useTheme();
   const pagerViewRef = useRef<PagerView>(null);
-  const flatListRefs = useRef<Array<FlatList<Item | null>>>([]);
+  const flatListRefs = useRef<Array<FlatList<Item> | null>>([]);
   const numColumns = 5, maxRows = 3;
   const [pageIndex, setPageIndex] = useState(0);
-  const [containerHeight, setContainerHeight] = useState(rem(100));
 
   // 新增动画值
   const scrollX = useRef(new Animated.Value(0)).current;
 
   // 监听滑动
-  const handlePageScroll = (event) => {
+  const handlePageScroll = (event: { nativeEvent: { offset: number; position: number; }; }) => {
     const {offset, position} = event.nativeEvent;
     // 更新动画值
     scrollX.setValue(offset - position);
@@ -94,8 +93,52 @@ const AnimatedIOPSlide: React.FC<AnimatedIOPSlideProps> = ({data, cardStyle}) =>
     }
   };
 
+  const styles = React.useMemo(() => StyleSheet.create({
+    container: {
+      flex: 6,
+    },
+    pager: {
+      flex: 5,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    dotList: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      gap: 10,
+    },
+    dotStyle: {
+      width: 10,
+      height: 10,
+      borderRadius: 5,
+    },
+    page: {
+      flex: 1,
+      justifyContent: 'center',
+    },
+    gridItem: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: theme.rem(70),
+      height: theme.rem(70),
+      marginVertical: 6,
+    },
+    gridIcon: {
+      width: theme.rem(36),
+      height: theme.rem(36),
+      marginBottom: 6,
+      borderRadius: 18,
+      backgroundColor: '#f5f5f5',
+    },
+    gridText: {
+      fontSize: 12,
+      color: '#333',
+    },
+  }), [theme]);
+
   return (
-    <View style={[cardStyle, styles.container, {height: containerHeight}]}>
+    <View style={[cardStyle, styles.container]}>
       <PagerView
         ref={pagerViewRef}
         style={styles.pager}
@@ -107,7 +150,7 @@ const AnimatedIOPSlide: React.FC<AnimatedIOPSlideProps> = ({data, cardStyle}) =>
           <View key={index} style={styles.page}>
             <Animated.View style={{transform: [{translateX}]}}>
               <FlatList
-                ref={el => (flatListRefs.current[index] = el)}
+                ref={el => { flatListRefs.current[index] = el as FlatList<Item> | null; }}
                 data={rowData}
                 horizontal={index === 0}
                 {...(index !== 0 ? { numColumns: 5 } : {})}
@@ -132,48 +175,6 @@ const AnimatedIOPSlide: React.FC<AnimatedIOPSlideProps> = ({data, cardStyle}) =>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 6,
-  },
-  pager: {
-    flex: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  dotList: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 10,
-  },
-  dotStyle: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-  },
-  page: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  gridItem: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: rem(70),
-    height: rem(70),
-    marginVertical: 6,
-  },
-  gridIcon: {
-    width: rem(36),
-    height: rem(36),
-    marginBottom: 6,
-    borderRadius: 18,
-    backgroundColor: '#f5f5f5',
-  },
-  gridText: {
-    fontSize: 12,
-    color: '#333',
-  },
-});
+
 
 export default AnimatedIOPSlide;

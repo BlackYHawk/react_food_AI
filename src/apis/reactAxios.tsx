@@ -12,13 +12,13 @@ const createAxiosInstance = (baseURL: string,
 };
 
 // 异常重试封装
-async function requestWithRetry<T = any>(
+async function requestWithRetry<T = unknown>(
   instance: AxiosInstance,
   config: AxiosRequestConfig,
   retryCount: number = 3,
   retryDelay: number = 1000
 ): Promise<AxiosResponse<T>> {
-  let lastError;
+  let lastError: unknown;
   for (let i = 0; i < retryCount; i++) {
     try {
       return await instance.request<T>(config);
@@ -59,7 +59,7 @@ class ReactAxios {
     delete this.axiosInstance.defaults.headers.common[key];
   }
 
-  async request<T = any>(
+  async request<T = unknown>(
     config: AxiosRequestConfig,
     retryCount: number = 1,
     retryDelay: number = 1000
@@ -68,10 +68,10 @@ class ReactAxios {
   }
 
   // 快捷方法
-  get<T = any>(url: string, config?: AxiosRequestConfig, retryCount?: number, retryDelay?: number) {
+  get<T = unknown>(url: string, config?: AxiosRequestConfig, retryCount?: number, retryDelay?: number) {
     return this.request<T>({ ...config, url, method: 'get' }, retryCount, retryDelay);
   }
-  post<T = any>(url: string, data?: any, config?: AxiosRequestConfig, retryCount?: number, retryDelay?: number) {
+  post<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig, retryCount?: number, retryDelay?: number) {
     return this.request<T>({ ...config, url, method: 'post', data }, retryCount, retryDelay);
   }
   // 其他方法可按需扩展

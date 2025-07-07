@@ -8,14 +8,15 @@ import {
   ScrollView,
   TouchableOpacity
 } from 'react-native';
-import { LineChart } from 'react-native-chart-kit';
-import { Dimensions } from 'react-native';
+import { LineChart } from 'react-native-gifted-charts';
+
 import { Icon } from 'react-native-elements';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-
-const screenWidth = Dimensions.get('window').width;
+import { useTheme } from '@/styles/ThemeProvider.tsx';
+import bookIcon from '@/assets/book-icon.png';
 
 const NutritionScreen = () => {
+  const { theme } = useTheme();
   // Mock data for the chart
   const chartData = {
     labels: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
@@ -29,13 +30,236 @@ const NutritionScreen = () => {
   };
   const safeInsets = useSafeAreaInsets();
 
+  const styles = React.useMemo(() => StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#f5f5f5',
+    },
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingHorizontal: 24,
+      paddingVertical: 16,
+      backgroundColor: theme.backgroundColor,
+      borderBottomWidth: 1,
+      borderBottomColor: theme.secondaryColor,
+    },
+    logoContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    bookIcon: {
+      width: 24,
+      height: 24,
+      tintColor: '#4CAF50',
+    },
+    logoText: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: theme.primaryColor,
+      marginLeft: 5,
+    },
+    content: {
+      flex: 1,
+    },
+    titleText: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      paddingHorizontal: 15,
+      paddingTop: 15,
+      paddingBottom: 10,
+      color: theme.textPrimary,
+    },
+    dateSelector: {
+      flexDirection: 'row',
+      paddingHorizontal: 15,
+      marginBottom: 15,
+    },
+    dateOption: {
+      paddingVertical: 6,
+      paddingHorizontal: 15,
+      borderRadius: 20,
+      marginRight: 10,
+    },
+    activeDateOption: {
+      backgroundColor: theme.primaryColor,
+    },
+    dateOptionText: {
+      color: theme.textSecondary,
+      fontSize: 14,
+    },
+    activeDateOptionText: {
+      color: 'white',
+      fontSize: 14,
+      fontWeight: 'bold',
+    },
+    calorieStats: {
+      flexDirection: 'row',
+      paddingHorizontal: 15,
+      marginBottom: 20,
+    },
+    calorieBox: {
+      flex: 1,
+      backgroundColor: theme.secondaryColor,
+      borderRadius: 12,
+      padding: 15,
+      marginRight: 10,
+    },
+    calorieHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 5,
+    },
+    calorieLabel: {
+      fontSize: 14,
+      color: theme.textSecondary,
+      marginLeft: 5,
+    },
+    calorieValue: {
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      marginBottom: 5,
+    },
+    calorieNumber: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      color: theme.textPrimary,
+    },
+    calorieUnit: {
+      fontSize: 14,
+      color: theme.textSecondary,
+      marginLeft: 5,
+      marginBottom: 3,
+    },
+    calorieChange: {
+      fontSize: 12,
+      color: '#4CAF50',
+    },
+    calorieRemaining: {
+      fontSize: 12,
+      color: '#FF9800',
+    },
+    chartContainer: {
+      backgroundColor: theme.secondaryColor,
+      borderRadius: 12,
+      marginHorizontal: 15,
+      paddingVertical: 15,
+      marginBottom: 20,
+      alignItems: 'center',
+    },
+    chart: {
+      borderRadius: 12,
+    },
+    nutritionContainer: {
+      backgroundColor: theme.secondaryColor,
+      borderRadius: 12,
+      marginHorizontal: 15,
+      padding: 15,
+      marginBottom: 20,
+    },
+    sectionTitle: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginBottom: 15,
+      color: theme.textPrimary,
+    },
+    nutrientItem: {
+      marginBottom: 15,
+    },
+    nutrientInfo: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 5,
+    },
+    nutrientName: {
+      fontSize: 14,
+      color: theme.textPrimary,
+    },
+    nutrientValue: {
+      fontSize: 14,
+      color: theme.textPrimary,
+      fontWeight: 'bold',
+    },
+    progressBarContainer: {
+      height: 10,
+      backgroundColor: theme.backgroundColor,
+      borderRadius: 5,
+    },
+    progressBar: {
+      height: 10,
+      borderRadius: 5,
+    },
+    proteinBar: {
+      backgroundColor: '#2196F3',
+    },
+    carbsBar: {
+      backgroundColor: '#4CAF50',
+    },
+    fatBar: {
+      backgroundColor: '#FFC107',
+    },
+    mealsContainer: {
+      backgroundColor: theme.secondaryColor,
+      borderRadius: 12,
+      marginHorizontal: 15,
+      padding: 15,
+      marginBottom: 20,
+    },
+    mealItem: {
+      flexDirection: 'row',
+      marginBottom: 20,
+      borderBottomWidth: 1,
+      borderBottomColor: theme.secondaryColor,
+      paddingBottom: 15,
+    },
+    mealImage: {
+      width: 70,
+      height: 70,
+      borderRadius: 8,
+    },
+    mealInfo: {
+      flex: 1,
+      marginLeft: 15,
+    },
+    mealHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 5,
+    },
+    mealType: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: '#333',
+    },
+    mealTime: {
+      fontSize: 14,
+      color: '#999',
+    },
+    mealDescription: {
+      fontSize: 14,
+      color: '#666',
+      marginBottom: 5,
+    },
+    calorieInfo: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    mealCalories: {
+      fontSize: 14,
+      color: '#FF5722',
+      marginLeft: 5,
+      fontWeight: 'bold',
+    },
+  }), [theme]);
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
       {/* Header */}
       <View style={[styles.header, { paddingTop: safeInsets.top }]}>
         <View style={styles.logoContainer}>
           <Image
-            source={require('../assets/book-icon.png')}
+            source={bookIcon}
             style={styles.bookIcon}
           />
           <Text style={styles.logoText}>美味食谱</Text>
@@ -97,28 +321,37 @@ const NutritionScreen = () => {
         {/* Chart */}
         <View style={styles.chartContainer}>
           <LineChart
-            data={chartData}
-            width={screenWidth - 30}
+            data={chartData.datasets[0].data.map((value, index) => ({ value, label: chartData.labels[index] }))}
             height={220}
-            chartConfig={{
-              backgroundColor: '#fff',
-              backgroundGradientFrom: '#fff',
-              backgroundGradientTo: '#fff',
-              decimalPlaces: 0,
-              color: (opacity = 1) => `rgba(76, 175, 80, ${opacity})`,
-              style: {
-                borderRadius: 16,
+            width={300} // You might need to adjust this based on your layout
+            color='rgb(76, 175, 80)'
+            hideDataPoints
+            isCurved
+            showVerticalLines
+            verticalLinesColor='rgba(140,140,140,0.1)'
+            xAxisColor='lightgray'
+            yAxisColor='lightgray'
+            yAxisLabelSuffix='千卡'
+            spacing={40}
+            initialSpacing={0}
+            rulesColor='gray'
+            rulesType='solid'
+            xAxisLabelTextStyle={{ color: theme.textSecondary, fontSize: 10 }}
+            yAxisTextStyle={{ color: theme.textSecondary, fontSize: 10 }}
+            pointerConfig={{
+              pointerStripUptoDataPoint: true,
+              pointerStripColor: 'lightgray',
+              pointerStripWidth: 2,
+              pointerColor: 'lightgray',
+              radius: 4,
+              pointerLabelComponent: (item) => {
+                return (
+                  <View style={{ backgroundColor: 'white', padding: 5, borderRadius: 5 }}>
+                    <Text style={{ fontSize: 10 }}>{`${item[0].label}: ${item[0].value}千卡`}</Text>
+                  </View>
+                );
               },
-              propsForDots: {
-                r: '5',
-                strokeWidth: '2',
-                stroke: '#4CAF50',
-              },
-              fillShadowGradient: 'rgba(76, 175, 80, 0.2)',
-              fillShadowGradientOpacity: 0.5,
             }}
-            bezier
-            style={styles.chart}
           />
         </View>
 
@@ -225,226 +458,5 @@ const NutritionScreen = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-    backgroundColor: 'white',
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-  },
-  logoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  bookIcon: {
-    width: 24,
-    height: 24,
-    tintColor: '#4CAF50',
-  },
-  logoText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#4CAF50',
-    marginLeft: 5,
-  },
-  content: {
-    flex: 1,
-  },
-  titleText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    paddingHorizontal: 15,
-    paddingTop: 15,
-    paddingBottom: 10,
-  },
-  dateSelector: {
-    flexDirection: 'row',
-    paddingHorizontal: 15,
-    marginBottom: 15,
-  },
-  dateOption: {
-    paddingVertical: 6,
-    paddingHorizontal: 15,
-    borderRadius: 20,
-    marginRight: 10,
-  },
-  activeDateOption: {
-    backgroundColor: '#4CAF50',
-  },
-  dateOptionText: {
-    color: '#666',
-    fontSize: 14,
-  },
-  activeDateOptionText: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  calorieStats: {
-    flexDirection: 'row',
-    paddingHorizontal: 15,
-    marginBottom: 20,
-  },
-  calorieBox: {
-    flex: 1,
-    backgroundColor: 'white',
-    borderRadius: 12,
-    padding: 15,
-    marginRight: 10,
-  },
-  calorieHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  calorieLabel: {
-    fontSize: 14,
-    color: '#666',
-    marginLeft: 5,
-  },
-  calorieValue: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    marginBottom: 5,
-  },
-  calorieNumber: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  calorieUnit: {
-    fontSize: 14,
-    color: '#666',
-    marginLeft: 5,
-    marginBottom: 3,
-  },
-  calorieChange: {
-    fontSize: 12,
-    color: '#4CAF50',
-  },
-  calorieRemaining: {
-    fontSize: 12,
-    color: '#FF9800',
-  },
-  chartContainer: {
-    backgroundColor: 'white',
-    borderRadius: 12,
-    marginHorizontal: 15,
-    paddingVertical: 15,
-    marginBottom: 20,
-    alignItems: 'center',
-  },
-  chart: {
-    borderRadius: 12,
-  },
-  nutritionContainer: {
-    backgroundColor: 'white',
-    borderRadius: 12,
-    marginHorizontal: 15,
-    padding: 15,
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 15,
-  },
-  nutrientItem: {
-    marginBottom: 15,
-  },
-  nutrientInfo: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 5,
-  },
-  nutrientName: {
-    fontSize: 14,
-    color: '#333',
-  },
-  nutrientValue: {
-    fontSize: 14,
-    color: '#333',
-    fontWeight: 'bold',
-  },
-  progressBarContainer: {
-    height: 10,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 5,
-  },
-  progressBar: {
-    height: 10,
-    borderRadius: 5,
-  },
-  proteinBar: {
-    backgroundColor: '#2196F3',
-  },
-  carbsBar: {
-    backgroundColor: '#4CAF50',
-  },
-  fatBar: {
-    backgroundColor: '#FFC107',
-  },
-  mealsContainer: {
-    backgroundColor: 'white',
-    borderRadius: 12,
-    marginHorizontal: 15,
-    padding: 15,
-    marginBottom: 20,
-  },
-  mealItem: {
-    flexDirection: 'row',
-    marginBottom: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-    paddingBottom: 15,
-  },
-  mealImage: {
-    width: 70,
-    height: 70,
-    borderRadius: 8,
-  },
-  mealInfo: {
-    flex: 1,
-    marginLeft: 15,
-  },
-  mealHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 5,
-  },
-  mealType: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  mealTime: {
-    fontSize: 14,
-    color: '#999',
-  },
-  mealDescription: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 5,
-  },
-  calorieInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  mealCalories: {
-    fontSize: 14,
-    color: '#FF5722',
-    marginLeft: 5,
-    fontWeight: 'bold',
-  },
-});
 
 export default NutritionScreen;

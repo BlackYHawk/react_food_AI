@@ -1,15 +1,15 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
-import i18n from '../i18n/i18n';
-import { launchImageLibrary } from 'react-native-image-picker';
+import i18n from '@/i18n/i18n';
+import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 
 const QuickFunctions = () => {
   const functions = [
     {
       icon: 'photo',
       label: 'home.quickFunctions.photo',
-      onPress: () => openGallery,
+      onPress: openGallery,
     },
     {
       icon: 'history',
@@ -23,19 +23,17 @@ const QuickFunctions = () => {
     },
   ];
 
-  const openGallery = () => {
-    const options = {
-      mediaType: 'photo',
+  const openGallery = async () => {
+    const result = await launchImageLibraryAsync({
+      mediaTypes: MediaTypeOptions.Images,
       quality: 0.8,
-    };
-
-    launchImageLibrary(options, (response) => {
-      if (response.assets && response.assets[0]) {
-        // 处理相册选择结果
-        console.log('Gallery result:', response.assets[0]);
-        // 这里添加图片识别逻辑
-      }
     });
+
+    if (!result.canceled) {
+      // 处理相册选择结果
+      console.log('Gallery result:', result.assets[0].uri);
+      // 这里添加图片识别逻辑
+    }
   };
 
   return (

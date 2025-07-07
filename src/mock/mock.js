@@ -1,8 +1,13 @@
-module.exports = function() {
+import hotcat from '@/mock/cookbook-hotcat.json';
+import list from '@/mock/cookbook-list.json';
+import category from '@/mock/cookbook-category.json';
+import detail from '@/mock/cookbook-detail.json';
+
+export default function() {
   return {
-    hotcat: require('./cookbook-hotcat.json'),
-    list: require('./cookbook-list.json'),
-    category: require('./cookbook-category.json'),
-    detail: require('./cookbook-detail.json')
+    hotcat,
+    list,
+    category,
+    detail
   }
 }

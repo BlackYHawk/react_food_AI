@@ -1,4 +1,14 @@
 {
   "name": "react_food_AI",
-  "displayName": "react_food_AI"
+  "plugins": [
+    "expo-localization",
+    [
+      "expo-camera",
+      {
+        "cameraPermission": "Allow $(name) to access your camera",
+        "microphonePermission": "Allow $(name) to access your microphone",
+        "recordAudioAndroid": true
+      }
+    ]
+  ]
 }

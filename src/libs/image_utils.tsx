@@ -1,4 +1,4 @@
-import { Image } from 'react-native-compressor';
+import * as ImageManipulator from 'expo-image-manipulator';
 
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
 const MIN_QUALITY = 0.2; // 最低压缩质量
@@ -22,10 +22,12 @@ export async function compressImageIfNeeded(uri: string): Promise<string> {
 
   // 循环压缩，直到小于10M或达到最低质量
   while (compressedSize > MAX_SIZE && quality >= MIN_QUALITY) {
-    compressedUri = await Image.compress(uri, {
-      compressionMethod: 'auto',
-      quality,
-    });
+    const result = await ImageManipulator.manipulateAsync(
+      uri,
+      [],
+      { compress: quality, format: ImageManipulator.SaveFormat.JPEG }
+    );
+    compressedUri = result.uri;
     const res = await fetch(compressedUri);
     const compressedBlob = await res.blob();
     compressedSize = compressedBlob.size;
