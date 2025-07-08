@@ -20,9 +20,12 @@ import i18n from '@/i18n/i18n';
 import { rem } from '@/libs/utils';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
 import userData from '@/mock/profile_user_date.json';
+import type { RootStackScreenProps } from '@/types/navigation'; // 路径按实际调整
+
+type LoginNavigation = RootStackScreenProps<'Login'>['navigation'];
 
 const ProfileScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<LoginNavigation>();
   const scrollY = useRef(new Animated.Value(0)).current;
   const { theme } = useTheme();
   const safeInsets = useSafeAreaInsets();

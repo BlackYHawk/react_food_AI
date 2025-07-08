@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -6,13 +6,13 @@ import {
   Animated,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
+import * as ImagePicker from 'expo-image-picker';
+import { ImageManipulator } from 'expo-image-manipulator';
 
 const CameraButton = () => {
   const { theme } = useTheme();
   const [scaleValue] = useState(new Animated.Value(1));
-  const navigation = useNavigation();
 
   const handlePressIn = () => {
     Animated.spring(scaleValue, {
@@ -29,7 +29,27 @@ const CameraButton = () => {
   };
 
   const handleCameraPress = async () => {
-    navigation.navigate('CameraScreen');
+    // 选择相机或相册
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ['images'],
+      quality: 1,
+    });
+
+    // 如果取消，直接返回
+    if (result.canceled) return;
+
+    // 获取图片 uri
+    const uri = result.assets?.[0]?.uri;
+    if (!uri) return;
+
+    // 压缩图片
+    const compressed = await ImageManipulator.manipulateAsync(uri, [], {
+      compress: 0.5,
+      format: ImageManipulator.SaveFormat.JPEG,
+    });
+
+    // 这里可以将 compressed.uri 返回给调用方或做后续处理
+    console.log('压缩后图片:', compressed.uri);
   };
 
   const styles = React.useMemo(() => StyleSheet.create({

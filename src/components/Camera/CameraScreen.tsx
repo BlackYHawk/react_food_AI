@@ -23,6 +23,7 @@ const CameraScreen = () => {
         if (photo.uri) {
           const compressedUri = await compressImageIfNeeded(photo.uri);
           navigation.goBack();
+
           // 你可以通过 params 或事件将 compressedUri 传回上一页
           // navigation.navigate('上一页', { photoUri: compressedUri });
         }

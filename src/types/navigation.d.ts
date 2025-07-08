@@ -3,7 +3,7 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 
 declare global {
-  
+
 }
 
 export type RootStackParamList = {
@@ -13,6 +13,7 @@ export type RootStackParamList = {
   Profile: undefined;
   Recipes: undefined;
   TabNavigator: undefined;
+  Camera: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -26,5 +27,6 @@ export type BottomTabParamList = {
   RecipesTab: undefined;
   ProfileTab: undefined;
 };
+
 
 

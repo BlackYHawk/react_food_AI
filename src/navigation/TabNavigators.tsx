@@ -7,8 +7,8 @@ import RecipesScreen from '@/screens/RecipesScreen.tsx';
 import NutritionScreen from '@/screens/NutritionScreen.tsx';
 import ProfileScreen from '@/screens/ProfileScreen.tsx';
 import LoginScreen from '@/screens/LoginScreen.tsx';
+import CameraScreen from '@/components/Camera/CameraScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
 import i18n from '@/i18n/i18n.js';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
 
@@ -71,8 +71,7 @@ const MainTabs = () => {
           paddingBottom: 2,
           height: 65,
         },
-      })}
-    >
+      })}>
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Recipes" component={RecipesScreen} />
       <Tab.Screen name="Nutrition" component={NutritionScreen} />
@@ -118,14 +117,9 @@ const Navigation = () => {
           };
         }}
       />
+      <RootStack.Screen name="Camera" component={CameraScreen} />
     </RootStack.Navigator>
   );
 };
 
 export default Navigation;
-
-// 在 navigation 相关文件中定义
-export type RootStackParamList = {
-  CameraScreen: undefined;
-  // 其他页面...
-};

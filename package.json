@@ -29,7 +29,9 @@
     "expo-image-picker": "16.1.4",
     "expo-linear-gradient": "~14.1.5",
     "expo-localization": "~16.1.6",
+    "expo-splash-screen": "^0.30.10",
     "i18n-js": "^4.5.1",
+    "lottie-react-native": "^7.2.4",
     "metro": "^0.82.4",
     "metro-config": "^0.82.4",
     "metro-resolver": "^0.82.4",
@@ -42,6 +44,7 @@
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "4.11.1",
     "react-native-svg": "15.12.0",
+    "react-native-vector-icons": "^10.2.0",
     "react-redux": "^9.2.0",
     "redux-persist": "^6.0.0"
   },

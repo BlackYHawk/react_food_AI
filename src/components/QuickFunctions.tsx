@@ -2,9 +2,35 @@ import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 import i18n from '@/i18n/i18n';
-import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
+import * as ImagePicker from 'expo-image-picker';
+import { ImageManipulator } from 'expo-image-manipulator';
 
 const QuickFunctions = () => {
+
+  const openGallery = async () => {
+    // 选择相机或相册
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      quality: 1,
+    });
+
+    // 如果取消，直接返回
+    if (result.canceled) return;
+
+    // 获取图片 uri
+    const uri = result.assets?.[0]?.uri;
+    if (!uri) return;
+
+    // 压缩图片
+    const compressed = await ImageManipulator.manipulateAsync(uri, [], {
+      compress: 0.5,
+      format: ImageManipulator.SaveFormat.JPEG,
+    });
+
+    // 这里可以将 compressed.uri 返回给调用方或做后续处理
+    console.log('压缩后图片:', compressed.uri);
+  };
+
   const functions = [
     {
       icon: 'photo',
@@ -22,19 +48,6 @@ const QuickFunctions = () => {
       onPress: () => Alert.alert('功能提示', '营养分析功能'),
     },
   ];
-
-  const openGallery = async () => {
-    const result = await launchImageLibraryAsync({
-      mediaTypes: MediaTypeOptions.Images,
-      quality: 0.8,
-    });
-
-    if (!result.canceled) {
-      // 处理相册选择结果
-      console.log('Gallery result:', result.assets[0].uri);
-      // 这里添加图片识别逻辑
-    }
-  };
 
   return (
     <View style={styles.container}>
