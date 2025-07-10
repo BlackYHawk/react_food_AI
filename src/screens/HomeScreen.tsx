@@ -5,7 +5,6 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
-
 } from 'react-native';
 import { SearchBar, Icon } from 'react-native-elements';
 import CameraButton from '@/components/Camera/CameraButton.tsx';
@@ -67,12 +66,15 @@ const HomeScreen = () => {
       borderRadius: 25,
       height: theme.rem(48),
       paddingHorizontal: theme.rem(16),
+      justifyContent: 'center',
     },
     searchInput: {
-      alignItems: 'center',
       textAlignVertical: 'center',
+      lineHeight: theme.rem(48),
       fontSize: 16,
       color: theme.textPrimary,
+      padding: 0,
+      margin: 0,
     },
     cameraSection: {
       alignItems: 'center',
@@ -99,7 +101,7 @@ const HomeScreen = () => {
           </View>
           <Text style={styles.title}>{i18n.t('home.title')}</Text>
         </View>
-        <Icon name="settings" type="ionicons" size={24} color="#999" onPress={toggleTheme} />
+        <Icon name="settings" type="ionicon" size={24} color="#999" onPress={toggleTheme} />
       </View>
 
       <View style={styles.content} >

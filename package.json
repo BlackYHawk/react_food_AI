@@ -38,7 +38,7 @@
     "metro-resolver": "^0.82.4",
     "react": "19.0.0",
     "react-native": "0.79.5",
-    "react-native-elements": "^3.4.3",
+    "react-native-elements": "3.4.2",
     "react-native-gifted-charts": "^1.4.61",
     "react-native-pager-view": "6.7.1",
     "react-native-reanimated": "~3.17.4",
