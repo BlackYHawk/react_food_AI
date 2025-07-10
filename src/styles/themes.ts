@@ -1,3 +1,8 @@
+import { Dimensions, PixelRatio, Platform } from 'react-native';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const scale = SCREEN_WIDTH / 375; // 基于375宽度的设计稿
+
 export const lightTheme = {
   backgroundColor: '#fff',
   primaryColor: '#00C984',
@@ -5,9 +10,16 @@ export const lightTheme = {
   textPrimary: '#333',
   textSecondary: '#666',
   textLight: '#999',
+  borderColor: '#ff0000',
+
   rem: (value: number) => {
-    const baseFontSize = 16; // 假设基准字体大小为16px
-    return value * baseFontSize;
+    const newSize = value * scale;
+
+    if (Platform.OS === 'ios') {
+      return Math.round(PixelRatio.roundToNearestPixel(newSize));
+    } else {
+      return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
+    }
   },
 };
 
@@ -18,8 +30,15 @@ export const darkTheme = {
   textPrimary: '#fff',
   textSecondary: '#b3b3b3',
   textLight: '#808080',
+  borderColor: '#ff0000',
+
   rem: (value: number) => {
-    const baseFontSize = 16; // 假设基准字体大小为16px
-    return value * baseFontSize;
+    const newSize = value * scale;
+
+    if (Platform.OS === 'ios') {
+      return Math.round(PixelRatio.roundToNearestPixel(newSize));
+    } else {
+      return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
+    }
   },
 };

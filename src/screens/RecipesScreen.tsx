@@ -28,8 +28,20 @@ interface CookbookItem {
   burdens: string;
 }
 
+interface CookbookCatItem {
+  id: string;
+  img: string;
+  name: string;
+}
+
+//今日推荐数据接口
 interface CookbookListResponse {
   data: CookbookItem[];
+}
+
+//精选食谱数据接口
+interface CookbookCatListResponse {
+  data: CookbookCatItem[];
 }
 
 const RecipesScreen = () => {
@@ -106,11 +118,34 @@ const RecipesScreen = () => {
       "burdens": "\u6392\u9aa8"
     },
   ]);
+  const [hotCatData, setHotCatData] = useState<CookbookCatItem[]>([
+    {
+      "id": "cat1",
+      "img": "https://i3.meishichina.com/attachment/recipe/2015/09/16/c640_201509161442371783820.jpg?x-oss-process=style/c320",
+      "name": "家常菜"
+    },
+    {
+      "id": "cat2",
+      "img": "https://i3.meishichina.com/attachment/recipe/2018/11/20/2018112015426906295309702111.jpg?x-oss-process=style/c320",
+      "name": "汤"
+    },
+    {
+      "id": "cat3",
+      "img": "https://i3.meishichina.com/attachment/recipe/2015/01/05/c640_201501051420460072724.jpg?x-oss-process=style/c180",
+      "name": "川菜"
+    },
+    {
+      "id": "cat4",
+      "img": "https://i3.meishichina.com/attachment/recipe/2018/04/24/20180424152455529414313.jpg?x-oss-process=style/c180",
+      "name": "粤菜"
+    }
+  ]);
 
+  // 获取今日推荐数据
   const fetchIOPData = async () => {
     try {
       const response = await ReactAxios.getInstance().get<CookbookListResponse>(
-        '/food/cookbook-list');
+        '/api/food/cookbook-list');
       // 假设返回的数据格式与 recentData 相同
       console.log('Fetched recent data:', response.data);
       setIOPData(response.data.data);
@@ -119,8 +154,22 @@ const RecipesScreen = () => {
     }
   };
 
+  // 获取精选食谱数据
+  const fetchHotCatData = async () => {
+    try {
+      const response = await ReactAxios.getInstance().get<CookbookCatListResponse>(
+        '/api/food/cookbook-hotcat');
+      // 假设返回的数据格式与 recentData 相同
+      console.log('Fetched hot data:', response.data);
+      setHotCatData(response.data.data);
+    } catch (error: unknown) {
+      console.error('Error fetching recent data:', error);
+    }
+  };
+
   useEffect(() => {
     fetchIOPData();
+    fetchHotCatData();
   }, []);
 
   const styles = React.useMemo(() => StyleSheet.create({
@@ -168,7 +217,7 @@ const RecipesScreen = () => {
     sectionContainer: {
       marginTop: 5,
       backgroundColor: theme.secondaryColor,
-      paddingVertical: 15,
+      paddingVertical: 5,
     },
     sectionHeader: {
       flexDirection: 'row',
@@ -284,38 +333,7 @@ const RecipesScreen = () => {
               <Text style={styles.moreText}>查看更多 &gt;</Text>
             </TouchableOpacity>
           </View>
-
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalList}>
-            {/* Food Item 1 */}
-            <TouchableOpacity style={styles.foodCard}>
-              <Image
-                source={{ uri: 'https://example.com/food1.jpg' }}
-                style={styles.foodImage}
-              />
-              <Text style={styles.foodName}>红烧茄子</Text>
-              <Text style={styles.foodRating}>4.5 • 21分钟</Text>
-            </TouchableOpacity>
-
-            {/* Food Item 2 */}
-            <TouchableOpacity style={styles.foodCard}>
-              <Image
-                source={{ uri: 'https://example.com/food2.jpg' }}
-                style={styles.foodImage}
-              />
-              <Text style={styles.foodName}>日式天妇罗</Text>
-              <Text style={styles.foodRating}>4.7 • 27分钟</Text>
-            </TouchableOpacity>
-
-            {/* Food Item 3 */}
-            <TouchableOpacity style={styles.foodCard}>
-              <Image
-                source={{ uri: 'https://example.com/food3.jpg' }}
-                style={styles.foodImage}
-              />
-              <Text style={styles.foodName}>麻辣香锅</Text>
-              <Text style={styles.foodRating}>4.6 • 30分钟</Text>
-            </TouchableOpacity>
-          </ScrollView>
+          <AnimatedIOPSlide data={hotCatData} cardStyle={styles.recommendCard} />
         </View>
 
         {/* Recent Views */}

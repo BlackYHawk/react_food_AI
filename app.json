@@ -1,5 +1,14 @@
 {
   "name": "react_food_AI",
+  "expo": {
+    "jsEngine": "hermes",
+    "android": {
+      "package": "com.leqinde.react_food_ai"
+    },
+    "ios": {
+      "bundleIdentifier": "com.leqinde.react-food-ai"
+    }
+  },
   "plugins": [
     "expo-localization",
     [

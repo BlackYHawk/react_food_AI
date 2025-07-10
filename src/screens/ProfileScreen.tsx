@@ -17,7 +17,6 @@ import {
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import i18n from '@/i18n/i18n';
-import { rem } from '@/libs/utils';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
 import userData from '@/mock/profile_user_date.json';
 import type { RootStackScreenProps } from '@/types/navigation'; // 路径按实际调整
@@ -35,7 +34,7 @@ const ProfileScreen = () => {
   };
 
   //顶部标题栏高度
-  const headerHeight = rem(50) + safeInsets.top; // 标题栏高度
+  const headerHeight = theme.rem(50) + safeInsets.top; // 标题栏高度
   // 渐变动画：透明度和位移
   const headerOpacity = scrollY.interpolate({
     inputRange: [0, headerHeight],
@@ -48,7 +47,7 @@ const ProfileScreen = () => {
     extrapolate: 'clamp',
   });
   // 头像区域高度
-  const profileHeight = rem(100) + safeInsets.top; // 头像区域高度
+  const profileHeight = theme.rem(100) + safeInsets.top; // 头像区域高度
   //头像区域动画
   const profileOpacity = scrollY.interpolate({
     inputRange: [0, headerHeight],
@@ -57,7 +56,7 @@ const ProfileScreen = () => {
   });
   const profileTranslateY = scrollY.interpolate({
     inputRange: [0, headerHeight],
-    outputRange: [0, -headerHeight - rem(50)],
+    outputRange: [0, -headerHeight - theme.rem(50)],
     extrapolate: 'clamp',
   });
 
@@ -67,9 +66,9 @@ const ProfileScreen = () => {
       left: 0,
       right: 0,
       backgroundColor: theme.primaryColor,
-      paddingTop: rem(20),
-      paddingBottom: rem(30),
-      paddingHorizontal: rem(20),
+      paddingTop: theme.rem(20),
+      paddingBottom: theme.rem(30),
+      paddingHorizontal: theme.rem(20),
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',

@@ -3,7 +3,6 @@ import {View, Text, StyleSheet, FlatList} from 'react-native';
 import {Avatar} from 'react-native-elements';
 import ReactAxios from '@/apis/reactAxios.tsx';
 import {useTheme} from '@/styles/ThemeProvider.tsx';
-import { rem } from '@/libs/utils.ts';
 
 interface CookbookItem {
   id: string;
@@ -46,7 +45,7 @@ const RecentAnalysis = () => {
   const fetchRecentData = async () => {
     try {
       const response = await ReactAxios.getInstance().get<CookbookListResponse>(
-        '/food/cookbook-list');
+        '/api/food/cookbook-list');
       // 假设返回的数据格式与 recentData 相同
       console.log('Fetched recent data:', response.data);
       setRecentData(response.data.data);
@@ -79,30 +78,30 @@ const RecentAnalysis = () => {
       paddingHorizontal: 16,
       alignItems: 'center',
       width: '100%',
-      height: rem(60),
+      height: theme.rem(60),
     },
     avatar: {
-      width: rem(50),
-      height: rem(50),
+      width: theme.rem(50),
+      height: theme.rem(50),
     },
     textContainer: {
       flex: 1,
-      marginLeft: rem(10),
+      marginLeft: theme.rem(10),
     },
     itemTitle: {
-      maxWidth: rem(120),
+      maxWidth: theme.rem(120),
       fontSize: 16,
       fontWeight: '500',
       color: '#333',
       marginBottom: 4,
     },
     itemSubtitle: {
-      maxWidth: rem(80),
+      maxWidth: theme.rem(80),
       fontSize: 14,
       color: '#666',
     },
     timeText: {
-      maxWidth: rem(60),
+      maxWidth: theme.rem(60),
       fontSize: 12,
       color: '#999',
     },

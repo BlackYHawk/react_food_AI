@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
-import generated from '@/assets/lottie_splash.json';
+import generated from '@/assets/lottie_launcher.json';
 
 const SplashScreen = () => {
   return (

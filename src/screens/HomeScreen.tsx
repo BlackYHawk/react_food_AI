@@ -14,7 +14,6 @@ import RecentAnalysis from '@/components/RecentAnalysis.tsx';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import i18n from '@/i18n/i18n.js';
-import { rem } from '@/libs/utils';
 
 const HomeScreen = () => {
   const { theme, toggleTheme } = useTheme();
@@ -60,14 +59,14 @@ const HomeScreen = () => {
       backgroundColor: 'transparent',
       borderTopWidth: 0,
       borderBottomWidth: 0,
-      paddingHorizontal: rem(24),
-      paddingVertical: rem(16),
+      paddingHorizontal: theme.rem(24),
+      paddingVertical: theme.rem(16),
     },
     searchInputContainer: {
       backgroundColor: theme.secondaryColor,
       borderRadius: 25,
-      height: rem(48),
-      paddingHorizontal: rem(16),
+      height: theme.rem(48),
+      paddingHorizontal: theme.rem(16),
     },
     searchInput: {
       alignItems: 'center',

@@ -1,13 +1,19 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
   FlatList,
-  TouchableOpacity,
   Image,
-  Animated, ViewStyle,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
 } from 'react-native';
+import Animated, {
+  Extrapolate,
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 import PagerView from 'react-native-pager-view';
 import {useTheme} from '@/styles/ThemeProvider.tsx';
 
@@ -19,51 +25,136 @@ type Item = {
 
 type AnimatedIOPSlideProps = {
   data: Item[];
-  cardStyle?: ViewStyle
+  cardStyle?: ViewStyle;
 };
 
-const AnimatedIOPSlide: React.FC<AnimatedIOPSlideProps> = ({data, cardStyle}) => {
-  const renderGridItem = ({item}: {item: Item}) => (
-    <TouchableOpacity style={styles.gridItem}>
-      <Image source={{uri: item.img}} style={styles.gridIcon} />
-      <Text style={styles.gridText} numberOfLines={1}>
-        {item.name}
-      </Text>
-    </TouchableOpacity>
-  );
-  const {theme} = useTheme();
-  const pagerViewRef = useRef<PagerView>(null);
-  const flatListRefs = useRef<Array<FlatList<Item> | null>>([]);
-  const numColumns = 5, maxRows = 3;
-  const [pageIndex, setPageIndex] = useState(0);
+const renderGridItem = ({item, styles}: {item: Item; styles: any}) => (
+  <TouchableOpacity style={styles.gridItem}>
+    <Image source={{uri: item.img}} style={styles.gridIcon} />
+    <Text style={styles.gridText} numberOfLines={1}>
+      {item.name}
+    </Text>
+  </TouchableOpacity>
+);
 
-  // 新增动画值
-  const scrollX = useRef(new Animated.Value(0)).current;
+const Page = ({
+                rowData,
+                index,
+                scrollX,
+                styles,
+                onContentSizeChange,
+              }: {
+  rowData: Item[];
+  index: number;
+  scrollX: Animated.SharedValue<number>;
+  styles: any;
+  onContentSizeChange?: (width, height) => void;
+}) => {
+  const animatedStyle = useAnimatedStyle(() => {
+    const opacity = interpolate(
+      scrollX.value,
+      [index - 1, index, index + 1],
+      [0, 1, 0],
+      Extrapolate.CLAMP,
+    );
 
-  // 监听滑动
-  const handlePageScroll = (event: { nativeEvent: { offset: number; position: number; }; }) => {
-    const {offset, position} = event.nativeEvent;
-    // 更新动画值
-    scrollX.setValue(offset - position);
-  };
+    let translateX = 0;
+    if (index === 0) {
+      translateX = interpolate(
+        scrollX.value,
+        [0, 1],
+        [0, -100],
+        Extrapolate.CLAMP,
+      );
+    }
 
-  // 平移动画，第一页左滑时向左移动
-  const translateX = scrollX.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, -50], // 可调整平移距离
-    extrapolate: 'clamp',
+    return {
+      opacity,
+      transform: [{translateX}],
+      flex: 1,
+    };
   });
 
-  const handleRowData = (data: Item[]) => {
-    if (!data || data.length === 0) return [];
-    const result: Item[][] = [];
-    result.push(data.splice(0, numColumns));
+  const flatListProps = index === 0 ? {horizontal: true} : {numColumns: 5};
 
-    let idx = 0;
-    while (idx < data.length) {
-      let tempChild = data.slice(idx, idx + maxRows * numColumns);
-      result.push(tempChild);
-      idx += tempChild.length;
+  return (
+    <Animated.View key={index} style={[styles.page, animatedStyle]}>
+      <FlatList
+        data={rowData}
+        onContentSizeChange={onContentSizeChange}
+        renderItem={props => renderGridItem({...props, styles})}
+        keyExtractor={item => item.id}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        scrollEnabled={false}
+        {...flatListProps}
+      />
+    </Animated.View>
+  );
+};
+
+const Dot = ({
+               index,
+               scrollX,
+               styles,
+             }: {
+  index: number;
+  scrollX: Animated.SharedValue<number>;
+  styles: any;
+}) => {
+  const dotAnimatedStyle = useAnimatedStyle(() => {
+    const opacity = interpolate(
+      scrollX.value,
+      [index - 1, index, index + 1],
+      [0.5, 1, 0.5],
+      Extrapolate.CLAMP,
+    );
+    const scale = interpolate(
+      scrollX.value,
+      [index - 1, index, index + 1],
+      [1, 1.2, 1],
+      Extrapolate.CLAMP,
+    );
+    return {
+      opacity,
+      transform: [{scale}],
+    };
+  });
+  return <Animated.View style={[styles.dotStyle, dotAnimatedStyle]} />;
+};
+
+const AnimatedIOPSlide: React.FC<AnimatedIOPSlideProps> = ({
+                                                             data,
+                                                             cardStyle,
+                                                           }) => {
+  const {theme} = useTheme();
+  const pagerViewRef = useRef<PagerView>(null);
+  const scrollX = useSharedValue(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageHeights, setPageHeights] = useState<number[]>([]);
+
+  const containerHeight = useMemo(() => {
+    const maxHeight = currentPage === 0 ? theme.rem(100) : theme.rem(600);
+    const contentHeight = pageHeights[currentPage] ?? maxHeight;
+    return Math.min(contentHeight, maxHeight);
+  }, [currentPage, pageHeights, theme]);
+
+  const onPageScroll = (event: {
+    nativeEvent: {offset: number; position: number};
+  }) => {
+    const {offset, position} = event.nativeEvent;
+    scrollX.value = position + offset;
+  };
+
+  const handleRowData = (d: Item[]) => {
+    if (!d || d.length === 0) return [];
+    const dataCopy = [...d];
+    const result: Item[][] = [];
+    result.push(dataCopy.splice(0, 5)); // Page 1: 1 row, 5 cols
+
+    const itemsPerPage = 3 * 5; // Subsequent pages: 3 rows, 5 cols
+    while (dataCopy.length > 0) {
+      result.push(dataCopy.splice(0, itemsPerPage));
     }
     return result;
   };
@@ -72,109 +163,92 @@ const AnimatedIOPSlide: React.FC<AnimatedIOPSlideProps> = ({data, cardStyle}) =>
   useEffect(() => {
     const processedData = handleRowData(data);
     setRowDatas(processedData);
-    if (pagerViewRef.current) {
-      pagerViewRef.current.setPage(0); // 重置到第一页
-    }
-  }, [data]);
+    pagerViewRef.current?.setPage(0);
+    scrollX.value = 0;
+  }, [data, scrollX]);
 
-  const handlePageSelected = (e: { nativeEvent: { position: number } }) => {
-    const idx = e.nativeEvent.position;
-    setPageIndex(idx);
-
-    if (flatListRefs.current) {
-      const flatList = flatListRefs.current[idx];
-      if (flatList) {
-        // flatList.measure((x, y, width, height, pageX, pageY) => {
-        //   // 计算当前页的高度
-        //   console.log("height", height);
-        //   setContainerHeight(height);
-        // });
-      }
-    }
-  };
-
-  const styles = React.useMemo(() => StyleSheet.create({
-    container: {
-      flex: 6,
-    },
-    pager: {
-      flex: 5,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    dotList: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'center',
-      gap: 10,
-    },
-    dotStyle: {
-      width: 10,
-      height: 10,
-      borderRadius: 5,
-    },
-    page: {
-      flex: 1,
-      justifyContent: 'center',
-    },
-    gridItem: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: theme.rem(70),
-      height: theme.rem(70),
-      marginVertical: 6,
-    },
-    gridIcon: {
-      width: theme.rem(36),
-      height: theme.rem(36),
-      marginBottom: 6,
-      borderRadius: 18,
-      backgroundColor: '#f5f5f5',
-    },
-    gridText: {
-      fontSize: 12,
-      color: '#333',
-    },
-  }), [theme]);
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          height: theme.rem(100),
+        },
+        pager: {
+          flex: 1,
+        },
+        dotList: {
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: 10,
+          height: theme.rem(30),
+        },
+        dotStyle: {
+          width: 10,
+          height: 10,
+          borderRadius: 5,
+          backgroundColor: 'gray',
+        },
+        page: {
+          flex: 1,
+          justifyContent: 'center',
+        },
+        gridItem: {
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: theme.rem(70),
+          height: theme.rem(70),
+          marginVertical: 6,
+        },
+        gridIcon: {
+          width: theme.rem(36),
+          height: theme.rem(36),
+          marginBottom: 6,
+          borderRadius: 18,
+          backgroundColor: '#f5f5f5',
+        },
+        gridText: {
+          fontSize: 12,
+          color: '#333',
+        },
+      }),
+    [theme],
+  );
+  const containerStyle = currentPage === 0 ? {height: theme.rem(100)} : {height: containerHeight};
 
   return (
-    <View style={[cardStyle, styles.container]}>
+    <View style={[cardStyle, { ...containerStyle }]}>
       <PagerView
         ref={pagerViewRef}
         style={styles.pager}
         initialPage={0}
-        onPageSelected={handlePageSelected}
-        onPageScroll={handlePageScroll}>
-        {/* 第1页：单行，带动画;第2页：九宫格 */}
+        onPageScroll={onPageScroll}
+        onPageSelected={(e) => setCurrentPage(e.nativeEvent.position)}>
         {rowDatas.map((rowData, index) => (
-          <View key={index} style={styles.page}>
-            <Animated.View style={{transform: [{translateX}]}}>
-              <FlatList
-                ref={el => { flatListRefs.current[index] = el as FlatList<Item> | null; }}
-                data={rowData}
-                horizontal={index === 0}
-                {...(index !== 0 ? { numColumns: 5 } : {})}
-                renderItem={renderGridItem}
-                keyExtractor={item => item.id}
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}
-                scrollEnabled={false}
-              />
-            </Animated.View>
-          </View>
+          <Page
+            key={index}
+            rowData={rowData}
+            index={index}
+            scrollX={scrollX}
+            styles={styles}
+            onContentSizeChange={(width, height) => {
+              setPageHeights(prev => {
+                const newHeights = [...prev];
+                newHeights[index] = height + theme.rem(30); // Add some padding
+                return newHeights;
+              });
+            }}
+          />
         ))}
       </PagerView>
       <View style={styles.dotList}>
-        {rowDatas.map((_, index) => {
-          return <View key={index} style={[styles.dotStyle, index === pageIndex ?
-            // eslint-disable-next-line react-native/no-inline-styles
-            {backgroundColor:'gray'} : {backgroundColor: 'white'}]} />;
-        })}
+        {rowDatas.map((_, index) => (
+          <Dot key={index} index={index} scrollX={scrollX} styles={styles} />
+        ))}
       </View>
     </View>
   );
 };
 
-
-
 export default AnimatedIOPSlide;
+
