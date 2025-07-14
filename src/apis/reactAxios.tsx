@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, isAxiosError } from 'axios';
 
 // 创建 axios 实例
 const createAxiosInstance = (baseURL: string,
@@ -37,7 +37,7 @@ async function requestWithRetry<T = unknown>(
 // 响应式请求框架主接口
 class ReactAxios {
   private static instance: ReactAxios;
-  private axiosInstance: AxiosInstance;
+  private readonly axiosInstance: AxiosInstance;
 
   private constructor(baseURL: string, defaultHeaders: Record<string, string> = {}) {
     this.axiosInstance = createAxiosInstance(baseURL, defaultHeaders);

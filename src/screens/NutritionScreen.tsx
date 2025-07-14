@@ -6,16 +6,17 @@ import {
   SafeAreaView,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  StatusBar
 } from 'react-native';
 import { LineChart } from 'react-native-gifted-charts';
-
 import { Icon } from 'react-native-elements';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
 import bookIcon from '@/assets/book-icon.png';
+import { useFocusEffect } from '@react-navigation/native';
 
-const NutritionScreen = () => {
+const NutritionScreen = ({navigation}) => {
   const { theme } = useTheme();
   // Mock data for the chart
   const chartData = {
@@ -253,8 +254,16 @@ const NutritionScreen = () => {
     },
   }), [theme]);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      StatusBar.setBarStyle('dark-content');
+    }, [navigation])
+  );
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
+      <StatusBar barStyle="dark-content" />
+      
       {/* Header */}
       <View style={[styles.header, { paddingTop: safeInsets.top }]}>
         <View style={styles.logoContainer}>

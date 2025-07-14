@@ -3,16 +3,18 @@ import { combineReducers } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import userReducer from '@/store/userSlice';
+import socialSlice from '@/store/socialSlice';
 
 const rootReducer = combineReducers({
   user: userReducer,
+  social: socialSlice,
   // 其他 reducer
 });
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['user'], // 需要持久化的 slice
+  whitelist: ['user', 'social'], // 需要持久化的 slice
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

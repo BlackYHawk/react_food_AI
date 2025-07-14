@@ -9,7 +9,8 @@ import {
   ViewStyle,
 } from 'react-native';
 import Animated, {
-  Extrapolate,
+  SharedValue,
+  Extrapolation,
   interpolate,
   useAnimatedStyle,
   useSharedValue,
@@ -26,6 +27,19 @@ type Item = {
 type AnimatedIOPSlideProps = {
   data: Item[];
   cardStyle?: ViewStyle;
+};
+
+const handleRowData = (d: Item[]) => {
+  if (!d || d.length === 0) return [];
+  const dataCopy = [...d];
+  const result: Item[][] = [];
+  result.push(dataCopy.splice(0, 5)); // Page 1: 1 row, 5 cols
+
+  const itemsPerPage = 3 * 5; // Subsequent pages: 3 rows, 5 cols
+  while (dataCopy.length > 0) {
+    result.push(dataCopy.splice(0, itemsPerPage));
+  }
+  return result;
 };
 
 const renderGridItem = ({item, styles}: {item: Item; styles: any}) => (
@@ -46,16 +60,16 @@ const Page = ({
               }: {
   rowData: Item[];
   index: number;
-  scrollX: Animated.SharedValue<number>;
+  scrollX: SharedValue<number>;
   styles: any;
-  onContentSizeChange?: (width, height) => void;
+  onContentSizeChange?: (width: number, height: number) => void;
 }) => {
   const animatedStyle = useAnimatedStyle(() => {
     const opacity = interpolate(
       scrollX.value,
       [index - 1, index, index + 1],
       [0, 1, 0],
-      Extrapolate.CLAMP,
+      Extrapolation.CLAMP,
     );
 
     let translateX = 0;
@@ -64,7 +78,7 @@ const Page = ({
         scrollX.value,
         [0, 1],
         [0, -100],
-        Extrapolate.CLAMP,
+        Extrapolation.CLAMP,
       );
     }
 
@@ -99,7 +113,7 @@ const Dot = ({
                styles,
              }: {
   index: number;
-  scrollX: Animated.SharedValue<number>;
+  scrollX: SharedValue<number>;
   styles: any;
 }) => {
   const dotAnimatedStyle = useAnimatedStyle(() => {
@@ -107,13 +121,13 @@ const Dot = ({
       scrollX.value,
       [index - 1, index, index + 1],
       [0.5, 1, 0.5],
-      Extrapolate.CLAMP,
+      Extrapolation.CLAMP,
     );
     const scale = interpolate(
       scrollX.value,
       [index - 1, index, index + 1],
       [1, 1.2, 1],
-      Extrapolate.CLAMP,
+      Extrapolation.CLAMP,
     );
     return {
       opacity,
@@ -146,18 +160,6 @@ const AnimatedIOPSlide: React.FC<AnimatedIOPSlideProps> = ({
     scrollX.value = position + offset;
   };
 
-  const handleRowData = (d: Item[]) => {
-    if (!d || d.length === 0) return [];
-    const dataCopy = [...d];
-    const result: Item[][] = [];
-    result.push(dataCopy.splice(0, 5)); // Page 1: 1 row, 5 cols
-
-    const itemsPerPage = 3 * 5; // Subsequent pages: 3 rows, 5 cols
-    while (dataCopy.length > 0) {
-      result.push(dataCopy.splice(0, itemsPerPage));
-    }
-    return result;
-  };
   const [rowDatas, setRowDatas] = useState<Item[][]>([]);
 
   useEffect(() => {
@@ -165,7 +167,7 @@ const AnimatedIOPSlide: React.FC<AnimatedIOPSlideProps> = ({
     setRowDatas(processedData);
     pagerViewRef.current?.setPage(0);
     scrollX.value = 0;
-  }, [data, scrollX]);
+  }, [data]);
 
   const styles = useMemo(
     () =>
@@ -234,7 +236,7 @@ const AnimatedIOPSlide: React.FC<AnimatedIOPSlideProps> = ({
             onContentSizeChange={(width, height) => {
               setPageHeights(prev => {
                 const newHeights = [...prev];
-                newHeights[index] = height + theme.rem(30); // Add some padding
+                newHeights[index] = height + theme.rem(20); // Add some padding
                 return newHeights;
               });
             }}

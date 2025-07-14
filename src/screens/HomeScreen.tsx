@@ -13,9 +13,10 @@ import RecentAnalysis from '@/components/RecentAnalysis.tsx';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import i18n from '@/i18n/i18n.js';
+import { useFocusEffect } from '@react-navigation/native';
 
-const HomeScreen = () => {
-  const { theme, toggleTheme } = useTheme();
+const HomeScreen = ({navigation}) => {
+  const { theme } = useTheme();
   const [searchText, setSearchText] = useState<string>('');
   const safeInsets = useSafeAreaInsets();
 
@@ -89,9 +90,15 @@ const HomeScreen = () => {
     },
   }), [theme]);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      StatusBar.setBarStyle('dark-content');
+    }, [navigation])
+  );
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.backgroundColor }}>
-      <StatusBar barStyle={theme.textPrimary === '#fff' ? 'light-content' : 'dark-content'} />
+      <StatusBar barStyle="dark-content" />
 
       {/* Header */}
       <View style={[styles.header, {paddingTop: safeInsets.top}]}>
@@ -101,7 +108,7 @@ const HomeScreen = () => {
           </View>
           <Text style={styles.title}>{i18n.t('home.title')}</Text>
         </View>
-        <Icon name="settings" type="ionicon" size={24} color="#999" onPress={toggleTheme} />
+        <Icon name="settings" type="ionicon" size={24} color="#999" />
       </View>
 
       <View style={styles.content} >

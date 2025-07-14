@@ -36,11 +36,18 @@
         "recommendations": "推荐食谱"
     },
     "profile": {
+      "guest": "去登录",
       "edit": "编辑资料",
+      "following": "我关注的",
+      "followers": "关注我的",
+      "posts": "我的作品",
       "collections": "我的收藏",
-      "history": "浏览历史",
-      "comment": "我的评论",
-      "rate": "获赞"
+      "rate": "获赞",
+      "theme": {
+        "title": "主题设置",
+        "light": "浅色主题",
+        "dark": "深色主题"
+      }
     },
     "login": {
         "title": "AI 食物助手",

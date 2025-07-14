@@ -7,8 +7,9 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  StatusBar
 } from 'react-native';
-
+import { useFocusEffect } from '@react-navigation/native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import AnimatedIOPSlide from '@/components/AnimatedIOPSlide.tsx';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
@@ -44,7 +45,7 @@ interface CookbookCatListResponse {
   data: CookbookCatItem[];
 }
 
-const RecipesScreen = () => {
+const RecipesScreen = ({navigation}) => {
   const { theme } = useTheme();
   const [selectedTab, setSelectedTab] = useState('分类');
   const tabs = ['分类', '品牌', '评价', '综合', '外卖'];
@@ -298,8 +299,16 @@ const RecipesScreen = () => {
     },
   }), [theme]);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      StatusBar.setBarStyle('dark-content');
+    }, [navigation])
+  );
+
   return (
     <SafeAreaView style={[{ flex: 1 }, { backgroundColor: theme.backgroundColor }]}>
+      <StatusBar barStyle="dark-content" />
+
       {/* Header */}
       <View style={[styles.header, { paddingTop: safeInsets.top }]}>
         <Text style={styles.title}>{i18n.t('recipes.title')}</Text>
