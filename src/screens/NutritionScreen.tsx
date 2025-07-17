@@ -12,11 +12,12 @@ import {
 import { LineChart } from 'react-native-gifted-charts';
 import { Icon } from 'react-native-elements';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {RootStackScreenProps} from '@/types/navigation';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
 import bookIcon from '@/assets/book-icon.png';
 import { useFocusEffect } from '@react-navigation/native';
 
-const NutritionScreen = ({navigation}) => {
+const NutritionScreen = ({navigation}: RootStackScreenProps<'Nutrition'>) => {
   const { theme } = useTheme();
   // Mock data for the chart
   const chartData = {
@@ -263,7 +264,7 @@ const NutritionScreen = ({navigation}) => {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
       <StatusBar barStyle="dark-content" />
-      
+
       {/* Header */}
       <View style={[styles.header, { paddingTop: safeInsets.top }]}>
         <View style={styles.logoContainer}>

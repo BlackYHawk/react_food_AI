@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {RootStackScreenProps} from '@/types/navigation';
 import AnimatedIOPSlide from '@/components/AnimatedIOPSlide.tsx';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
 import i18n from '@/i18n/i18n';
@@ -45,7 +46,7 @@ interface CookbookCatListResponse {
   data: CookbookCatItem[];
 }
 
-const RecipesScreen = ({navigation}) => {
+const RecipesScreen = ({navigation} : RootStackScreenProps<'Recipes'>) => {
   const { theme } = useTheme();
   const [selectedTab, setSelectedTab] = useState('分类');
   const tabs = ['分类', '品牌', '评价', '综合', '外卖'];

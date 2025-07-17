@@ -11,6 +11,8 @@ enum LoginType {
   NONE = 0,
   PHONE = 1,
   EMAIL = 2,
+  FINGER = 3,
+  FACEID = 4,
 }
 
 export {LoginStatus, LoginType};

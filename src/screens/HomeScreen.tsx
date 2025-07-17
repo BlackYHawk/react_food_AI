@@ -7,6 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { SearchBar, Icon } from 'react-native-elements';
+import {RootStackScreenProps} from '@/types/navigation';
 import CameraButton from '@/components/Camera/CameraButton.tsx';
 import QuickFunctions from '@/components/QuickFunctions.tsx';
 import RecentAnalysis from '@/components/RecentAnalysis.tsx';
@@ -15,7 +16,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import i18n from '@/i18n/i18n.js';
 import { useFocusEffect } from '@react-navigation/native';
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({navigation}: RootStackScreenProps<'Home'>) => {
   const { theme } = useTheme();
   const [searchText, setSearchText] = useState<string>('');
   const safeInsets = useSafeAreaInsets();

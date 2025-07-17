@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import {StyleSheet, View, Text, ViewStyle} from 'react-native';
-import {Icon} from 'react-native-elements';
+import {Icon, IconProps} from 'react-native-elements';
 import {useTheme} from '@/styles/ThemeProvider.tsx';
 import {useAppSelector} from '@/hooks/appHooks.tsx';
 import i18n from '@/i18n/i18n';
@@ -9,11 +9,20 @@ type SocialCardProps = {
   socialStyle?: ViewStyle;
 }
 
+interface SocialStat {
+  id: string;
+  icon: string;
+  type: string;
+  color: string;
+  title: string;
+  count: number;
+}
+
 const SocialCard = ({socialStyle} : SocialCardProps) => {
   const { theme } = useTheme();
   const socialData = useAppSelector((state) => state.social);
 
-  const socialStats = useMemo(() => {
+  const socialStats: SocialStat[] = useMemo(() => {
     return [
       {
         id: 'following',
@@ -83,20 +92,21 @@ const SocialCard = ({socialStyle} : SocialCardProps) => {
 
   return (
     <View style={[styles.statsContainer, socialStyle]}>
-    {socialStats.map((item  ) => (
-      <View key={item.id} style={styles.statItem}>
-        <Icon
-          name={item.icon}
-          type={item.type}
-          color={item.color}
-          size={24}
-          containerStyle={styles.statIconContainer}
-        />
-        <Text style={styles.statTitle}>{item.title}</Text>
-        <Text style={styles.statCount}>{item.count}</Text>
-      </View>
-    ))}
-  </View>
+      {socialStats.map((item: SocialStat) => (
+        <View key={item.id} style={styles.statItem}>
+          <Icon
+            name={item.icon}
+            type={item.type}
+            color={item.color}
+            size={24}
+            containerStyle={styles.statIconContainer}
+            tvParallaxProperties={{}}
+          />
+          <Text style={styles.statTitle}>{item.title}</Text>
+          <Text style={styles.statCount}>{item.count}</Text>
+        </View>
+      ))}
+    </View>
   );
 };
 

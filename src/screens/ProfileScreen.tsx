@@ -51,6 +51,10 @@ const ProfileScreen = ({navigation}: RootStackScreenProps<'Profile'>) => {
   });
 
   const styles = React.useMemo(() => StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.backgroundColor
+    },
     fixProfileHeader: {
       position: 'absolute',
       left: 0,
@@ -78,33 +82,6 @@ const ProfileScreen = ({navigation}: RootStackScreenProps<'Profile'>) => {
       paddingHorizontal: 15,
       marginBottom: 10,
     },
-    listItemContainer: {
-      paddingVertical: 12,
-      borderBottomWidth: 1,
-      borderBottomColor: '#f0f0f0',
-    },
-    itemImage: {
-      width: 60,
-      height: 60,
-      borderRadius: 8,
-    },
-    itemTitle: {
-      fontSize: 15,
-      fontWeight: 'bold',
-      color: theme.textPrimary,
-    },
-    itemDate: {
-      fontSize: 13,
-      color: '#999',
-      marginTop: 5,
-    },
-    itemTime: {
-      fontSize: 13,
-      color: '#999',
-      marginTop: 5,
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
     fixedHeader: {
       position: 'absolute',
       left: 0,
@@ -120,10 +97,6 @@ const ProfileScreen = ({navigation}: RootStackScreenProps<'Profile'>) => {
       fontWeight: 'bold',
       marginLeft: theme.rem(10),
     },
-    container: {
-      flex: 1,
-      backgroundColor: theme.backgroundColor
-    }
   }), [theme]);
 
   useFocusEffect(
@@ -169,12 +142,20 @@ const ProfileScreen = ({navigation}: RootStackScreenProps<'Profile'>) => {
         scrollEventThrottle={16}>
 
         {/* 社交卡片 */}
-        <SocialCard socialStyle={{paddingTop: profileHeight + 10}} />
+        <SocialCard key="social-card" socialStyle={{paddingTop: profileHeight + 10}} />
 
         {/* 主题Section */}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>
             {i18n.t('profile.theme.title')}
+          </Text>
+          <ThemeSwitch />
+        </View>
+
+        {/* 安全Section */}
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>
+            {i18n.t('profile.security.title')}
           </Text>
           <ThemeSwitch />
         </View>

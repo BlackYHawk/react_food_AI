@@ -47,16 +47,26 @@
         "title": "主题设置",
         "light": "浅色主题",
         "dark": "深色主题"
-      }
+      },
+      "security": {
+        "title": "安全设置",
+        "changePassword": "修改密码",
+        "twoFactorAuth": "两步验证"
+      },
     },
     "login": {
         "title": "AI 食物助手",
-        "description": "智能定制专属菜单，打造健康美味生活",
+        "description": "智能健康助手",
+        "emailLogin": "邮箱",
+        "emailPlaceholder": "请输入邮箱",
+        "passwordPlaceholder": "请输入验证码",
+        "sendCode": "发送验证码",
+        "smsLogin": "短信",
+        "phonePlaceholder": "请输入手机号",
         "agreementText": "登录即代表同意",
         "agreementLink": "用户协议",
         "privacyLink": "隐私政策",
         "login": "登录",
-        "register": "注册",
         "back": "返回"
     },
     "welcome": "Welcome",

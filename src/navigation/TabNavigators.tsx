@@ -10,16 +10,20 @@ import LoginScreen from '@/screens/LoginScreen.tsx';
 import CameraScreen from '@/components/Camera/CameraScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import i18n from '@/i18n/i18n.js';
-import { useTheme } from '@/styles/ThemeProvider.tsx';
+import type {
+  BottomTabParamList,
+  RootStackParamList,
+} from '@/types/navigation.d.ts';
+import {useTheme} from '@/styles/ThemeProvider.tsx';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const MainTabs = () => {
-  const { theme } = useTheme();
+  const {theme} = useTheme();
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
+      screenOptions={({route}) => ({
+        tabBarIcon: ({color, size}) => {
           let iconName = 'home';
           let iconType = 'material';
 
@@ -40,12 +44,20 @@ const MainTabs = () => {
               iconName = 'home';
           }
 
-          return <Icon name={iconName} type={iconType} size={size} color={color} />;
+          return (
+            <Icon
+              name={iconName}
+              type={iconType}
+              size={size}
+              color={color}
+              tvParallaxProperties={{}}
+            />
+          );
         },
         tabBarActiveTintColor: theme.primaryColor,
         tabBarInactiveTintColor: theme.textLight,
         headerShown: false,
-        tabBarLabel: ({ focused }) => {
+        tabBarLabel: ({focused}) => {
           let label = '';
           switch (route.name) {
             case 'Home':
@@ -63,7 +75,15 @@ const MainTabs = () => {
             default:
               label = '';
           }
-          return <Text style={[{ color: focused ? theme.primaryColor : theme.textLight }, { fontSize: 10 }]}>{label}</Text>;
+          return (
+            <Text
+              style={[
+                {color: focused ? theme.primaryColor : theme.textLight},
+                {fontSize: 10},
+              ]}>
+              {label}
+            </Text>
+          );
         },
         tabBarStyle: {
           backgroundColor: theme.backgroundColor,
@@ -80,9 +100,11 @@ const MainTabs = () => {
   );
 };
 
-const RootStack = createNativeStackNavigator();
+const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 const Navigation = () => {
+  const {theme} = useTheme();
+
   return (
     <RootStack.Navigator>
       <RootStack.Screen
@@ -95,27 +117,33 @@ const Navigation = () => {
       <RootStack.Screen
         name="Login"
         component={LoginScreen}
-        options={({navigation}) => {
-          const { theme } = useTheme();
-          return {
-            headerShown: true,
-            headerBackVisible: true,
-            headerBackTitleStyle: {
-              fontSize: 16,
-            },
-            headerBackTitle: i18n.t('login.back'),
-            headerTitle: i18n.t('login.title'),
-            headerTitleStyle: {
-              fontSize: 20,
-              color: theme.textPrimary,
-            },
-            headerTitleAlign: 'center',
-            headerRight: () =>
-              <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.goBack()}>
-                <Icon name="close" type="material" color={theme.textPrimary} size={24} />
-            </TouchableOpacity>,
-          };
-        }}
+        options={({navigation}) => ({
+          headerShown: true,
+          headerBackVisible: true,
+          headerBackTitleStyle: {
+            fontSize: 16,
+          },
+          headerBackTitle: i18n.t('login.back'),
+          headerTitle: i18n.t('login.title'),
+          headerTitleStyle: {
+            fontSize: 20,
+            color: theme.textPrimary,
+          },
+          headerTitleAlign: 'center',
+          headerRight: () => (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => navigation.goBack()}>
+              <Icon
+                name="close"
+                type="material"
+                color={theme.textPrimary}
+                size={24}
+                tvParallaxProperties={{}}
+              />
+            </TouchableOpacity>
+          ),
+        })}
       />
       <RootStack.Screen name="Camera" component={CameraScreen} />
     </RootStack.Navigator>

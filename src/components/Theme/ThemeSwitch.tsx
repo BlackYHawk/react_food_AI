@@ -30,6 +30,7 @@ const ThemeSwitch = () => {
       checked={item.checked}
       checkedIcon="dot-circle-o"
       uncheckedIcon="circle-o"
+      checkedColor={theme.primaryColor}
       onPress={() => {
         if (item.checked) {
           return;

@@ -1,5 +1,7 @@
 import React from 'react';
 import {
+  View,
+  Text,
   StyleSheet,
   SafeAreaView,
   StatusBar,
@@ -8,7 +10,7 @@ import { useTheme } from '@/styles/ThemeProvider.tsx';
 import LoginComponent from '@/components/Login/LoginComponent.tsx';
 
 const LoginScreen = () => {
-  const { theme } = useTheme();
+  const { theme, isLightTheme } = useTheme();
 
   const styles = React.useMemo(() => StyleSheet.create({
     container: {
@@ -18,7 +20,7 @@ const LoginScreen = () => {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
-      <StatusBar barStyle={theme.textPrimary === '#fff' ? 'light-content' : 'dark-content'} />
+      <StatusBar barStyle={isLightTheme ? 'dark-content' : 'light-content'} />
       <LoginComponent />
     </SafeAreaView>
   );

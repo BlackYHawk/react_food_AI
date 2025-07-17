@@ -5,10 +5,9 @@ import {useTheme} from '@/styles/ThemeProvider.tsx';
 import i18n from '@/i18n/i18n';
 import {useAppSelector} from '@/hooks/appHooks.tsx';
 import {LoginStatus} from '@/store/LoginStatus';
-import {RootStackScreenProps} from '@/types/navigation';
 
 type UserComponentProps = {
-  navigation: RootStackScreenProps<'Login'>;
+  navigation: any;
 };
 
 const UserComponent = ({navigation}: UserComponentProps) => {
