@@ -14,6 +14,7 @@ import { Icon } from 'react-native-elements';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {RootStackScreenProps} from '@/types/navigation';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
+import { rem } from '@/styles/dimension'
 import bookIcon from '@/assets/book-icon.png';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -268,13 +269,8 @@ const NutritionScreen = ({navigation}: RootStackScreenProps<'Nutrition'>) => {
       {/* Header */}
       <View style={[styles.header, { paddingTop: safeInsets.top }]}>
         <View style={styles.logoContainer}>
-          <Image
-            source={bookIcon}
-            style={styles.bookIcon}
-          />
           <Text style={styles.logoText}>美味食谱</Text>
         </View>
-        <Icon name="menu-outline" size={24} color="#333" />
       </View>
 
       <ScrollView style={styles.content}>

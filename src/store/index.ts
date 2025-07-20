@@ -1,27 +1,37 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { combineReducers } from 'redux';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import userReducer from '@/store/userSlice';
-import socialSlice from '@/store/socialSlice';
-
-const rootReducer = combineReducers({
-  user: userReducer,
-  social: socialSlice,
-  // 其他 reducer
-});
+import foodReducer from './slices/foodSlice';
+import recipeReducer from './slices/recipeSlice';
+import userReducer from './slices/userSlice';
+import chatReducer from './slices/chatSlice';
+import socialReducer from './slices/socialSlice';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['user', 'social'], // 需要持久化的 slice
+  whitelist: ['food', 'user', 'recipe', 'social'], // Only persist these reducers
 };
+
+const rootReducer = combineReducers({
+  food: foodReducer,
+  recipe: recipeReducer,
+  user: userReducer,
+  chat: chatReducer,
+  social: socialReducer
+});
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
+
 export const persistor = persistStore(store);
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

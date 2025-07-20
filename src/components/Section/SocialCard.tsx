@@ -1,111 +1,105 @@
-import React, {useMemo} from 'react';
-import {StyleSheet, View, Text, ViewStyle} from 'react-native';
-import {Icon, IconProps} from 'react-native-elements';
-import {useTheme} from '@/styles/ThemeProvider.tsx';
-import {useAppSelector} from '@/hooks/appHooks.tsx';
+import React from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import { useSelector } from 'react-redux';
+import { useTheme } from '@/styles/ThemeProvider';
+import { RootState } from '@/store';
 import i18n from '@/i18n/i18n';
 
-type SocialCardProps = {
-  socialStyle?: ViewStyle;
+interface SocialCardProps {
+  socialStyle?: any;
 }
 
-interface SocialStat {
-  id: string;
-  icon: string;
-  type: string;
-  color: string;
-  title: string;
-  count: number;
-}
-
-const SocialCard = ({socialStyle} : SocialCardProps) => {
+const SocialCard: React.FC<SocialCardProps> = ({ socialStyle }) => {
   const { theme } = useTheme();
-  const socialData = useAppSelector((state) => state.social);
+  const { isAuthenticated } = useSelector((state: RootState) => state.user);
 
-  const socialStats: SocialStat[] = useMemo(() => {
-    return [
-      {
-        id: 'following',
-        icon: 'history',
-        type: 'font-awesome',
-        color: theme.primaryColor,
-        title: i18n.t('profile.following'),
-        count: socialData.following.length,
-      },
-      {
-        id: 'followers',
-        icon: 'history',
-        type: 'font-awesome',
-        color: theme.primaryColor,
-        title: i18n.t('profile.followers'),
-        count: socialData.followers.length,
-      },
-      {
-        id: 'posts',
-        icon: 'star',
-        type: 'font-awesome',
-        color: theme.primaryColor,
-        title: i18n.t('profile.posts'),
-        count: socialData.posts.length,
-      },
-      {
-        id: 'collections',
-        icon: 'thumbs-up',
-        type: 'font-awesome',
-        color: theme.primaryColor,
-        title: i18n.t('profile.collections'),
-        count: socialData.collections.length,
-      },
-    ]
-  }, [socialData]);
-
-  const styles = useMemo(() => StyleSheet.create({
-    statsContainer: {
+  const styles = StyleSheet.create({
+    container: {
+      backgroundColor: theme.cardBackground,
+      borderRadius: 12,
+      marginHorizontal: 15,
+      marginVertical: 10,
+      padding: 15,
+      ...socialStyle,
+    },
+    socialRow: {
       flexDirection: 'row',
-      backgroundColor: theme.backgroundColor,
+      justifyContent: 'space-around',
+      marginVertical: 10,
     },
-    statItem: {
-      flex: 1,
+    socialItem: {
       alignItems: 'center',
-      justifyContent: 'center',
     },
-    statIconContainer: {
-      backgroundColor: 'rgba(0, 201, 132, 0.1)',
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginBottom: 5,
-    },
-    statTitle: {
-      fontSize: 12,
-      color: theme.textPrimary,
-      marginBottom: 2,
-    },
-    statCount: {
-      fontSize: 16,
+    socialCount: {
+      fontSize: 18,
       fontWeight: 'bold',
       color: theme.textPrimary,
+      marginBottom: 5,
     },
-  }), [theme]);
+    socialLabel: {
+      fontSize: 14,
+      color: theme.textSecondary,
+    },
+    notLoggedInContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 20,
+    },
+    notLoggedInText: {
+      fontSize: 14,
+      color: theme.textSecondary,
+      marginBottom: 10,
+    },
+    loginButton: {
+      backgroundColor: theme.primaryColor,
+      paddingHorizontal: 20,
+      paddingVertical: 8,
+      borderRadius: 20,
+    },
+    loginButtonText: {
+      color: 'white',
+      fontWeight: '500',
+    },
+  });
+
+  if (!isAuthenticated) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.notLoggedInContainer}>
+          <Text style={styles.notLoggedInText}>登录后查看您的社交数据</Text>
+        </View>
+      </View>
+    );
+  }
 
   return (
-    <View style={[styles.statsContainer, socialStyle]}>
-      {socialStats.map((item: SocialStat) => (
-        <View key={item.id} style={styles.statItem}>
-          <Icon
-            name={item.icon}
-            type={item.type}
-            color={item.color}
-            size={24}
-            containerStyle={styles.statIconContainer}
-            tvParallaxProperties={{}}
-          />
-          <Text style={styles.statTitle}>{item.title}</Text>
-          <Text style={styles.statCount}>{item.count}</Text>
+    <View style={styles.container}>
+      <View style={styles.socialRow}>
+        <View style={styles.socialItem}>
+          <Text style={styles.socialCount}>128</Text>
+          <Text style={styles.socialLabel}>{i18n.t('profile.following')}</Text>
         </View>
-      ))}
+        
+        <View style={styles.socialItem}>
+          <Text style={styles.socialCount}>3.2k</Text>
+          <Text style={styles.socialLabel}>{i18n.t('profile.followers')}</Text>
+        </View>
+        
+        <View style={styles.socialItem}>
+          <Text style={styles.socialCount}>26</Text>
+          <Text style={styles.socialLabel}>{i18n.t('profile.posts')}</Text>
+        </View>
+        
+        <View style={styles.socialItem}>
+          <Text style={styles.socialCount}>156</Text>
+          <Text style={styles.socialLabel}>{i18n.t('profile.rate')}</Text>
+        </View>
+      </View>
     </View>
   );
 };

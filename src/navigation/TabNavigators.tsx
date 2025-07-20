@@ -1,29 +1,35 @@
 import * as React from 'react';
-import { TouchableOpacity } from 'react-native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon, Text } from 'react-native-elements';
 import HomeScreen from '@/screens/HomeScreen.tsx';
+import VideoScreen from '@/screens/VideoScreen';
 import RecipesScreen from '@/screens/RecipesScreen.tsx';
 import NutritionScreen from '@/screens/NutritionScreen.tsx';
 import ProfileScreen from '@/screens/ProfileScreen.tsx';
 import LoginScreen from '@/screens/LoginScreen.tsx';
 import CameraScreen from '@/components/Camera/CameraScreen';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import FoodScanScreen from '@/screens/FoodScanScreen';
+import FoodHistoryScreen from '@/screens/FoodHistoryScreen';
+import RecipeDetailScreen from '@/screens/RecipeDetailScreen';
+import ChatGroupScreen from '@/screens/ChatGroupScreen';
+import LiveStreamScreen from '@/screens/LiveStreamScreen';
+import SettingsScreen from '@/screens/SettingsScreen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import i18n from '@/i18n/i18n.js';
 import type {
   BottomTabParamList,
   RootStackParamList,
-} from '@/types/navigation.d.ts';
-import {useTheme} from '@/styles/ThemeProvider.tsx';
+} from '@/types/navigation';
+import { useTheme } from '@/styles/ThemeProvider.tsx';
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const MainTabs = () => {
-  const {theme} = useTheme();
+  const { theme } = useTheme();
   return (
     <Tab.Navigator
-      screenOptions={({route}) => ({
-        tabBarIcon: ({color, size}) => {
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
           let iconName = 'home';
           let iconType = 'material';
 
@@ -31,11 +37,11 @@ const MainTabs = () => {
             case 'Home':
               iconName = 'home';
               break;
+            case 'Video':
+              iconName = 'play-circle-filled';
+              break;
             case 'Recipes':
               iconName = 'book';
-              break;
-            case 'Nutrition':
-              iconName = 'assessment';
               break;
             case 'Profile':
               iconName = 'person';
@@ -57,17 +63,17 @@ const MainTabs = () => {
         tabBarActiveTintColor: theme.primaryColor,
         tabBarInactiveTintColor: theme.textLight,
         headerShown: false,
-        tabBarLabel: ({focused}) => {
+        tabBarLabel: ({ focused }) => {
           let label = '';
           switch (route.name) {
             case 'Home':
               label = i18n.t('tab.home');
               break;
+            case 'Video':
+              label = i18n.t('tab.video');
+              break;
             case 'Recipes':
               label = i18n.t('tab.recipes');
-              break;
-            case 'Nutrition':
-              label = i18n.t('tab.nutrition');
               break;
             case 'Profile':
               label = i18n.t('tab.profile');
@@ -78,8 +84,8 @@ const MainTabs = () => {
           return (
             <Text
               style={[
-                {color: focused ? theme.primaryColor : theme.textLight},
-                {fontSize: 10},
+                { color: focused ? theme.primaryColor : theme.textLight },
+                { fontSize: 10 },
               ]}>
               {label}
             </Text>
@@ -93,8 +99,8 @@ const MainTabs = () => {
         },
       })}>
       <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Video" component={VideoScreen} />
       <Tab.Screen name="Recipes" component={RecipesScreen} />
-      <Tab.Screen name="Nutrition" component={NutritionScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
@@ -103,7 +109,7 @@ const MainTabs = () => {
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 const Navigation = () => {
-  const {theme} = useTheme();
+  const { theme } = useTheme();
 
   return (
     <RootStack.Navigator>
@@ -117,35 +123,60 @@ const Navigation = () => {
       <RootStack.Screen
         name="Login"
         component={LoginScreen}
-        options={({navigation}) => ({
-          headerShown: true,
-          headerBackVisible: true,
-          headerBackTitleStyle: {
-            fontSize: 16,
-          },
-          headerBackTitle: i18n.t('login.back'),
-          headerTitle: i18n.t('login.title'),
-          headerTitleStyle: {
-            fontSize: 20,
-            color: theme.textPrimary,
-          },
-          headerTitleAlign: 'center',
-          headerRight: () => (
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => navigation.goBack()}>
-              <Icon
-                name="close"
-                type="material"
-                color={theme.textPrimary}
-                size={24}
-                tvParallaxProperties={{}}
-              />
-            </TouchableOpacity>
-          ),
-        })}
+        options={{
+          headerShown: false,
+        }}
       />
       <RootStack.Screen name="Camera" component={CameraScreen} />
+      <RootStack.Screen
+        name="FoodScan"
+        component={FoodScanScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <RootStack.Screen
+        name="FoodHistory"
+        component={FoodHistoryScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <RootStack.Screen
+        name="RecipeDetail"
+        component={RecipeDetailScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <RootStack.Screen
+        name="Nutrition"
+        component={NutritionScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <RootStack.Screen
+        name="ChatGroup"
+        component={ChatGroupScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <RootStack.Screen
+        name="LiveStream"
+        component={LiveStreamScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <RootStack.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
     </RootStack.Navigator>
   );
 };

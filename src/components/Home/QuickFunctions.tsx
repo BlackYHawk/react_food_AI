@@ -4,8 +4,10 @@ import { Icon } from 'react-native-elements';
 import i18n from '@/i18n/i18n';
 import * as ImagePicker from 'expo-image-picker';
 import { ImageManipulator } from 'expo-image-manipulator';
+import { useNavigation } from '@react-navigation/native';
 
 const QuickFunctions = () => {
+  const navigation = useNavigation();
 
   const openGallery = async () => {
     // 选择相机或相册
@@ -40,12 +42,12 @@ const QuickFunctions = () => {
     {
       icon: 'history',
       label: 'home.quickFunctions.history',
-      onPress: () => Alert.alert('功能提示', '历史记录功能'),
+      onPress: () => {navigation.navigate('FoodHistory')}
     },
     {
       icon: 'assessment',
       label: 'home.quickFunctions.assessment',
-      onPress: () => Alert.alert('功能提示', '营养分析功能'),
+      onPress: () => {navigation.navigate('Nutrition')}
     },
   ];
 

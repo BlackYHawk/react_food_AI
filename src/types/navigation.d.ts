@@ -10,11 +10,18 @@ export type RootStackParamList = {
   Login: undefined;
   Main: undefined;
   Home: undefined;
+  Video: undefined;
   Nutrition: undefined;
   Profile: undefined;
   Recipes: undefined;
   TabNavigator: undefined;
   Camera: undefined;
+  FoodScan: undefined;
+  FoodHistory: undefined;
+  RecipeDetail: { recipeId: string };
+  ChatGroup: undefined;
+  LiveStream: undefined;
+  Settings: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -24,6 +31,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
 
 export type BottomTabParamList = {
   Home: undefined;
+  Video: undefined;
   Recipes: undefined;
   Nutrition: undefined;
   Profile: undefined;

@@ -52,7 +52,7 @@
         "title": "安全设置",
         "changePassword": "修改密码",
         "twoFactorAuth": "两步验证"
-      },
+      }
     },
     "login": {
         "title": "AI 食物助手",

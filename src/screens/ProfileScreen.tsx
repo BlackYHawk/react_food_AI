@@ -6,25 +6,28 @@ import {
   StatusBar,
   SafeAreaView,
   Animated,
+  TouchableOpacity,
 } from 'react-native';
+import { Icon } from 'react-native-elements';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useFocusEffect} from '@react-navigation/native';
 import i18n from '@/i18n/i18n';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
+import { rem } from '@/styles/dimension'
 import ThemeSwitch from '@/components/Theme/ThemeSwitch';
 import {useAppSelector} from '@/hooks/appHooks.tsx';
 import UserComponent from '@/components/Login/UserComponent';
 import {RootStackScreenProps} from '@/types/navigation';
-import SocialCard from '../components/Section/SocialCard';
+import SocialCard from '@/components/Section/SocialCard';
 
 const ProfileScreen = ({navigation}: RootStackScreenProps<'Profile'>) => {
   const scrollY = useRef(new Animated.Value(0)).current;
-  const { theme, isLightTheme } = useTheme();
+  const { theme, themeType } = useTheme();
   const safeInsets = useSafeAreaInsets();
   const userData = useAppSelector((state) => state.user);
 
   //顶部标题栏高度
-  const headerHeight = theme.rem(50) + safeInsets.top; // 标题栏高度
+  const headerHeight = rem(50) + safeInsets.top; // 标题栏高度
   // 渐变动画：透明度和位移
   const headerOpacity = scrollY.interpolate({
     inputRange: [0, headerHeight],
@@ -37,7 +40,7 @@ const ProfileScreen = ({navigation}: RootStackScreenProps<'Profile'>) => {
     extrapolate: 'clamp',
   });
   // 头像区域高度
-  const profileHeight = theme.rem(100) + safeInsets.top; // 头像区域高度
+  const profileHeight = rem(100) + safeInsets.top; // 头像区域高度
   //头像区域动画
   const profileOpacity = scrollY.interpolate({
     inputRange: [0, headerHeight],
@@ -46,7 +49,7 @@ const ProfileScreen = ({navigation}: RootStackScreenProps<'Profile'>) => {
   });
   const profileTranslateY = scrollY.interpolate({
     inputRange: [0, headerHeight],
-    outputRange: [0, -headerHeight - theme.rem(50)],
+    outputRange: [0, -headerHeight - rem(50)],
     extrapolate: 'clamp',
   });
 
@@ -60,9 +63,9 @@ const ProfileScreen = ({navigation}: RootStackScreenProps<'Profile'>) => {
       left: 0,
       right: 0,
       backgroundColor: theme.primaryColor,
-      paddingTop: theme.rem(20),
-      paddingBottom: theme.rem(30),
-      paddingHorizontal: theme.rem(20),
+      paddingTop: rem(20),
+      paddingBottom: rem(30),
+      paddingHorizontal: rem(20),
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -73,7 +76,7 @@ const ProfileScreen = ({navigation}: RootStackScreenProps<'Profile'>) => {
     },
     sectionContainer: {
       backgroundColor: theme.backgroundColor,
-      marginTop: theme.rem(15),
+      marginTop: rem(15),
     },
     sectionTitle: {
       fontSize: 16,
@@ -81,6 +84,19 @@ const ProfileScreen = ({navigation}: RootStackScreenProps<'Profile'>) => {
       color: theme.textPrimary,
       paddingHorizontal: 15,
       marginBottom: 10,
+    },
+    sectionSettingContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      backgroundColor: theme.backgroundColor,
+      marginTop: rem(15),
+    },
+    sectionSettingTitle: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: theme.textPrimary,
+      paddingHorizontal: 15,
     },
     fixedHeader: {
       position: 'absolute',
@@ -95,19 +111,19 @@ const ProfileScreen = ({navigation}: RootStackScreenProps<'Profile'>) => {
       color: 'white',
       fontSize: 20,
       fontWeight: 'bold',
-      marginLeft: theme.rem(10),
+      marginLeft: rem(10),
     },
   }), [theme]);
 
   useFocusEffect(
     React.useCallback(() => {
-      StatusBar.setBarStyle(isLightTheme ? 'light-content' : 'dark-content');
+      StatusBar.setBarStyle(themeType === 'light' ? 'light-content' : 'dark-content');
     }, [navigation])
   );
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={isLightTheme ? 'light-content' : 'dark-content'} />
+      <StatusBar barStyle={themeType === 'light' ? 'light-content' : 'dark-content'} />
 
       {/* Animated 顶部标题栏，滑动渐变显示 */}
       <Animated.View
@@ -147,50 +163,27 @@ const ProfileScreen = ({navigation}: RootStackScreenProps<'Profile'>) => {
         {/* 主题Section */}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>
-            {i18n.t('profile.theme.title')}
+            {i18n.t('profile.themeSettings.title')}
           </Text>
           <ThemeSwitch />
         </View>
 
         {/* 安全Section */}
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>
-            {i18n.t('profile.security.title')}
+        <TouchableOpacity 
+          style={styles.sectionSettingContainer}
+          onPress={() => navigation.navigate('Settings')}
+          activeOpacity={0.7} >
+          <Text style={styles.sectionSettingTitle}>
+            {i18n.t('profile.settings')}
           </Text>
-          <ThemeSwitch />
-        </View>
-
-        {/* Collections Section */}
-        {/*<View style={styles.sectionContainer}>*/}
-        {/*  <Text style={styles.sectionTitle}>*/}
-        {/*    {i18n.t('profile.collections')}*/}
-        {/*  </Text>*/}
-
-        {/*  {userData.collections.map(item => (*/}
-        {/*    <ListItem key={item.id} containerStyle={styles.listItemContainer}>*/}
-        {/*      <Image*/}
-        {/*        key="image"*/}
-        {/*        source={{uri: item.image}}*/}
-        {/*        style={styles.itemImage}*/}
-        {/*      />*/}
-        {/*      <ListItem.Content key="content">*/}
-        {/*        <ListItem.Title style={styles.itemTitle}>*/}
-        {/*          {item.title}*/}
-        {/*        </ListItem.Title>*/}
-        {/*        <ListItem.Subtitle style={styles.itemDate}>*/}
-        {/*          {item.date}*/}
-        {/*        </ListItem.Subtitle>*/}
-        {/*      </ListItem.Content>*/}
-        {/*      <Icon*/}
-        {/*        key="icon"*/}
-        {/*        name="trash"*/}
-        {/*        type="font-awesome-5"*/}
-        {/*        color="#ccc"*/}
-        {/*        size={18}*/}
-        {/*      />*/}
-        {/*    </ListItem>*/}
-        {/*  ))}*/}
-        {/*</View>*/}
+          <Icon 
+            name="chevron-right" 
+            type="material" 
+            style={{paddingHorizontal: 15}}
+            size={30}
+            color={theme.textSecondary}
+            tvParallaxProperties={{}} />
+        </TouchableOpacity>
 
       </Animated.ScrollView>
     </SafeAreaView>

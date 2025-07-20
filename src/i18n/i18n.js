@@ -1,15 +1,19 @@
-import * as Localization from 'expo-localization';
 import { I18n } from 'i18n-js';
-import zhCN from '@/i18n/zh-CN.json';
+import * as Localization from 'expo-localization';
 
+// Import translations
+import en from './translations/en';
+import zh from './translations/zh';
+
+// Create i18n instance
 const i18n = new I18n({
-  ...zhCN,
+  en,
+  zh,
 });
 
-const locales = Localization.getLocales();
-const locale = locales.length > 0 ? locales[0].languageTag : 'en';
-console.log("locale:"+locale);
-i18n.defaultLocale = 'zh-CN';
-i18n.locale = 'zh-CN';
+// Set the locale once at the beginning of your app
+i18n.locale = (Localization.locale || 'zh').split('-')[0] || 'zh';
+i18n.enableFallback = true;
+i18n.defaultLocale = 'zh';
 
 export default i18n;

@@ -7,10 +7,15 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
-import * as ImagePicker from 'expo-image-picker';
-import { ImageManipulator } from 'expo-image-manipulator';
+import { useNavigation } from '@react-navigation/native';
 
-const CameraButton = () => {
+interface CameraButtonProps {
+  navigation?: any;
+}
+
+const CameraButton: React.FC<CameraButtonProps> = ({ navigation: propNavigation }) => {
+  const hookNavigation = useNavigation();
+  const navigation = propNavigation || hookNavigation;
   const { theme } = useTheme();
   const [scaleValue] = useState(new Animated.Value(1));
 
@@ -29,27 +34,8 @@ const CameraButton = () => {
   };
 
   const handleCameraPress = async () => {
-    // 选择相机或相册
-    const result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ['images'],
-      quality: 1,
-    });
-
-    // 如果取消，直接返回
-    if (result.canceled) return;
-
-    // 获取图片 uri
-    const uri = result.assets?.[0]?.uri;
-    if (!uri) return;
-
-    // 压缩图片
-    const compressed = await ImageManipulator.manipulateAsync(uri, [], {
-      compress: 0.5,
-      format: ImageManipulator.SaveFormat.JPEG,
-    });
-
-    // 这里可以将 compressed.uri 返回给调用方或做后续处理
-    console.log('压缩后图片:', compressed.uri);
+    // 跳转到食物扫描页面
+    navigation.navigate('FoodScan');
   };
 
   const styles = React.useMemo(() => StyleSheet.create({
@@ -139,7 +125,7 @@ const CameraButton = () => {
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
           activeOpacity={0.8}>
-          <Icon name="camera-alt" type="material" size={48} color="white" />
+          <Icon name="camera-alt" type="material" size={48} color="white" tvParallaxProperties={{}} />
         </TouchableOpacity>
       </Animated.View>
     </View>

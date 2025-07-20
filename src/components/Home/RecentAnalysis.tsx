@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, FlatList} from 'react-native';
 import {Avatar} from 'react-native-elements';
 import ReactAxios from '@/apis/reactAxios.tsx';
-import {useTheme} from '@/styles/ThemeProvider.tsx';
+import { useTheme } from '@/styles/ThemeProvider.tsx';
+import { rem } from '@/styles/dimension'
 
 interface CookbookItem {
   id: string;
@@ -78,30 +79,30 @@ const RecentAnalysis = () => {
       paddingHorizontal: 16,
       alignItems: 'center',
       width: '100%',
-      height: theme.rem(60),
+      height: rem(60),
     },
     avatar: {
-      width: theme.rem(50),
-      height: theme.rem(50),
+      width: rem(50),
+      height: rem(50),
     },
     textContainer: {
       flex: 1,
-      marginLeft: theme.rem(10),
+      marginLeft: rem(10),
     },
     itemTitle: {
-      maxWidth: theme.rem(120),
+      maxWidth: rem(120),
       fontSize: 16,
       fontWeight: '500',
       color: '#333',
       marginBottom: 4,
     },
     itemSubtitle: {
-      maxWidth: theme.rem(80),
+      maxWidth: rem(80),
       fontSize: 14,
       color: '#666',
     },
     timeText: {
-      maxWidth: theme.rem(60),
+      maxWidth: rem(60),
       fontSize: 12,
       color: '#999',
     },

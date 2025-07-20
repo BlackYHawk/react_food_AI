@@ -5,23 +5,33 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
+  ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import { SearchBar, Icon } from 'react-native-elements';
-import {RootStackScreenProps} from '@/types/navigation';
+import { RootStackScreenProps } from '@/types/navigation';
 import CameraButton from '@/components/Camera/CameraButton.tsx';
-import QuickFunctions from '@/components/QuickFunctions.tsx';
-import RecentAnalysis from '@/components/RecentAnalysis.tsx';
+import QuickFunctions from '@/components/Home/QuickFunctions.tsx';
+import NutritionChart from '@/components/NutritionChart';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
+import { rem } from '@/styles/dimension'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import i18n from '@/i18n/i18n.js';
 import { useFocusEffect } from '@react-navigation/native';
 
-const HomeScreen = ({navigation}: RootStackScreenProps<'Home'>) => {
+const HomeScreen = ({ navigation }: RootStackScreenProps<'Home'>) => {
   const { theme } = useTheme();
   const [searchText, setSearchText] = useState<string>('');
   const safeInsets = useSafeAreaInsets();
+  const { scannedItems, dailyGoals } = useSelector((state: RootState) => state.food);
 
+  // Calculate today's nutrition totals
   const styles = React.useMemo(() => StyleSheet.create({
+    content: {
+      flex: 1,
+    },
     header: {
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -53,26 +63,23 @@ const HomeScreen = ({navigation}: RootStackScreenProps<'Home'>) => {
       fontWeight: '600',
       color: theme.textPrimary,
     },
-    content: {
-      flex: 1,
-    },
     searchContainer: {
       backgroundColor: 'transparent',
       borderTopWidth: 0,
       borderBottomWidth: 0,
-      paddingHorizontal: theme.rem(24),
-      paddingVertical: theme.rem(16),
+      paddingHorizontal: rem(24),
+      paddingVertical: rem(10),
     },
     searchInputContainer: {
       backgroundColor: theme.secondaryColor,
       borderRadius: 25,
-      height: theme.rem(48),
-      paddingHorizontal: theme.rem(16),
+      height: rem(48),
+      paddingHorizontal: rem(16),
       justifyContent: 'center',
     },
     searchInput: {
       textAlignVertical: 'center',
-      lineHeight: theme.rem(48),
+      lineHeight: rem(48),
       fontSize: 16,
       color: theme.textPrimary,
       padding: 0,
@@ -80,14 +87,19 @@ const HomeScreen = ({navigation}: RootStackScreenProps<'Home'>) => {
     },
     cameraSection: {
       alignItems: 'center',
-      paddingVertical: 40,
-      paddingHorizontal: 24,
+      paddingVertical: 15,
+      paddingHorizontal: 20,
     },
     cameraText: {
       fontSize: 16,
       color: theme.textSecondary,
       marginTop: 20,
       marginBottom: 40,
+    },
+    settingsButton: {
+      padding: 8,
+      borderRadius: 20,
+      backgroundColor: 'transparent',
     },
   }), [theme]);
 
@@ -101,40 +113,59 @@ const HomeScreen = ({navigation}: RootStackScreenProps<'Home'>) => {
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.backgroundColor }}>
       <StatusBar barStyle="dark-content" />
 
-      {/* Header */}
-      <View style={[styles.header, {paddingTop: safeInsets.top}]}>
-        <View style={styles.headerLeft}>
-          <View style={styles.logo}>
-            <Text style={styles.logoText}>🍽️</Text>
+      <ScrollView style={styles.content}>
+        {/* Header */}
+        <View style={[styles.header, { paddingTop: safeInsets.top }]}>
+          <View style={styles.headerLeft}>
+            <View style={styles.logo}>
+              <Text style={styles.logoText}>🍽️</Text>
+            </View>
+            <Text style={styles.title}>{i18n.t('home.title')}</Text>
           </View>
-          <Text style={styles.title}>{i18n.t('home.title')}</Text>
-        </View>
-        <Icon name="settings" type="ionicon" size={24} color="#999" />
-      </View>
 
-      <View style={styles.content} >
-        {/* Search Bar */}
-        <SearchBar
-          placeholder={i18n.t('home.search.placeholder')}
-          onChangeText={setSearchText}
-          value={searchText}
-          containerStyle={styles.searchContainer}
-          inputContainerStyle={styles.searchInputContainer}
-          inputStyle={styles.searchInput}
-          searchIcon={{name:'search', size: 20, color: '#999' }}
-          clearIcon={{name:'clear', size: 20, color: '#999' }}
-        />
-
-        {/* Main Camera Section */}
-        <View style={styles.cameraSection}>
-          <CameraButton />
-          <Text style={styles.cameraText}>{i18n.t('home.camera')}</Text>
-          <QuickFunctions />
+          <TouchableOpacity
+            style={styles.settingsButton}
+            onPress={() => navigation.navigate('ChatGroup')}
+            activeOpacity={0.7}
+          >
+            <Icon
+              name="notifications"
+              type="ionicon"
+              size={24}
+              color={theme.textSecondary}
+              tvParallaxProperties={{}}
+            />
+          </TouchableOpacity>
         </View>
 
-        {/* Recent Analysis */}
-        <RecentAnalysis />
-      </View>
+        <View style={styles.content} >
+          {/* Search Bar */}
+          <SearchBar
+            placeholder={i18n.t('home.search.placeholder')}
+            onChangeText={setSearchText}
+            value={searchText}
+            containerStyle={styles.searchContainer}
+            inputContainerStyle={styles.searchInputContainer}
+            inputStyle={styles.searchInput}
+            searchIcon={{ name: 'search', size: 20, color: '#999' }}
+            clearIcon={{ name: 'clear', size: 20, color: '#999' }}
+          />
+
+          {/* Main Camera Section */}
+          <View style={styles.cameraSection}>
+            <CameraButton />
+            <Text style={styles.cameraText}>{i18n.t('home.camera')}</Text>
+            <QuickFunctions />
+          </View>
+
+          {/* Daily Nutrition Summary */}
+          {scannedItems.length > 0 && (
+            <View style={{ marginTop: rem(5) }}>
+              <NutritionChart type="daily" chartType="pie" />
+            </View>
+          )}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
