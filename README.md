@@ -2,6 +2,10 @@
 
 A comprehensive React Native food assistant app with AI-powered food scanning, recipe management, community features, and live streaming capabilities.
 
+
+## Related Backend Project
+Based on Fastify Framework [Fastify_food](https://github.com/BlackYHawk/fastify_food)
+
 ## 🚀 Features Implemented
 
 ### 1. Food Scanning & Analysis
