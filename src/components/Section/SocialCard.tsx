@@ -8,7 +8,7 @@ import {
 import { useSelector } from 'react-redux';
 import { useTheme } from '@/styles/ThemeProvider';
 import { RootState } from '@/store';
-import i18n from '@/i18n/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface SocialCardProps {
   socialStyle?: any;
@@ -16,6 +16,7 @@ interface SocialCardProps {
 
 const SocialCard: React.FC<SocialCardProps> = ({ socialStyle }) => {
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const { isAuthenticated } = useSelector((state: RootState) => state.user);
 
   const styles = StyleSheet.create({
@@ -82,22 +83,22 @@ const SocialCard: React.FC<SocialCardProps> = ({ socialStyle }) => {
       <View style={styles.socialRow}>
         <View style={styles.socialItem}>
           <Text style={styles.socialCount}>128</Text>
-          <Text style={styles.socialLabel}>{i18n.t('profile.following')}</Text>
+          <Text style={styles.socialLabel}>{t('profile.following')}</Text>
         </View>
         
         <View style={styles.socialItem}>
           <Text style={styles.socialCount}>3.2k</Text>
-          <Text style={styles.socialLabel}>{i18n.t('profile.followers')}</Text>
+          <Text style={styles.socialLabel}>{t('profile.followers')}</Text>
         </View>
         
         <View style={styles.socialItem}>
           <Text style={styles.socialCount}>26</Text>
-          <Text style={styles.socialLabel}>{i18n.t('profile.posts')}</Text>
+          <Text style={styles.socialLabel}>{t('profile.posts')}</Text>
         </View>
         
         <View style={styles.socialItem}>
           <Text style={styles.socialCount}>156</Text>
-          <Text style={styles.socialLabel}>{i18n.t('profile.rate')}</Text>
+          <Text style={styles.socialLabel}>{t('profile.rate')}</Text>
         </View>
       </View>
     </View>

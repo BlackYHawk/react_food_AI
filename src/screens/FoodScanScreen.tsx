@@ -14,12 +14,13 @@ import * as ImagePicker from 'expo-image-picker';
 import { Icon } from 'react-native-elements';
 import { useTheme } from '@/styles/ThemeProvider';
 import { RootStackScreenProps } from '@/types/navigation';
-import i18n from '@/i18n/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useDispatch } from 'react-redux';
 import { FoodItem, addScannedItem } from '@/store/slices/foodSlice';
 
 const FoodScanScreen = ({ navigation }: RootStackScreenProps<'FoodScan'>) => {
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [permission, requestPermission] = useCameraPermissions();
   const [facing, setFacing] = useState<CameraType>('back');
@@ -81,7 +82,7 @@ const FoodScanScreen = ({ navigation }: RootStackScreenProps<'FoodScan'>) => {
     if (analysisResult) {
       // Save to Redux store
       dispatch(addScannedItem(analysisResult));
-      Alert.alert('Success', i18n.t('foodScan.savedSuccess'));
+      Alert.alert('Success', t('foodScan.savedSuccess'));
       navigation.goBack();
     }
   };

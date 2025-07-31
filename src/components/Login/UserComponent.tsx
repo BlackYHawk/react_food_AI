@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { useTheme } from '@/styles/ThemeProvider';
 import { RootState } from '@/store';
 import { Icon } from 'react-native-elements';
-import i18n from '@/i18n/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface UserComponentProps {
   navigation: any;
@@ -18,6 +18,7 @@ interface UserComponentProps {
 
 const UserComponent: React.FC<UserComponentProps> = ({ navigation }) => {
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const { isAuthenticated, profile } = useSelector((state: RootState) => state.user);
 
   const handleLogin = () => {
@@ -99,7 +100,7 @@ const UserComponent: React.FC<UserComponentProps> = ({ navigation }) => {
             <Icon name="person" size={40} color="rgba(255,255,255,0.5)" tvParallaxProperties={{}} />
           </View>
           <View style={styles.userTextContainer}>
-            <Text style={styles.userName}>{i18n.t('profile.guest')}</Text>
+            <Text style={styles.userName}>{t('profile.guest')}</Text>
             <Text style={styles.userDetail}>登录以使用更多功能</Text>
           </View>
         </View>
@@ -133,7 +134,7 @@ const UserComponent: React.FC<UserComponentProps> = ({ navigation }) => {
       </View>
       <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
         <Icon name="edit" size={16} color="white" tvParallaxProperties={{}} />
-        <Text style={styles.editText}>{i18n.t('profile.edit')}</Text>
+        <Text style={styles.editText}>{t('profile.edit')}</Text>
       </TouchableOpacity>
     </View>
   );

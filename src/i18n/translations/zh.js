@@ -118,8 +118,6 @@ export default {
     settings: '设置',
     help: '帮助与支持',
     logout: '退出登录',
-    theme: '主题',
-    language: '语言',
     notifications: '通知',
     about: '关于',
     guest: '去登录',
@@ -129,11 +127,6 @@ export default {
     posts: '我的作品',
     collections: '我的收藏',
     rate: '获赞',
-    themeSettings: {
-      title: '主题设置',
-      light: '浅色主题',
-      dark: '深色主题'
-    },
     security: {
       title: '安全设置',
       changePassword: '修改密码',
@@ -164,6 +157,18 @@ export default {
   settings: {
     account: '账户信息',
     appearance: '外观',
+    theme: {
+      title: '主题',
+      lightMode: '浅色主题',
+      darkMode: '深色主题'
+    },
+    skin: {
+      title: '皮肤',
+    },
+    language: {
+      title: '语言',
+      selectLanguage: '请选择语言',
+    },
     preferences: '常规配置',
     data: '数据设置',
     support: '帮助',

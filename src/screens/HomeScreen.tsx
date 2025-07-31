@@ -18,11 +18,12 @@ import { RootState } from '@/store';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
 import { rem } from '@/styles/dimension'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import i18n from '@/i18n/i18n.js';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useFocusEffect } from '@react-navigation/native';
 
 const HomeScreen = ({ navigation }: RootStackScreenProps<'Home'>) => {
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const [searchText, setSearchText] = useState<string>('');
   const safeInsets = useSafeAreaInsets();
   const { scannedItems, dailyGoals } = useSelector((state: RootState) => state.food);
@@ -120,7 +121,7 @@ const HomeScreen = ({ navigation }: RootStackScreenProps<'Home'>) => {
             <View style={styles.logo}>
               <Text style={styles.logoText}>🍽️</Text>
             </View>
-            <Text style={styles.title}>{i18n.t('home.title')}</Text>
+            <Text style={styles.title}>{t('home.title')}</Text>
           </View>
 
           <TouchableOpacity
@@ -141,7 +142,7 @@ const HomeScreen = ({ navigation }: RootStackScreenProps<'Home'>) => {
         <View style={styles.content} >
           {/* Search Bar */}
           <SearchBar
-            placeholder={i18n.t('home.search.placeholder')}
+            placeholder={t('home.search.placeholder')}
             onChangeText={setSearchText}
             value={searchText}
             containerStyle={styles.searchContainer}
@@ -154,7 +155,7 @@ const HomeScreen = ({ navigation }: RootStackScreenProps<'Home'>) => {
           {/* Main Camera Section */}
           <View style={styles.cameraSection}>
             <CameraButton />
-            <Text style={styles.cameraText}>{i18n.t('home.camera')}</Text>
+            <Text style={styles.cameraText}>{t('home.camera')}</Text>
             <QuickFunctions />
           </View>
 

@@ -17,12 +17,13 @@ import { useTheme } from '@/styles/ThemeProvider';
 import { RootStackScreenProps } from '@/types/navigation';
 import { RootState } from '@/store';
 import { addMessage } from '@/store/slices/chatSlice';
-import i18n from '@/i18n/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const ChatGroupScreen = ({ route, navigation }: RootStackScreenProps<'ChatGroup'>) => {
   const { groupId } = route.params || { groupId: null };
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const [message, setMessage] = useState('');
@@ -123,7 +124,7 @@ const ChatGroupScreen = ({ route, navigation }: RootStackScreenProps<'ChatGroup'
   if (!activeGroup) {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
-        <Text style={{ color: theme.textPrimary }}>{i18n.t('common.noData')}</Text>
+        <Text style={{ color: theme.textPrimary }}>{t('common.noData')}</Text>
       </SafeAreaView>
     );
   }
@@ -141,7 +142,7 @@ const ChatGroupScreen = ({ route, navigation }: RootStackScreenProps<'ChatGroup'
             {activeGroup.name}
           </Text>
           <Text style={[styles.headerSubtitle, { color: theme.textSecondary }]}>
-            {activeGroup.memberCount} {i18n.t('livestream.viewers')}
+            {activeGroup.memberCount} {t('livestream.viewers')}
           </Text>
         </View>
         
@@ -172,7 +173,7 @@ const ChatGroupScreen = ({ route, navigation }: RootStackScreenProps<'ChatGroup'
           
           <TextInput
             style={[styles.input, { color: theme.textPrimary, backgroundColor: theme.backgroundColor }]}
-            placeholder={i18n.t('chat.typeMessage')}
+            placeholder={t('chat.typeMessage')}
             placeholderTextColor={theme.textLight}
             value={message}
             onChangeText={setMessage}

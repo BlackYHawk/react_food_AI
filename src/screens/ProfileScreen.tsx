@@ -11,7 +11,7 @@ import {
 import { Icon } from 'react-native-elements';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useFocusEffect} from '@react-navigation/native';
-import i18n from '@/i18n/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
 import { rem } from '@/styles/dimension'
 import ThemeSwitch from '@/components/Theme/ThemeSwitch';
@@ -23,6 +23,7 @@ import SocialCard from '@/components/Section/SocialCard';
 const ProfileScreen = ({navigation}: RootStackScreenProps<'Profile'>) => {
   const scrollY = useRef(new Animated.Value(0)).current;
   const { theme, themeType } = useTheme();
+  const { t } = useTranslation();
   const safeInsets = useSafeAreaInsets();
   const userData = useAppSelector((state) => state.user);
 
@@ -160,21 +161,13 @@ const ProfileScreen = ({navigation}: RootStackScreenProps<'Profile'>) => {
         {/* 社交卡片 */}
         <SocialCard key="social-card" socialStyle={{paddingTop: profileHeight + 10}} />
 
-        {/* 主题Section */}
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>
-            {i18n.t('profile.themeSettings.title')}
-          </Text>
-          <ThemeSwitch />
-        </View>
-
         {/* 安全Section */}
         <TouchableOpacity 
           style={styles.sectionSettingContainer}
           onPress={() => navigation.navigate('Settings')}
           activeOpacity={0.7} >
           <Text style={styles.sectionSettingTitle}>
-            {i18n.t('profile.settings')}
+            {t('profile.settings')}
           </Text>
           <Icon 
             name="chevron-right" 

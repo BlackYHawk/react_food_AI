@@ -121,10 +121,28 @@ export default {
     settings: 'Settings',
     help: 'Help & Support',
     logout: 'Logout',
-    theme: 'Theme',
-    language: 'Language',
+  
     notifications: 'Notifications',
     about: 'About',
+  },
+  settings: {
+    account: 'Account',
+    appearance: 'Appearance',
+    theme: {
+      title: 'Theme',
+      lightMode: 'Light Themes',
+      darkMode: 'Dark Themes'
+    },
+    skin: {
+      title: 'Skin Color',
+    },
+    language: {
+      title: 'Language',
+      selectLanguage: 'Please select a language',
+    },
+    preferences: 'Preferences',
+    data: 'Data',
+    support: 'Support',
   },
   chat: {
     groups: 'Chat Groups',

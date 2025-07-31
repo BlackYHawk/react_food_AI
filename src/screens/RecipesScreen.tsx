@@ -16,7 +16,7 @@ import {RootStackScreenProps} from '@/types/navigation';
 import AnimatedIOPSlide from '@/components/AnimatedIOPSlide.tsx';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
 import { rem } from '@/styles/dimension'
-import i18n from '@/i18n/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 import ReactAxios from '@/apis/reactAxios.tsx';
 
 interface CookbookItem {
@@ -50,6 +50,7 @@ interface CookbookCatListResponse {
 
 const RecipesScreen = ({navigation} : RootStackScreenProps<'Recipes'>) => {
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState('分类');
   const tabs = ['分类', '品牌', '评价', '综合', '外卖'];
   const safeInsets = useSafeAreaInsets();
@@ -310,7 +311,7 @@ const RecipesScreen = ({navigation} : RootStackScreenProps<'Recipes'>) => {
       {/* Header */}
       <View style={[styles.header, { paddingTop: safeInsets.top }]}>
         <Icon name="food-bank" type="material" size={24} color="#333" />
-        <Text style={styles.title}>{i18n.t('recipes.title')}</Text>
+        <Text style={styles.title}>{t('recipes.title')}</Text>
       </View>
 
       {/* Category Tabs */}

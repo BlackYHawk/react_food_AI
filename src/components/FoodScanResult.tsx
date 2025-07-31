@@ -10,7 +10,7 @@ import {
 import { Icon } from 'react-native-elements';
 import { useTheme } from '@/styles/ThemeProvider';
 import { FoodItem } from '@/store/slices/foodSlice';
-import i18n from '@/i18n/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const { width } = Dimensions.get('window');
 
@@ -28,6 +28,7 @@ const FoodScanResult: React.FC<FoodScanResultProps> = ({
   showActions = false,
 }) => {
   const { theme } = useTheme();
+  const { t } = useTranslation();
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -76,7 +77,7 @@ const FoodScanResult: React.FC<FoodScanResultProps> = ({
               tvParallaxProperties={{}}
             />
             <Text style={[styles.confidence, { color: getConfidenceColor(foodItem.confidence) }]}>
-              {Math.round(foodItem.confidence * 100)}% {i18n.t('foodScan.confidence')}
+              {Math.round(foodItem.confidence * 100)}% {t('foodScan.confidence')}
             </Text>
           </View>
         </View>
@@ -126,7 +127,7 @@ const FoodScanResult: React.FC<FoodScanResultProps> = ({
                 {foodItem.calories}
               </Text>
               <Text style={[styles.nutritionLabel, { color: theme.textSecondary }]}>
-                {i18n.t('home.calories')}
+                {t('home.calories')}
               </Text>
             </View>
             
@@ -143,7 +144,7 @@ const FoodScanResult: React.FC<FoodScanResultProps> = ({
                 {foodItem.carbs}g
               </Text>
               <Text style={[styles.nutritionLabel, { color: theme.textSecondary }]}>
-                {i18n.t('home.carbs')}
+                {t('home.carbs')}
               </Text>
             </View>
             
@@ -160,7 +161,7 @@ const FoodScanResult: React.FC<FoodScanResultProps> = ({
                 {foodItem.protein}g
               </Text>
               <Text style={[styles.nutritionLabel, { color: theme.textSecondary }]}>
-                {i18n.t('home.protein')}
+                {t('home.protein')}
               </Text>
             </View>
             
@@ -177,7 +178,7 @@ const FoodScanResult: React.FC<FoodScanResultProps> = ({
                 {foodItem.fat}g
               </Text>
               <Text style={[styles.nutritionLabel, { color: theme.textSecondary }]}>
-                {i18n.t('home.fat')}
+                {t('home.fat')}
               </Text>
             </View>
           </View>

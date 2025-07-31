@@ -10,6 +10,7 @@ import {
 import { useTheme } from '@/styles/ThemeProvider';
 import { Icon } from 'react-native-elements';
 import { ThemeColors } from '@/styles/themes';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const { width } = Dimensions.get('window');
 const THEME_ITEM_SIZE = width / 4 - 20;
@@ -20,12 +21,13 @@ interface ThemeSelectorProps {
 
 const ThemeSelector: React.FC<ThemeSelectorProps> = ({ onClose }) => {
   const { theme, themeType, availableThemes, setThemeType } = useTheme();
+  const { t } = useTranslation();
 
   // 将主题分组为亮色和暗色主题
   const lightThemes = Object.entries(availableThemes).filter(
     ([_, themeObj]) => !themeObj.isDark
   );
-  
+
   const darkThemes = Object.entries(availableThemes).filter(
     ([_, themeObj]) => themeObj.isDark
   );
@@ -39,7 +41,7 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ onClose }) => {
 
   const renderThemeItem = ([id, themeObj]: [string, ThemeColors]) => {
     const isSelected = id === themeType;
-    
+
     return (
       <TouchableOpacity
         key={id}
@@ -62,7 +64,7 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ onClose }) => {
               { backgroundColor: themeObj.primaryColor },
             ]}
           />
-          
+
           {/* 内容区域 */}
           <View style={styles.previewContent}>
             <View
@@ -118,7 +120,7 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ onClose }) => {
     <View style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
       <View style={styles.header}>
         <Text style={[styles.title, { color: theme.textPrimary }]}>
-          选择主题
+          {t('settings.skin.title')}
         </Text>
         {onClose && (
           <TouchableOpacity onPress={onClose} style={styles.closeButton}>
@@ -135,7 +137,7 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ onClose }) => {
       <ScrollView style={styles.scrollView}>
         {/* 亮色主题 */}
         <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>
-          亮色主题
+          {t('settings.theme.lightMode')}
         </Text>
         <View style={styles.themesGrid}>
           {lightThemes.map(renderThemeItem)}
@@ -143,7 +145,7 @@ const ThemeSelector: React.FC<ThemeSelectorProps> = ({ onClose }) => {
 
         {/* 暗色主题 */}
         <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>
-          暗色主题
+          {t('settings.theme.darkMode')}
         </Text>
         <View style={styles.themesGrid}>
           {darkThemes.map(renderThemeItem)}

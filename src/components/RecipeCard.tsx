@@ -11,7 +11,7 @@ import { Icon } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
 import { useTheme } from '@/styles/ThemeProvider';
 import { Recipe, toggleFavorite } from '@/store/slices/recipeSlice';
-import i18n from '@/i18n/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const { width } = Dimensions.get('window');
 
@@ -29,6 +29,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
     compact = false
 }) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const handleToggleFavorite = (e: any) => {
@@ -38,7 +39,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
 
     const formatTime = (minutes: number) => {
         if (minutes < 60) {
-            return `${minutes}${i18n.t('recipeDetail.minutes')}`;
+            return `${minutes}${t('recipeDetail.minutes')}`;
         }
         const hours = Math.floor(minutes / 60);
         const remainingMinutes = minutes % 60;

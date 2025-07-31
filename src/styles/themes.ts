@@ -16,16 +16,7 @@ export interface ThemeColors {
   info: string;
   border: string;
   isDark: boolean;
-  // 添加rem函数用于响应式尺寸
-  rem: (size: number) => number;
 }
-
-// 基础尺寸转换函数
-const createRem = (baseFontSize: number = 16) => {
-  return (size: number) => {
-    return size;
-  };
-};
 
 // 创建主题的工厂函数
 const createTheme = (options: Partial<ThemeColors> & { id: string; name: string; isDark: boolean }): ThemeColors => {
@@ -42,7 +33,6 @@ const createTheme = (options: Partial<ThemeColors> & { id: string; name: string;
     error: '#F44336',
     info: '#2196F3',
     border: '#E0E0E0',
-    rem: createRem(),
     ...options
   };
 };

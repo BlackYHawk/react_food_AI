@@ -1,6 +1,6 @@
 import { I18n } from 'i18n-js';
 import * as Localization from 'expo-localization';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // Import translations
 import en from './translations/en';
 import zh from './translations/zh';
@@ -15,5 +15,7 @@ const i18n = new I18n({
 i18n.locale = (Localization.locale || 'zh').split('-')[0] || 'zh';
 i18n.enableFallback = true;
 i18n.defaultLocale = 'zh';
+
+// Language management is now handled by LanguageContext
 
 export default i18n;

@@ -2,5 +2,16 @@ declare module '*.png';
 declare module '*.jpg';
 declare module '*.jpeg';
 declare module '*.gif';
-declare module '*.webp';
-declare module '*.svg';
+declare module '*.bmp';
+declare module '*.tiff';
+declare module '*.json' {
+  const value: any;
+  export default value;
+}
+
+declare module 'i18n-js' {
+  interface I18n {
+    changeLanguage(locale: string): void;
+    language: string;
+  }
+}

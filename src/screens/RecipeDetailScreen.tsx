@@ -16,7 +16,7 @@ import { useTheme } from '@/styles/ThemeProvider';
 import { RootStackScreenProps } from '@/types/navigation';
 import { RootState } from '@/store';
 import { toggleFavorite } from '@/store/slices/recipeSlice';
-import i18n from '@/i18n/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { width } = Dimensions.get('window');
@@ -24,6 +24,7 @@ const { width } = Dimensions.get('window');
 const RecipeDetailScreen = ({ route, navigation }: RootStackScreenProps<'RecipeDetail'>) => {
   const { recipeId } = route.params;
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const [showVideo, setShowVideo] = useState(false);
@@ -40,7 +41,7 @@ const RecipeDetailScreen = ({ route, navigation }: RootStackScreenProps<'RecipeD
   if (!recipe) {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
-        <Text style={{ color: theme.textPrimary }}>{i18n.t('common.noData')}</Text>
+        <Text style={{ color: theme.textPrimary }}>{t('common.noData')}</Text>
       </SafeAreaView>
     );
   }
@@ -106,14 +107,14 @@ const RecipeDetailScreen = ({ route, navigation }: RootStackScreenProps<'RecipeD
             <View style={styles.metaItem}>
               <Icon name="timer" size={20} color={theme.primaryColor} tvParallaxProperties={{}} />
               <Text style={[styles.metaText, { color: theme.textSecondary }]}>
-                {recipe.prepTime + recipe.cookTime} {i18n.t('recipeDetail.minutes')}
+                {recipe.prepTime + recipe.cookTime} {t('recipeDetail.minutes')}
               </Text>
             </View>
             
             <View style={styles.metaItem}>
               <Icon name="restaurant" size={20} color={theme.primaryColor} tvParallaxProperties={{}} />
               <Text style={[styles.metaText, { color: theme.textSecondary }]}>
-                {recipe.servings} {i18n.t('recipeDetail.servings')}
+                {recipe.servings} {t('recipeDetail.servings')}
               </Text>
             </View>
             
@@ -128,7 +129,7 @@ const RecipeDetailScreen = ({ route, navigation }: RootStackScreenProps<'RecipeD
           {/* Nutrition Facts */}
           <View style={[styles.nutritionContainer, { backgroundColor: theme.cardBackground }]}>
             <Text style={[styles.sectionTitle, { color: theme.textPrimary }]}>
-              {i18n.t('recipeDetail.nutritionFacts')}
+              {t('recipeDetail.nutritionFacts')}
             </Text>
             
             <View style={styles.nutritionRow}>
@@ -137,7 +138,7 @@ const RecipeDetailScreen = ({ route, navigation }: RootStackScreenProps<'RecipeD
                   {recipe.calories}
                 </Text>
                 <Text style={[styles.nutritionLabel, { color: theme.textSecondary }]}>
-                  {i18n.t('home.calories')}
+                  {t('home.calories')}
                 </Text>
               </View>
               
@@ -146,7 +147,7 @@ const RecipeDetailScreen = ({ route, navigation }: RootStackScreenProps<'RecipeD
                   {recipe.carbs}g
                 </Text>
                 <Text style={[styles.nutritionLabel, { color: theme.textSecondary }]}>
-                  {i18n.t('home.carbs')}
+                  {t('home.carbs')}
                 </Text>
               </View>
               
@@ -155,7 +156,7 @@ const RecipeDetailScreen = ({ route, navigation }: RootStackScreenProps<'RecipeD
                   {recipe.protein}g
                 </Text>
                 <Text style={[styles.nutritionLabel, { color: theme.textSecondary }]}>
-                  {i18n.t('home.protein')}
+                  {t('home.protein')}
                 </Text>
               </View>
               
@@ -164,7 +165,7 @@ const RecipeDetailScreen = ({ route, navigation }: RootStackScreenProps<'RecipeD
                   {recipe.fat}g
                 </Text>
                 <Text style={[styles.nutritionLabel, { color: theme.textSecondary }]}>
-                  {i18n.t('home.fat')}
+                  {t('home.fat')}
                 </Text>
               </View>
             </View>
@@ -173,7 +174,7 @@ const RecipeDetailScreen = ({ route, navigation }: RootStackScreenProps<'RecipeD
           {/* Ingredients */}
           <View style={styles.section}>
             <Text style={[styles.sectionTitle, { color: theme.textPrimary }]}>
-              {i18n.t('recipeDetail.ingredients')}
+              {t('recipeDetail.ingredients')}
             </Text>
             
             {recipe.ingredients.map((ingredient, index) => (
@@ -189,7 +190,7 @@ const RecipeDetailScreen = ({ route, navigation }: RootStackScreenProps<'RecipeD
           {/* Instructions */}
           <View style={styles.section}>
             <Text style={[styles.sectionTitle, { color: theme.textPrimary }]}>
-              {i18n.t('recipeDetail.instructions')}
+              {t('recipeDetail.instructions')}
             </Text>
             
             {recipe.instructions.map((instruction, index) => (
@@ -213,7 +214,7 @@ const RecipeDetailScreen = ({ route, navigation }: RootStackScreenProps<'RecipeD
               >
                 <Icon name="videocam" size={20} color="white" tvParallaxProperties={{}} />
                 <Text style={styles.actionButtonText}>
-                  {i18n.t('recipeDetail.watchVideo')}
+                  {t('recipeDetail.watchVideo')}
                 </Text>
               </TouchableOpacity>
             )}
@@ -224,7 +225,7 @@ const RecipeDetailScreen = ({ route, navigation }: RootStackScreenProps<'RecipeD
             >
               <Icon name="share" size={20} color="white" tvParallaxProperties={{}} />
               <Text style={styles.actionButtonText}>
-                {i18n.t('recipeDetail.share')}
+                {t('recipeDetail.share')}
               </Text>
             </TouchableOpacity>
           </View>

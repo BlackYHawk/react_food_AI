@@ -14,7 +14,7 @@ import {
 import * as LocalAuthentication from 'expo-local-authentication';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
-import i18n from '@/i18n/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 import { CheckBox, Icon } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
 import { login } from '@/store/slices/userSlice';
@@ -22,6 +22,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const LoginComponent = () => {
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   
@@ -101,16 +102,16 @@ const LoginComponent = () => {
       const savedBiometrics = await LocalAuthentication.isEnrolledAsync();
       if (!savedBiometrics) {
         Alert.alert(
-          i18n.t('login.biometricNotAvailable'),
-          i18n.t('login.biometricNotEnrolled')
+          t('login.biometricNotAvailable'),
+          t('login.biometricNotEnrolled')
         );
         setIsLoading(false);
         return;
       }
 
       const result = await LocalAuthentication.authenticateAsync({
-        promptMessage: i18n.t('login.biometricPrompt'),
-        cancelLabel: i18n.t('common.cancel'),
+        promptMessage: t('login.biometricPrompt'),
+        cancelLabel: t('common.cancel'),
         disableDeviceFallback: false,
       });
 
@@ -136,7 +137,7 @@ const LoginComponent = () => {
         
         // 显示成功消息
         Alert.alert(
-          i18n.t('login.loginSuccess') || '登录成功',
+          t('login.loginSuccess') || '登录成功',
           '',
           [
             {
@@ -149,11 +150,11 @@ const LoginComponent = () => {
           ]
         );
       } else {
-        Alert.alert(i18n.t('login.loginFailed') || '登录失败');
+        Alert.alert(t('login.loginFailed') || '登录失败');
       }
     } catch (error) {
       console.error('Biometric authentication error:', error);
-      Alert.alert(i18n.t('login.loginFailed') || '登录失败');
+      Alert.alert(t('login.loginFailed') || '登录失败');
     } finally {
       setIsLoading(false);
     }
@@ -162,7 +163,7 @@ const LoginComponent = () => {
   // Handle sending verification code for phone login
   const handleSendCode = () => {
     if (!phone || phone.length < 10) {
-      Alert.alert(i18n.t('login.error'), 'Please enter a valid phone number');
+      Alert.alert(t('login.error'), 'Please enter a valid phone number');
       return;
     }
     
@@ -172,14 +173,14 @@ const LoginComponent = () => {
       setCodeSent(true);
       setCountdown(60); // 60 seconds countdown
       setIsLoading(false);
-      Alert.alert(i18n.t('login.verificationCodeSent'));
+      Alert.alert(t('login.verificationCodeSent'));
     }, 1500);
   };
 
   // Handle login with email/password or phone/code
   const handleLogin = () => {
     if (!privacyChecked) {
-      Alert.alert(i18n.t('login.error'), 'Please agree to the terms and privacy policy');
+      Alert.alert(t('login.error'), 'Please agree to the terms and privacy policy');
       return;
     }
     
@@ -188,7 +189,7 @@ const LoginComponent = () => {
     try {
       if (loginMethod === 'email') {
         if (!email || !password) {
-          Alert.alert(i18n.t('login.error'), 'Please enter both email and password.');
+          Alert.alert(t('login.error'), 'Please enter both email and password.');
           setIsLoading(false);
           return;
         }
@@ -216,7 +217,7 @@ const LoginComponent = () => {
           
           // 显示成功消息
           Alert.alert(
-            i18n.t('login.loginSuccess') || '登录成功',
+            t('login.loginSuccess') || '登录成功',
             '',
             [
               {
@@ -232,13 +233,13 @@ const LoginComponent = () => {
       } 
       else if (loginMethod === 'phone') {
         if (!phone || !code) {
-          Alert.alert(i18n.t('login.error'), 'Please enter both phone number and verification code.');
+          Alert.alert(t('login.error'), 'Please enter both phone number and verification code.');
           setIsLoading(false);
           return;
         }
         
         if (!codeSent) {
-          Alert.alert(i18n.t('login.error'), 'Please send verification code first.');
+          Alert.alert(t('login.error'), 'Please send verification code first.');
           setIsLoading(false);
           return;
         }
@@ -266,7 +267,7 @@ const LoginComponent = () => {
           
           // 显示成功消息
           Alert.alert(
-            i18n.t('login.loginSuccess') || '登录成功',
+            t('login.loginSuccess') || '登录成功',
             '',
             [
               {
@@ -283,7 +284,7 @@ const LoginComponent = () => {
     } catch (error) {
       console.error('Login error:', error);
       setIsLoading(false);
-      Alert.alert(i18n.t('login.loginFailed'));
+      Alert.alert(t('login.loginFailed'));
     }
   };
 
@@ -505,7 +506,7 @@ const LoginComponent = () => {
     <View style={styles.formContainer}>
       <TextInput
         style={styles.input}
-        placeholder={i18n.t("login.emailPlaceholder")}
+        placeholder={t("login.emailPlaceholder")}
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
@@ -513,13 +514,13 @@ const LoginComponent = () => {
       />
       <TextInput
         style={styles.input}
-        placeholder={i18n.t("login.passwordPlaceholder")}
+        placeholder={t("login.passwordPlaceholder")}
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
       <TouchableOpacity style={styles.forgotPasswordButton}>
-        <Text style={styles.forgotPasswordText}>{i18n.t("login.forgotPassword")}</Text>
+        <Text style={styles.forgotPasswordText}>{t("login.forgotPassword")}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -529,7 +530,7 @@ const LoginComponent = () => {
     <View style={styles.formContainer}>
       <TextInput
         style={styles.input}
-        placeholder={i18n.t("login.phonePlaceholder")}
+        placeholder={t("login.phonePlaceholder")}
         value={phone}
         onChangeText={setPhone}
         keyboardType="phone-pad"
@@ -537,7 +538,7 @@ const LoginComponent = () => {
       <View style={styles.codeInputContainer}>
         <TextInput
           style={[styles.input, styles.codeInput]}
-          placeholder={i18n.t("login.codePlaceholder")}
+          placeholder={t("login.codePlaceholder")}
           value={code}
           onChangeText={setCode}
           keyboardType="number-pad"
@@ -551,7 +552,7 @@ const LoginComponent = () => {
           disabled={countdown > 0 || !phone}
         >
           <Text style={styles.sendCodeButtonText}>
-            {countdown > 0 ? `${countdown}s` : i18n.t("login.sendCode")}
+            {countdown > 0 ? `${countdown}s` : t("login.sendCode")}
           </Text>
         </TouchableOpacity>
       </View>
@@ -572,7 +573,7 @@ const LoginComponent = () => {
           <View style={styles.biometricIconContainer}>
             <Icon name="face-recognition" type="material-community" size={40} color={theme.primaryColor} tvParallaxProperties={{}} />
           </View>
-          <Text style={styles.biometricText}>{i18n.t("login.faceIdLogin")}</Text>
+          <Text style={styles.biometricText}>{t("login.faceIdLogin")}</Text>
         </TouchableOpacity>
       )}
       
@@ -588,13 +589,13 @@ const LoginComponent = () => {
             <Icon name="fingerprint" size={40} color={theme.primaryColor} tvParallaxProperties={{}} />
           </View>
           <Text style={styles.biometricText}>
-            {Platform.OS === 'ios' ? i18n.t("login.touchIdLogin") : i18n.t("login.fingerprintLogin")}
+            {Platform.OS === 'ios' ? t("login.touchIdLogin") : t("login.fingerprintLogin")}
           </Text>
         </TouchableOpacity>
       )}
       
       {!isFaceIdSupported && !isTouchIdSupported && (
-        <Text style={styles.noBiometricText}>{i18n.t("login.biometricNotAvailable")}</Text>
+        <Text style={styles.noBiometricText}>{t("login.biometricNotAvailable")}</Text>
       )}
     </View>
   );
@@ -602,7 +603,7 @@ const LoginComponent = () => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <Text style={styles.title}>{i18n.t("login.description")}</Text>
+        <Text style={styles.title}>{t("login.description")}</Text>
         
         {/* Login Method Tabs */}
         <View style={styles.methodSwitcher}>
@@ -623,7 +624,7 @@ const LoginComponent = () => {
                 styles.switchButtonText,
                 loginMethod === 'email' && styles.activeSwitchText,
               ]}>
-              {i18n.t("login.emailLogin")}
+              {t("login.emailLogin")}
             </Text>
           </TouchableOpacity>
           
@@ -644,7 +645,7 @@ const LoginComponent = () => {
                 styles.switchButtonText,
                 loginMethod === 'phone' && styles.activeSwitchText,
               ]}>
-              {i18n.t("login.smsLogin")}
+              {t("login.smsLogin")}
             </Text>
           </TouchableOpacity>
           
@@ -666,7 +667,7 @@ const LoginComponent = () => {
                 styles.switchButtonText,
                 loginMethod === 'biometric' && styles.activeSwitchText,
               ]}>
-              {i18n.t("login.biometricLogin")}
+              {t("login.biometricLogin")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -686,7 +687,7 @@ const LoginComponent = () => {
             {isLoading ? (
               <ActivityIndicator color="white" size="small" />
             ) : (
-              <Text style={styles.loginButtonText}>{i18n.t("login.login")}</Text>
+              <Text style={styles.loginButtonText}>{t("login.login")}</Text>
             )}
           </TouchableOpacity>
         )}
@@ -702,17 +703,17 @@ const LoginComponent = () => {
             tvParallaxProperties={{}}
           />
           <Text style={styles.agreementText}>
-            {i18n.t('login.agreementText')}
-            <Text style={styles.agreementLink}>{i18n.t('login.agreementLink')}</Text>
+            {t('login.agreementText')}
+            <Text style={styles.agreementLink}>{t('login.agreementLink')}</Text>
             {' '}&{' '}
-            <Text style={styles.agreementLink}>{i18n.t('login.privacyLink')}</Text>
+            <Text style={styles.agreementLink}>{t('login.privacyLink')}</Text>
           </Text>
         </View>
 
         {/* Divider */}
         <View style={styles.dividerContainer}>
           <View style={styles.divider} />
-          <Text style={styles.dividerText}>{i18n.t('login.orContinueWith')}</Text>
+          <Text style={styles.dividerText}>{t('login.orContinueWith')}</Text>
           <View style={styles.divider} />
         </View>
 
@@ -731,9 +732,9 @@ const LoginComponent = () => {
 
         {/* Sign Up Link */}
         <View style={styles.signupContainer}>
-          <Text style={styles.signupText}>{i18n.t('login.noAccount')}</Text>
+          <Text style={styles.signupText}>{t('login.noAccount')}</Text>
           <TouchableOpacity>
-            <Text style={styles.signupLink}>{i18n.t('login.signUp')}</Text>
+            <Text style={styles.signupLink}>{t('login.signUp')}</Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   Switch,
   Alert,
+  Modal,
+  Dimensions,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,27 +18,34 @@ import { RootStackScreenProps } from '@/types/navigation';
 import { RootState } from '@/store';
 import { logout } from '@/store/slices/userSlice';
 import { clearFoodHistory } from '@/store/slices/foodSlice';
-import i18n from '@/i18n/i18n';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import ThemeSelector from '@/components/Theme/ThemeSelector';
 
 const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
-  const { theme, themeType, toggleTheme } = useTheme();
+  const { theme, themeType, toggleTheme, availableThemes } = useTheme();
+  const { currentLanguage, changeLanguage } = useLanguage();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const userProfile = useSelector((state: RootState) => state.user.profile);
   const isAuthenticated = useSelector((state: RootState) => state.user.isAuthenticated);
+  
+  // 主题选择器状态
+  const [showThemeSelector, setShowThemeSelector] = useState(false);
 
   const handleLogout = () => {
     Alert.alert(
-      i18n.t('profile.logout'),
+      t('profile.logout'),
       'Are you sure you want to logout?',
       [
         {
-          text: i18n.t('common.cancel'),
+          text: t('common.cancel'),
           style: 'cancel',
         },
         {
-          text: i18n.t('profile.logout'),
+          text: t('profile.logout'),
           onPress: () => {
             dispatch(logout());
             navigation.navigate('Login');
@@ -53,13 +62,60 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
       'This will permanently delete all your food scan history. This action cannot be undone.',
       [
         {
-          text: i18n.t('common.cancel'),
+          text: t('common.cancel'),
           style: 'cancel',
         },
         {
           text: 'Clear',
           onPress: () => dispatch(clearFoodHistory()),
           style: 'destructive',
+        },
+      ]
+    );
+  };
+
+  const handleThemeSelection = () => {
+    setShowThemeSelector(true);
+  };
+
+  const handleCloseThemeSelector = () => {
+    setShowThemeSelector(false);
+  };
+
+  // 获取当前主题的显示名称
+  const getCurrentThemeName = () => {
+    const currentTheme = availableThemes?.[themeType];
+    return currentTheme?.name || (themeType === 'dark' ? t('settings.theme.darkMode') : t('settings.theme.lightMode'));
+  };
+
+  const handleLanguageChange = () => {
+    Alert.alert(
+      t('settings.language.title'),
+      t('settings.language.selectLanguage'),
+      [
+        {
+          text: 'English',
+          onPress: async () => {
+            try {
+              await changeLanguage('en');
+            } catch (error) {
+              console.error('Failed to change language:', error);
+            }
+          },
+        },
+        {
+          text: '中文',
+          onPress: async () => {
+            try {
+              await changeLanguage('zh');
+            } catch (error) {
+              console.error('Failed to change language:', error);
+            }
+          },
+        },
+        {
+          text: t('common.cancel'),
+          style: 'cancel',
         },
       ]
     );
@@ -111,7 +167,7 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
           <Icon name="arrow-back" size={24} color={theme.textPrimary} tvParallaxProperties={{}} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: theme.textPrimary }]}>
-          {i18n.t('profile.settings')}
+          {t('profile.settings')}
         </Text>
         <View style={{ width: 24 }} />
       </View>
@@ -121,7 +177,7 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
         {isAuthenticated && (
           <View style={styles.section}>
             <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>
-            {i18n.t('settings.account')}
+            {t('settings.account')}
             </Text>
 
             <SettingItem
@@ -133,7 +189,7 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
 
             <SettingItem
               icon="favorite"
-              title={i18n.t('profile.savedRecipes')}
+              title={t('profile.savedRecipes')}
               subtitle="View your saved recipes"
               onPress={() => {/* Navigate to saved recipes */ }}
             />
@@ -143,48 +199,55 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
         {/* Appearance Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>
-          {i18n.t('settings.appearance')}
+          {t('settings.appearance')}
           </Text>
 
           <SettingItem
-            icon="palette"
-            title={i18n.t('profile.theme')}
-            subtitle={themeType === 'dark' ? 'Dark Mode' : 'Light Mode'}
+            icon={theme.isDark ? 'dark-mode' : 'light-mode'}
+            title={t('settings.theme.title')}
+            subtitle={theme.isDark ? t('settings.theme.darkMode') : t('settings.theme.lightMode')}
             showArrow={false}
             rightComponent={
               <Switch
-                value={themeType === 'dark'}
+                value={theme.isDark}
                 onValueChange={toggleTheme}
                 trackColor={{ false: theme.border, true: theme.primaryColor }}
-                thumbColor={themeType === 'dark' ? 'white' : theme.backgroundColor}
+                thumbColor={theme.isDark ? 'white' : theme.backgroundColor}
               />
             }
           />
 
           <SettingItem
+            icon="palette"
+            title={t('settings.skin.title')}
+            subtitle={getCurrentThemeName()}
+            onPress={handleThemeSelection}
+          />
+
+          <SettingItem
             icon="language"
-            title={i18n.t('profile.language')}
-            subtitle="English"
-            onPress={() => {/* Navigate to language selection */ }}
+            title={t('settings.language.title')}
+            subtitle={currentLanguage === 'en' ? 'English' : '中文'}
+            onPress={handleLanguageChange}
           />
         </View>
 
         {/* Preferences Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>
-          {i18n.t('settings.preferences')}
+          {t('settings.preferences')}
           </Text>
 
           <SettingItem
             icon="notifications"
-            title={i18n.t('profile.notifications')}
+            title={t('profile.notifications')}
             subtitle="Manage notification settings"
             onPress={() => {/* Navigate to notifications */ }}
           />
 
           <SettingItem
             icon="restaurant-menu"
-            title={i18n.t('profile.dietaryRestrictions')}
+            title={t('profile.dietaryRestrictions')}
             subtitle="Set your dietary preferences"
             onPress={() => {/* Navigate to dietary preferences */ }}
           />
@@ -200,12 +263,12 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
         {/* Data Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>
-          {i18n.t('settings.data')}
+          {t('settings.data')}
           </Text>
 
           <SettingItem
             icon="history"
-            title={i18n.t('nutrition.foodHistory')}
+            title={t('nutrition.foodHistory')}
             subtitle="View your food scan history"
             onPress={() => navigation.navigate('FoodHistory')}
           />
@@ -228,19 +291,19 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
         {/* Support Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>
-          {i18n.t('settings.support')}
+          {t('settings.support')}
           </Text>
 
           <SettingItem
             icon="help"
-            title={i18n.t('profile.help')}
+            title={t('profile.help')}
             subtitle="Get help and support"
             onPress={() => {/* Navigate to help */ }}
           />
 
           <SettingItem
             icon="info"
-            title={i18n.t('profile.about')}
+            title={t('profile.about')}
             subtitle="App version and info"
             onPress={() => {/* Navigate to about */ }}
           />
@@ -258,7 +321,7 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
           <View style={styles.section}>
             <SettingItem
               icon="logout"
-              title={i18n.t('profile.logout')}
+              title={t('profile.logout')}
               subtitle="Sign out of your account"
               onPress={handleLogout}
               showArrow={false}
@@ -266,9 +329,31 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
           </View>
         )}
       </ScrollView>
+
+      {/* 主题选择器模态框 */}
+      <Modal
+        visible={showThemeSelector}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        transparent={true}
+        onRequestClose={handleCloseThemeSelector}
+      >
+        <View style={styles.modalContainer}>
+          <View
+            style={[
+              styles.modalContent,
+              { backgroundColor: theme.backgroundColor },
+            ]}
+          >
+            <ThemeSelector onClose={handleCloseThemeSelector} />
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
+
+const { height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -325,6 +410,17 @@ const styles = StyleSheet.create({
   settingSubtitle: {
     fontSize: 14,
     marginTop: 2,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    height: height * 0.7,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingTop: 16,
   },
 });
 

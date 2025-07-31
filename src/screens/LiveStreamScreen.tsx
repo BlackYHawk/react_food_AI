@@ -12,7 +12,7 @@ import {
 import { Icon } from 'react-native-elements';
 import { useTheme } from '@/styles/ThemeProvider';
 import { RootStackScreenProps } from '@/types/navigation';
-import i18n from '@/i18n/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface LiveStream {
@@ -32,6 +32,7 @@ interface LiveStream {
 
 const LiveStreamScreen = ({ navigation }: RootStackScreenProps<'LiveStream'>) => {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const insets = useSafeAreaInsets();
     const [selectedTab, setSelectedTab] = useState('live');
 
@@ -90,7 +91,7 @@ const LiveStreamScreen = ({ navigation }: RootStackScreenProps<'LiveStream'>) =>
                 <Image source={{ uri: item.thumbnail }} style={styles.thumbnail} />
                 {item.isLive && (
                     <View style={[styles.liveIndicator, { backgroundColor: theme.error }]}>
-                        <Text style={styles.liveText}>{i18n.t('livestream.live')}</Text>
+                        <Text style={styles.liveText}>{t('livestream.live')}</Text>
                     </View>
                 )}
                 <View style={styles.viewerCount}>
@@ -118,7 +119,7 @@ const LiveStreamScreen = ({ navigation }: RootStackScreenProps<'LiveStream'>) =>
                     </View>
 
                     <TouchableOpacity style={[styles.followButton, { backgroundColor: theme.primaryColor }]}>
-                        <Text style={styles.followButtonText}>{i18n.t('livestream.follow')}</Text>
+                        <Text style={styles.followButtonText}>{t('livestream.follow')}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -165,7 +166,7 @@ const LiveStreamScreen = ({ navigation }: RootStackScreenProps<'LiveStream'>) =>
                         styles.tabText,
                         { color: selectedTab === 'live' ? theme.primaryColor : theme.textSecondary }
                     ]}>
-                        {i18n.t('livestream.live')}
+                        {t('livestream.live')}
                     </Text>
                 </TouchableOpacity>
 
@@ -180,7 +181,7 @@ const LiveStreamScreen = ({ navigation }: RootStackScreenProps<'LiveStream'>) =>
                         styles.tabText,
                         { color: selectedTab === 'upcoming' ? theme.primaryColor : theme.textSecondary }
                     ]}>
-                        {i18n.t('livestream.upcoming')}
+                        {t('livestream.upcoming')}
                     </Text>
                 </TouchableOpacity>
 
@@ -195,7 +196,7 @@ const LiveStreamScreen = ({ navigation }: RootStackScreenProps<'LiveStream'>) =>
                         styles.tabText,
                         { color: selectedTab === 'past' ? theme.primaryColor : theme.textSecondary }
                     ]}>
-                        {i18n.t('livestream.past')}
+                        {t('livestream.past')}
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -212,7 +213,7 @@ const LiveStreamScreen = ({ navigation }: RootStackScreenProps<'LiveStream'>) =>
             {/* Start Stream Button */}
             <TouchableOpacity style={[styles.startStreamButton, { backgroundColor: theme.primaryColor }]}>
                 <Icon name="videocam" size={24} color="white" tvParallaxProperties={{}} />
-                <Text style={styles.startStreamText}>{i18n.t('livestream.startStream')}</Text>
+                <Text style={styles.startStreamText}>{t('livestream.startStream')}</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );

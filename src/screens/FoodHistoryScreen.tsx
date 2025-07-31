@@ -15,11 +15,12 @@ import { useTheme } from '@/styles/ThemeProvider';
 import { RootStackScreenProps } from '@/types/navigation';
 import { RootState } from '@/store';
 import { removeScannedItem } from '@/store/slices/foodSlice';
-import i18n from '@/i18n/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const FoodHistoryScreen = ({ navigation }: RootStackScreenProps<'FoodHistory'>) => {
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const { scannedItems } = useSelector((state: RootState) => state.food);
@@ -31,15 +32,15 @@ const FoodHistoryScreen = ({ navigation }: RootStackScreenProps<'FoodHistory'>) 
 
   const handleDeleteItem = (id: string) => {
     Alert.alert(
-      i18n.t('common.delete'),
-      i18n.t('common.confirmDelete'),
+      t('common.delete'),
+      t('common.confirmDelete'),
       [
         {
-          text: i18n.t('common.cancel'),
+          text: t('common.cancel'),
           style: 'cancel',
         },
         {
-          text: i18n.t('common.delete'),
+          text: t('common.delete'),
           onPress: () => dispatch(removeScannedItem(id)),
           style: 'destructive',
         },
@@ -64,7 +65,7 @@ const FoodHistoryScreen = ({ navigation }: RootStackScreenProps<'FoodHistory'>) 
         <View style={styles.nutritionContainer}>
           <View style={styles.nutritionItem}>
             <Text style={[styles.nutritionLabel, { color: theme.textSecondary }]}>
-              {i18n.t('home.calories')}:
+              {t('home.calories')}:
             </Text>
             <Text style={[styles.nutritionValue, { color: theme.textPrimary }]}>
               {item.calories} kcal
@@ -73,7 +74,7 @@ const FoodHistoryScreen = ({ navigation }: RootStackScreenProps<'FoodHistory'>) 
           
           <View style={styles.nutritionItem}>
             <Text style={[styles.nutritionLabel, { color: theme.textSecondary }]}>
-              {i18n.t('home.carbs')}:
+              {t('home.carbs')}:
             </Text>
             <Text style={[styles.nutritionValue, { color: theme.textPrimary }]}>
               {item.carbs}g
@@ -82,7 +83,7 @@ const FoodHistoryScreen = ({ navigation }: RootStackScreenProps<'FoodHistory'>) 
           
           <View style={styles.nutritionItem}>
             <Text style={[styles.nutritionLabel, { color: theme.textSecondary }]}>
-              {i18n.t('home.protein')}:
+              {t('home.protein')}:
             </Text>
             <Text style={[styles.nutritionValue, { color: theme.textPrimary }]}>
               {item.protein}g
@@ -91,7 +92,7 @@ const FoodHistoryScreen = ({ navigation }: RootStackScreenProps<'FoodHistory'>) 
           
           <View style={styles.nutritionItem}>
             <Text style={[styles.nutritionLabel, { color: theme.textSecondary }]}>
-              {i18n.t('home.fat')}:
+              {t('home.fat')}:
             </Text>
             <Text style={[styles.nutritionValue, { color: theme.textPrimary }]}>
               {item.fat}g
@@ -113,7 +114,7 @@ const FoodHistoryScreen = ({ navigation }: RootStackScreenProps<'FoodHistory'>) 
           <Icon name="arrow-back" size={24} color={theme.textPrimary} tvParallaxProperties={{}} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: theme.textPrimary }]}>
-          {i18n.t('nutrition.foodHistory')}
+          {t('nutrition.foodHistory')}
         </Text>
         <View style={{ width: 24 }} />
       </View>
@@ -122,13 +123,13 @@ const FoodHistoryScreen = ({ navigation }: RootStackScreenProps<'FoodHistory'>) 
         <View style={styles.emptyContainer}>
           <Icon name="restaurant" size={80} color={theme.textLight} tvParallaxProperties={{}} />
           <Text style={[styles.emptyText, { color: theme.textSecondary }]}>
-            {i18n.t('common.noData')}
+            {t('common.noData')}
           </Text>
           <TouchableOpacity 
             style={[styles.scanButton, { backgroundColor: theme.primaryColor }]}
             onPress={() => navigation.navigate('FoodScan')}
           >
-            <Text style={styles.scanButtonText}>{i18n.t('home.scanFood')}</Text>
+            <Text style={styles.scanButtonText}>{t('home.scanFood')}</Text>
           </TouchableOpacity>
         </View>
       ) : (

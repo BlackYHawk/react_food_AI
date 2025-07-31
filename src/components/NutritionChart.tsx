@@ -4,7 +4,7 @@ import { LineChart, PieChart } from 'react-native-gifted-charts';
 import { useTheme } from '@/styles/ThemeProvider';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import i18n from '@/i18n/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const { width } = Dimensions.get('window');
 
@@ -15,6 +15,7 @@ interface NutritionChartProps {
 
 const NutritionChart: React.FC<NutritionChartProps> = ({ type, chartType }) => {
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const { scannedItems, dailyGoals } = useSelector((state: RootState) => state.food);
 
   // Calculate nutrition data based on scanned items
@@ -89,19 +90,19 @@ const NutritionChart: React.FC<NutritionChartProps> = ({ type, chartType }) => {
         value: nutritionData.carbs,
         color: theme.info,
         text: `${Math.round((nutritionData.carbs / total) * 100)}%`,
-        label: i18n.t('home.carbs'),
+        label: t('home.carbs'),
       },
       {
         value: nutritionData.protein,
         color: theme.success,
         text: `${Math.round((nutritionData.protein / total) * 100)}%`,
-        label: i18n.t('home.protein'),
+        label: t('home.protein'),
       },
       {
         value: nutritionData.fat,
         color: theme.warning,
         text: `${Math.round((nutritionData.fat / total) * 100)}%`,
-        label: i18n.t('home.fat'),
+        label: t('home.fat'),
       },
     ];
   };
@@ -113,7 +114,7 @@ const NutritionChart: React.FC<NutritionChartProps> = ({ type, chartType }) => {
     return (
       <View style={[styles.container, { backgroundColor: theme.cardBackground }]}>
         <Text style={[styles.title, { color: theme.textPrimary }]}>
-          {i18n.t("nutrition.macronutrientDistribution")}
+          {t("nutrition.macronutrientDistribution")}
         </Text>
 
         {pieData.length > 0 ? (
@@ -148,7 +149,7 @@ const NutritionChart: React.FC<NutritionChartProps> = ({ type, chartType }) => {
         ) : (
           <View style={styles.noDataContainer}>
             <Text style={[styles.noDataText, { color: theme.textSecondary }]}>
-              {i18n.t('common.noData')}
+              {t('common.noData')}
             </Text>
           </View>
         )}
@@ -203,7 +204,7 @@ const NutritionChart: React.FC<NutritionChartProps> = ({ type, chartType }) => {
       ) : (
         <View style={styles.noDataContainer}>
           <Text style={[styles.noDataText, { color: theme.textSecondary }]}>
-            {i18n.t('common.noData')}
+            {t('common.noData')}
           </Text>
         </View>
       )}

@@ -1,13 +1,14 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
-import i18n from '@/i18n/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 import * as ImagePicker from 'expo-image-picker';
 import { ImageManipulator } from 'expo-image-manipulator';
 import { useNavigation } from '@react-navigation/native';
 
 const QuickFunctions = () => {
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   const openGallery = async () => {
     // 选择相机或相册
@@ -63,7 +64,7 @@ const QuickFunctions = () => {
           <View style={styles.iconContainer}>
             <Icon name={func.icon} type="material" size={24} color="#4CAF50" />
           </View>
-          <Text style={styles.label}>{i18n.t(func.label)}</Text>
+          <Text style={styles.label}>{t(func.label)}</Text>
         </TouchableOpacity>
       ))}
     </View>

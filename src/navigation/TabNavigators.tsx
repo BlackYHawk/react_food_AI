@@ -15,7 +15,7 @@ import ChatGroupScreen from '@/screens/ChatGroupScreen';
 import LiveStreamScreen from '@/screens/LiveStreamScreen';
 import SettingsScreen from '@/screens/SettingsScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import i18n from '@/i18n/i18n.js';
+import { useTranslation } from '@/hooks/useTranslation';
 import type {
   BottomTabParamList,
   RootStackParamList,
@@ -26,6 +26,7 @@ const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const MainTabs = () => {
   const { theme } = useTheme();
+  const { t } = useTranslation();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -67,16 +68,16 @@ const MainTabs = () => {
           let label = '';
           switch (route.name) {
             case 'Home':
-              label = i18n.t('tab.home');
+              label = t('tab.home');
               break;
             case 'Video':
-              label = i18n.t('tab.video');
+              label = t('tab.video');
               break;
             case 'Recipes':
-              label = i18n.t('tab.recipes');
+              label = t('tab.recipes');
               break;
             case 'Profile':
-              label = i18n.t('tab.profile');
+              label = t('tab.profile');
               break;
             default:
               label = '';

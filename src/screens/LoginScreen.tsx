@@ -90,7 +90,7 @@ const LoginScreen = () => {
         </TouchableOpacity>
 
         {/* Title */}
-        <Text style={styles.headerTitle}>{i18n.t('login.title')}</Text>
+        <Text style={styles.headerTitle}>登录</Text>
 
         {/* Close Button */}
         <TouchableOpacity 
