@@ -12,7 +12,6 @@ import { Icon } from 'react-native-elements';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
 import LoginComponent from '@/components/Login/LoginComponent.tsx';
-import i18n from '@/i18n/i18n';
 
 const LoginScreen = () => {
   const { theme, isLightTheme } = useTheme();
@@ -71,20 +70,20 @@ const LoginScreen = () => {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor }]}>
       <StatusBar barStyle={isLightTheme ? 'dark-content' : 'light-content'} />
-      
+
       {/* Header Bar */}
       <View style={[styles.header, { paddingTop: safeInsets.top }]}>
         {/* Back Button */}
-        <TouchableOpacity 
-          style={styles.headerButton} 
+        <TouchableOpacity
+          style={styles.headerButton}
           onPress={handleBack}
           activeOpacity={0.7}
         >
-          <Icon 
-            name="arrow-back" 
+          <Icon
+            name="arrow-back"
             type="material"
-            size={24} 
-            color={theme.textPrimary || '#000000'} 
+            size={24}
+            color={theme.textPrimary || '#000000'}
             tvParallaxProperties={{}}
           />
         </TouchableOpacity>
@@ -93,15 +92,15 @@ const LoginScreen = () => {
         <Text style={styles.headerTitle}>登录</Text>
 
         {/* Close Button */}
-        <TouchableOpacity 
-          style={styles.headerButton} 
+        <TouchableOpacity
+          style={styles.headerButton}
           onPress={handleClose}
           activeOpacity={0.7} >
-          <Icon 
-            name="close" 
+          <Icon
+            name="close"
             type="material"
-            size={24} 
-            color={theme.textPrimary || '#000000'} 
+            size={24}
+            color={theme.textPrimary || '#000000'}
             tvParallaxProperties={{}}
           />
         </TouchableOpacity>

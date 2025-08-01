@@ -13,7 +13,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import TabNavigators from '@/navigation/TabNavigators.tsx';
 import { ThemeProvider } from '@/styles/ThemeProvider.tsx';
-import { LanguageProvider } from '@/contexts/LanguageContext';
+import { LanguageProvider } from '@/i18n/LanguageProvider';
 import { Provider } from 'react-redux';
 import { persistor, store } from '@/store';
 import { PersistGate } from 'redux-persist/integration/react';

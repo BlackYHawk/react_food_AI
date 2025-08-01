@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Localization from 'expo-localization';
-import i18n from '@/i18n/i18n';
+import { i18n, getLocale, supportedLanguages } from '@/i18n/i18n';
 
 interface LanguageContextType {
     currentLanguage: string;
     changeLanguage: (locale: string) => Promise<void>;
+    currentLanguageAlias: string;
     isLoading: boolean;
 }
 
@@ -24,7 +24,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
         const loadSavedLanguage = async () => {
             try {
                 const savedLanguage = await AsyncStorage.getItem('user_language');
-                const defaultLanguage = (Localization.locale || 'zh').split('-')[0] || 'zh';
+                const defaultLanguage = (getLocale() || 'zh').split('-')[0] || 'zh';
                 const languageToUse = savedLanguage || defaultLanguage;
 
                 if (languageToUse === 'en' || languageToUse === 'zh') {
@@ -56,10 +56,13 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
             throw error;
         }
     };
+    // Get the alias for the current language
+    const currentLanguageAlias = supportedLanguages.find(lang => lang.code === currentLanguage)?.name || currentLanguage;
 
     const value: LanguageContextType = {
         currentLanguage,
         changeLanguage,
+        currentLanguageAlias,
         isLoading,
     };
 

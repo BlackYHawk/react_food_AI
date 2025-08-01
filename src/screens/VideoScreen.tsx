@@ -19,7 +19,6 @@ import { useTheme } from '@/styles/ThemeProvider';
 import { RootStackScreenProps } from '@/types/navigation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
-import i18n from '@/i18n/i18n';
 
 const { width, height } = Dimensions.get('window');
 

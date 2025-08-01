@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useLanguage } from '@/contexts/LanguageContext';
-import i18n from '@/i18n/i18n';
+import { useLanguage } from '@/i18n/LanguageProvider';
+import { i18n } from '@/i18n/i18n';
 
 /**
  * Custom hook that provides translation function and automatically re-renders

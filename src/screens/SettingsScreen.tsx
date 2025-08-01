@@ -18,22 +18,26 @@ import { RootStackScreenProps } from '@/types/navigation';
 import { RootState } from '@/store';
 import { logout } from '@/store/slices/userSlice';
 import { clearFoodHistory } from '@/store/slices/foodSlice';
-import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useLanguage } from '@/i18n/LanguageProvider';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ThemeSelector from '@/components/Theme/ThemeSelector';
+import LanguageSelector from '@/components/Launguage/LanguageSelector';
 
 const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
-  const { theme, themeType, toggleTheme, availableThemes } = useTheme();
-  const { currentLanguage, changeLanguage } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
   const { t } = useTranslation();
+  const { currentLanguageAlias } = useLanguage();
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const userProfile = useSelector((state: RootState) => state.user.profile);
   const isAuthenticated = useSelector((state: RootState) => state.user.isAuthenticated);
-  
+
   // 主题选择器状态
   const [showThemeSelector, setShowThemeSelector] = useState(false);
+
+  // 语言选择器状态
+  const [showLanguageSelector, setShowLanguageSelector] = useState(false);
 
   const handleLogout = () => {
     Alert.alert(
@@ -84,41 +88,15 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
 
   // 获取当前主题的显示名称
   const getCurrentThemeName = () => {
-    const currentTheme = availableThemes?.[themeType];
-    return currentTheme?.name || (themeType === 'dark' ? t('settings.theme.darkMode') : t('settings.theme.lightMode'));
+    return theme?.name || (theme.isDark ? t('settings.theme.darkMode') : t('settings.theme.lightMode'));
   };
 
   const handleLanguageChange = () => {
-    Alert.alert(
-      t('settings.language.title'),
-      t('settings.language.selectLanguage'),
-      [
-        {
-          text: 'English',
-          onPress: async () => {
-            try {
-              await changeLanguage('en');
-            } catch (error) {
-              console.error('Failed to change language:', error);
-            }
-          },
-        },
-        {
-          text: '中文',
-          onPress: async () => {
-            try {
-              await changeLanguage('zh');
-            } catch (error) {
-              console.error('Failed to change language:', error);
-            }
-          },
-        },
-        {
-          text: t('common.cancel'),
-          style: 'cancel',
-        },
-      ]
-    );
+    setShowLanguageSelector(true);
+  };
+
+  const handleCloseLanguageSelector = () => {
+    setShowLanguageSelector(false);
   };
 
   const SettingItem = ({
@@ -177,7 +155,7 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
         {isAuthenticated && (
           <View style={styles.section}>
             <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>
-            {t('settings.account')}
+              {t('settings.account')}
             </Text>
 
             <SettingItem
@@ -199,7 +177,7 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
         {/* Appearance Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>
-          {t('settings.appearance')}
+            {t('settings.appearance')}
           </Text>
 
           <SettingItem
@@ -227,7 +205,7 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
           <SettingItem
             icon="language"
             title={t('settings.language.title')}
-            subtitle={currentLanguage === 'en' ? 'English' : '中文'}
+            subtitle={currentLanguageAlias}
             onPress={handleLanguageChange}
           />
         </View>
@@ -235,7 +213,7 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
         {/* Preferences Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>
-          {t('settings.preferences')}
+            {t('settings.preferences')}
           </Text>
 
           <SettingItem
@@ -263,7 +241,7 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
         {/* Data Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>
-          {t('settings.data')}
+            {t('settings.data')}
           </Text>
 
           <SettingItem
@@ -291,7 +269,7 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
         {/* Support Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>
-          {t('settings.support')}
+            {t('settings.support')}
           </Text>
 
           <SettingItem
@@ -346,6 +324,20 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
             ]}
           >
             <ThemeSelector onClose={handleCloseThemeSelector} />
+          </View>
+        </View>
+      </Modal>
+
+      {/* 语言选择器模态框 */}
+      <Modal
+        visible={showLanguageSelector}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={handleCloseLanguageSelector}
+      >
+        <View style={styles.languageModalOverlay}>
+          <View style={[styles.languageModalContainer, { backgroundColor: theme.backgroundColor }]}>
+            <LanguageSelector onClose={handleCloseLanguageSelector} />
           </View>
         </View>
       </Modal>
@@ -421,6 +413,28 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 16,
+  },
+  // 语言选择器样式
+  languageModalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  languageModalContainer: {
+    width: '100%',
+    maxWidth: 400,
+    maxHeight: height * 0.7,
+    borderRadius: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 8,
   },
 });
 
