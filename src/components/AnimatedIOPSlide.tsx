@@ -17,6 +17,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import PagerView from 'react-native-pager-view';
 import {useTheme} from '@/styles/ThemeProvider.tsx';
+import { rem } from '@/styles/dimension'
 
 type Item = {
   id: string;
@@ -148,7 +149,7 @@ const AnimatedIOPSlide: React.FC<AnimatedIOPSlideProps> = ({
   const [pageHeights, setPageHeights] = useState<number[]>([]);
 
   const containerHeight = useMemo(() => {
-    const maxHeight = currentPage === 0 ? theme.rem(100) : theme.rem(600);
+    const maxHeight = currentPage === 0 ? rem(100) : rem(600);
     const contentHeight = pageHeights[currentPage] ?? maxHeight;
     return Math.min(contentHeight, maxHeight);
   }, [currentPage, pageHeights, theme]);
@@ -173,7 +174,7 @@ const AnimatedIOPSlide: React.FC<AnimatedIOPSlideProps> = ({
     () =>
       StyleSheet.create({
         container: {
-          height: theme.rem(100),
+          height: rem(100),
         },
         pager: {
           flex: 1,
@@ -183,7 +184,7 @@ const AnimatedIOPSlide: React.FC<AnimatedIOPSlideProps> = ({
           justifyContent: 'center',
           alignItems: 'center',
           gap: 10,
-          height: theme.rem(30),
+          height: rem(30),
         },
         dotStyle: {
           width: 10,
@@ -198,13 +199,13 @@ const AnimatedIOPSlide: React.FC<AnimatedIOPSlideProps> = ({
         gridItem: {
           alignItems: 'center',
           justifyContent: 'center',
-          width: theme.rem(70),
-          height: theme.rem(70),
+          width: rem(70),
+          height: rem(70),
           marginVertical: 6,
         },
         gridIcon: {
-          width: theme.rem(36),
-          height: theme.rem(36),
+          width: rem(36),
+          height: rem(36),
           marginBottom: 6,
           borderRadius: 18,
           backgroundColor: '#f5f5f5',
@@ -216,7 +217,7 @@ const AnimatedIOPSlide: React.FC<AnimatedIOPSlideProps> = ({
       }),
     [theme],
   );
-  const containerStyle = currentPage === 0 ? {height: theme.rem(100)} : {height: containerHeight};
+  const containerStyle = currentPage === 0 ? {height: rem(100)} : {height: containerHeight};
 
   return (
     <View style={[cardStyle, { ...containerStyle }]}>
@@ -236,7 +237,7 @@ const AnimatedIOPSlide: React.FC<AnimatedIOPSlideProps> = ({
             onContentSizeChange={(width, height) => {
               setPageHeights(prev => {
                 const newHeights = [...prev];
-                newHeights[index] = height + theme.rem(20); // Add some padding
+                newHeights[index] = height + rem(20); // Add some padding
                 return newHeights;
               });
             }}

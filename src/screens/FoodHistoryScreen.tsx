@@ -56,12 +56,12 @@ const FoodHistoryScreen = ({ navigation }: RootStackScreenProps<'FoodHistory'>) 
           <Icon name="delete-outline" size={24} color={theme.error} tvParallaxProperties={{}} />
         </TouchableOpacity>
       </View>
-      
+
       <View style={styles.itemContent}>
         {item.imageUri && (
           <Image source={{ uri: item.imageUri }} style={styles.itemImage} />
         )}
-        
+
         <View style={styles.nutritionContainer}>
           <View style={styles.nutritionItem}>
             <Text style={[styles.nutritionLabel, { color: theme.textSecondary }]}>
@@ -71,7 +71,7 @@ const FoodHistoryScreen = ({ navigation }: RootStackScreenProps<'FoodHistory'>) 
               {item.calories} kcal
             </Text>
           </View>
-          
+
           <View style={styles.nutritionItem}>
             <Text style={[styles.nutritionLabel, { color: theme.textSecondary }]}>
               {t('home.carbs')}:
@@ -80,7 +80,7 @@ const FoodHistoryScreen = ({ navigation }: RootStackScreenProps<'FoodHistory'>) 
               {item.carbs}g
             </Text>
           </View>
-          
+
           <View style={styles.nutritionItem}>
             <Text style={[styles.nutritionLabel, { color: theme.textSecondary }]}>
               {t('home.protein')}:
@@ -89,7 +89,7 @@ const FoodHistoryScreen = ({ navigation }: RootStackScreenProps<'FoodHistory'>) 
               {item.protein}g
             </Text>
           </View>
-          
+
           <View style={styles.nutritionItem}>
             <Text style={[styles.nutritionLabel, { color: theme.textSecondary }]}>
               {t('home.fat')}:
@@ -100,7 +100,7 @@ const FoodHistoryScreen = ({ navigation }: RootStackScreenProps<'FoodHistory'>) 
           </View>
         </View>
       </View>
-      
+
       <Text style={[styles.itemDate, { color: theme.textLight }]}>
         {formatDate(item.date)}
       </Text>
@@ -114,7 +114,7 @@ const FoodHistoryScreen = ({ navigation }: RootStackScreenProps<'FoodHistory'>) 
           <Icon name="arrow-back" size={24} color={theme.textPrimary} tvParallaxProperties={{}} />
         </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: theme.textPrimary }]}>
-          {t('nutrition.foodHistory')}
+          {t('foodHistory.title')}
         </Text>
         <View style={{ width: 24 }} />
       </View>
@@ -125,7 +125,7 @@ const FoodHistoryScreen = ({ navigation }: RootStackScreenProps<'FoodHistory'>) 
           <Text style={[styles.emptyText, { color: theme.textSecondary }]}>
             {t('common.noData')}
           </Text>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[styles.scanButton, { backgroundColor: theme.primaryColor }]}
             onPress={() => navigation.navigate('FoodScan')}
           >

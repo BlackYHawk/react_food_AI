@@ -14,7 +14,6 @@ import {useFocusEffect} from '@react-navigation/native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
 import { rem } from '@/styles/dimension'
-import ThemeSwitch from '@/components/Theme/ThemeSwitch';
 import {useAppSelector} from '@/hooks/appHooks.tsx';
 import UserComponent from '@/components/Login/UserComponent';
 import {RootStackScreenProps} from '@/types/navigation';
@@ -162,16 +161,16 @@ const ProfileScreen = ({navigation}: RootStackScreenProps<'Profile'>) => {
         <SocialCard key="social-card" socialStyle={{paddingTop: profileHeight + 10}} />
 
         {/* 安全Section */}
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.sectionSettingContainer}
           onPress={() => navigation.navigate('Settings')}
           activeOpacity={0.7} >
           <Text style={styles.sectionSettingTitle}>
             {t('profile.settings')}
           </Text>
-          <Icon 
-            name="chevron-right" 
-            type="material" 
+          <Icon
+            name="chevron-right"
+            type="material"
             style={{paddingHorizontal: 15}}
             size={30}
             color={theme.textSecondary}

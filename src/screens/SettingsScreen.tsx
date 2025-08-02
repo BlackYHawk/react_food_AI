@@ -9,7 +9,7 @@ import {
   Switch,
   Alert,
   Modal,
-  Dimensions,
+  Dimensions, StatusBar,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { useSelector, useDispatch } from 'react-redux';
@@ -25,7 +25,7 @@ import ThemeSelector from '@/components/Theme/ThemeSelector';
 import LanguageSelector from '@/components/Launguage/LanguageSelector';
 
 const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, themeType, toggleTheme } = useTheme();
   const { t } = useTranslation();
   const { currentLanguageAlias } = useLanguage();
   const dispatch = useDispatch();
@@ -33,16 +33,16 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
   const userProfile = useSelector((state: RootState) => state.user.profile);
   const isAuthenticated = useSelector((state: RootState) => state.user.isAuthenticated);
 
-  // 主题选择器状态
+  // Theme selector state
   const [showThemeSelector, setShowThemeSelector] = useState(false);
 
-  // 语言选择器状态
+  // Language selector state
   const [showLanguageSelector, setShowLanguageSelector] = useState(false);
 
   const handleLogout = () => {
     Alert.alert(
       t('profile.logout'),
-      'Are you sure you want to logout?',
+      t('profile.logoutConfirm'),
       [
         {
           text: t('common.cancel'),
@@ -62,15 +62,15 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
 
   const handleClearHistory = () => {
     Alert.alert(
-      'Clear Food History',
-      'This will permanently delete all your food scan history. This action cannot be undone.',
+      t('settings.data.clearHistoryConfirmTitle'),
+      t('settings.data.clearHistoryConfirmMessage'),
       [
         {
           text: t('common.cancel'),
           style: 'cancel',
         },
         {
-          text: 'Clear',
+          text: t('common.clear'),
           onPress: () => dispatch(clearFoodHistory()),
           style: 'destructive',
         },
@@ -86,7 +86,7 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
     setShowThemeSelector(false);
   };
 
-  // 获取当前主题的显示名称
+  // Get the display name of the current theme
   const getCurrentThemeName = () => {
     return theme?.name || (theme.isDark ? t('settings.theme.darkMode') : t('settings.theme.lightMode'));
   };
@@ -139,6 +139,8 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.backgroundColor, paddingTop: insets.top }]}>
+      <StatusBar barStyle={themeType === 'light' ? 'dark-content' : 'light-content'} />
+
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -160,7 +162,7 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
 
             <SettingItem
               icon="person"
-              title={userProfile?.name || 'User Profile'}
+              title={userProfile?.name || t('settings.userProfile')}
               subtitle={userProfile?.email}
               onPress={() => {/* Navigate to profile edit */ }}
             />
@@ -168,7 +170,7 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
             <SettingItem
               icon="favorite"
               title={t('profile.savedRecipes')}
-              subtitle="View your saved recipes"
+              subtitle={t('settings.viewSavedRecipes')}
               onPress={() => {/* Navigate to saved recipes */ }}
             />
           </View>
@@ -219,21 +221,21 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
           <SettingItem
             icon="notifications"
             title={t('profile.notifications')}
-            subtitle="Manage notification settings"
+            subtitle={t('settings.manageNotifications')}
             onPress={() => {/* Navigate to notifications */ }}
           />
 
           <SettingItem
             icon="restaurant-menu"
             title={t('profile.dietaryRestrictions')}
-            subtitle="Set your dietary preferences"
+            subtitle={t('settings.setDietaryPrefs')}
             onPress={() => {/* Navigate to dietary preferences */ }}
           />
 
           <SettingItem
             icon="fitness-center"
-            title="Daily Goals"
-            subtitle="Set your nutrition goals"
+            title={t('settings.dailyGoals')}
+            subtitle={t('settings.setNutritionGoals')}
             onPress={() => {/* Navigate to goals setting */ }}
           />
         </View>
@@ -241,27 +243,27 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
         {/* Data Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>
-            {t('settings.data')}
+            {t('settings.data.title')}
           </Text>
 
           <SettingItem
             icon="history"
-            title={t('nutrition.foodHistory')}
-            subtitle="View your food scan history"
+            title={t('settings.data.foodHistory')}
+            subtitle={t('settings.data.foodHistorySub')}
             onPress={() => navigation.navigate('FoodHistory')}
           />
 
           <SettingItem
             icon="delete-sweep"
-            title="Clear Food History"
-            subtitle="Delete all food scan records"
+            title={t('settings.data.clearHistory')}
+            subtitle={t('settings.data.clearHistorySub')}
             onPress={handleClearHistory}
           />
 
           <SettingItem
             icon="cloud-download"
-            title="Export Data"
-            subtitle="Download your data"
+            title={t('settings.data.exportData')}
+            subtitle={t('settings.data.exportDataSub')}
             onPress={() => {/* Handle data export */ }}
           />
         </View>
@@ -275,21 +277,21 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
           <SettingItem
             icon="help"
             title={t('profile.help')}
-            subtitle="Get help and support"
+            subtitle={t('settings.getHelp')}
             onPress={() => {/* Navigate to help */ }}
           />
 
           <SettingItem
             icon="info"
             title={t('profile.about')}
-            subtitle="App version and info"
+            subtitle={t('settings.appInfo')}
             onPress={() => {/* Navigate to about */ }}
           />
 
           <SettingItem
             icon="star-rate"
-            title="Rate App"
-            subtitle="Rate us on the app store"
+            title={t('settings.rateApp')}
+            subtitle={t('settings.rateAppSub')}
             onPress={() => {/* Handle app rating */ }}
           />
         </View>
@@ -300,7 +302,7 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
             <SettingItem
               icon="logout"
               title={t('profile.logout')}
-              subtitle="Sign out of your account"
+              subtitle={t('settings.signOut')}
               onPress={handleLogout}
               showArrow={false}
             />
@@ -308,7 +310,7 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
         )}
       </ScrollView>
 
-      {/* 主题选择器模态框 */}
+      {/* Theme selector modal */}
       <Modal
         visible={showThemeSelector}
         animationType="slide"
@@ -328,7 +330,7 @@ const SettingsScreen = ({ navigation }: RootStackScreenProps<'Settings'>) => {
         </View>
       </Modal>
 
-      {/* 语言选择器模态框 */}
+      {/* Language selector modal */}
       <Modal
         visible={showLanguageSelector}
         animationType="fade"
@@ -414,7 +416,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     paddingTop: 16,
   },
-  // 语言选择器样式
+  // Language selector styles
   languageModalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
