@@ -1,5 +1,4 @@
 {
-  "name": "react_food_AI",
   "expo": {
     "jsEngine": "hermes",
     "android": {
@@ -7,32 +6,40 @@
     },
     "ios": {
       "bundleIdentifier": "com.leqinde.react-food-ai"
-    }
-  },
-  "plugins": [
-    "expo-localization",
-    [
-      "expo-image-picker",
-      {
-        "cameraPermission": "Allow $(name) to access your camera",
-        "photosPermission": "The app accesses your photos to let you share them with your friends."
-      }
-    ],
-    [
-      "expo-camera",
-      {
-        "cameraPermission": "Allow $(name) to access your camera",
-        "microphonePermission": "Allow $(name) to access your microphone",
-        "recordAudioAndroid": true
-      }
-    ],
-    [
-      "expo-splash-screen",
-      {
-        "image": "./src/assets/login_robot.png",
-        "resizeMode": "contain",
-        "backgroundColor": "#ffffff"
-      }
+    },
+    "name": "react_food_AI",
+    "slug": "food_ai",
+    "plugins": [
+      "expo-localization",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Allow $(name) to access your camera",
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(name) to access your camera",
+          "microphonePermission": "Allow $(name) to access your microphone",
+          "recordAudioAndroid": true
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./src/assets/login_robot.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ],
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID."
+        }
+      ]
     ]
-  ]
+  }
 }

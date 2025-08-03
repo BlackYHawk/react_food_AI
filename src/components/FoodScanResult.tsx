@@ -110,7 +110,7 @@ const FoodScanResult: React.FC<FoodScanResultProps> = ({
         {/* Nutrition Information */}
         <View style={styles.nutritionContainer}>
           <Text style={[styles.sectionTitle, { color: theme.textPrimary }]}>
-            Nutrition Information
+            {t('foodScan.nutritionInfo')}
           </Text>
           
           <View style={styles.nutritionGrid}>
@@ -188,7 +188,7 @@ const FoodScanResult: React.FC<FoodScanResultProps> = ({
         <View style={styles.footer}>
           <Icon name="schedule" size={16} color={theme.textLight} tvParallaxProperties={{}} />
           <Text style={[styles.timestamp, { color: theme.textLight }]}>
-            Scanned on {formatDate(foodItem.date)}
+            {t('foodScan.scannedOn')} {formatDate(foodItem.date)}
           </Text>
         </View>
       </View>

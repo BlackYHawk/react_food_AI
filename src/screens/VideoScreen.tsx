@@ -20,6 +20,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import videoData from '@/mock/video-contents.json';
 import commentsData from '@/mock/video-comments.json';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { rem } from '@/styles/dimension';
 
 const { width } = Dimensions.get('window');
 
@@ -106,7 +107,7 @@ const VideoItemComponent = React.memo(({
         rightActions: {
             position: 'absolute',
             right: 16,
-            bottom: 80,
+            bottom: rem(40),
             alignItems: 'center',
         },
         avatarContainer: {
@@ -147,7 +148,7 @@ const VideoItemComponent = React.memo(({
             position: 'absolute',
             left: 16,
             right: 80,
-            bottom: 80,
+            bottom: rem(40),
         },
         authorName: {
             color: 'white',
@@ -176,10 +177,10 @@ const VideoItemComponent = React.memo(({
                     style={styles.video}
                     player={player}
                     nativeControls={false}
-                    allowsFullscreen={false}
+                    allowsFullscreen={true}
                 />
             )}
-            <View style={[styles.rightActions, { bottom: 80 + insets.bottom }]}>
+            <View style={[styles.rightActions, { bottom: rem(40) + insets.bottom }]}>
                 <TouchableOpacity style={styles.avatarContainer} onPress={() => onFollow(item.author.id)}>
                     <Image source={{ uri: item.author.avatar }} style={styles.avatar} />
                     {!item.author.isFollowed && (
@@ -201,7 +202,7 @@ const VideoItemComponent = React.memo(({
                     <Text style={styles.actionText}>{formatNumber(item.stats.shares)}</Text>
                 </TouchableOpacity>
             </View>
-            <View style={[styles.bottomInfo, { bottom: 80 + insets.bottom }]}>
+            <View style={[styles.bottomInfo, { bottom: rem(40) + insets.bottom }]}>
                 <Text style={styles.authorName}>@{item.author.name}</Text>
                 <Text style={styles.videoTitle}>{item.title}</Text>
                 <Text style={styles.videoDescription} numberOfLines={2}>{item.description}</Text>

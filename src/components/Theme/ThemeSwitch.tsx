@@ -11,6 +11,8 @@ import { useTheme } from '@/styles/ThemeProvider';
 import { Icon } from 'react-native-elements';
 import ThemeSelector from './ThemeSelector';
 
+import { useTranslation } from '@/hooks/useTranslation';
+
 interface ThemeSwitchProps {
   showLabel?: boolean;
   compact?: boolean;
@@ -21,6 +23,7 @@ const ThemeSwitch: React.FC<ThemeSwitchProps> = ({
   compact = false,
 }) => {
   const { theme, themeType, toggleTheme } = useTheme();
+  const { t } = useTranslation();
   const [showThemeSelector, setShowThemeSelector] = useState(false);
 
   const handleToggleTheme = () => {
@@ -104,7 +107,7 @@ const ThemeSwitch: React.FC<ThemeSwitchProps> = ({
         />
         {showLabel && (
           <Text style={[styles.switchText, { color: theme.textPrimary }]}>
-            {theme.isDark ? '切换到亮色模式' : '切换到暗色模式'}
+            {theme.isDark ? t('settings.theme.switchToLight') : t('settings.theme.switchToDark')}
           </Text>
         )}
       </TouchableOpacity>
@@ -125,7 +128,7 @@ const ThemeSwitch: React.FC<ThemeSwitchProps> = ({
         />
         {showLabel && (
           <Text style={[styles.switchText, { color: theme.textPrimary }]}>
-            选择主题
+            {t('settings.theme.selectTheme')}
           </Text>
         )}
       </TouchableOpacity>

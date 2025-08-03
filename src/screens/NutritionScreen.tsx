@@ -15,7 +15,6 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {RootStackScreenProps} from '@/types/navigation';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
 import { rem } from '@/styles/dimension'
-import bookIcon from '@/assets/book-icon.png';
 import { useFocusEffect } from '@react-navigation/native';
 
 const NutritionScreen = ({navigation}: RootStackScreenProps<'Nutrition'>) => {

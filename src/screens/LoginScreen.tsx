@@ -11,10 +11,12 @@ import { useNavigation } from '@react-navigation/native';
 import { Icon } from 'react-native-elements';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
-import LoginComponent from '@/components/Login/LoginComponent.tsx';
+import { useTranslation } from '@/hooks/useTranslation';
+import LoginComponent from '@/components/Login/LoginComponent';
 
 const LoginScreen = () => {
   const { theme, isLightTheme } = useTheme();
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const safeInsets = useSafeAreaInsets();
 
@@ -89,7 +91,7 @@ const LoginScreen = () => {
         </TouchableOpacity>
 
         {/* Title */}
-        <Text style={styles.headerTitle}>登录</Text>
+        <Text style={styles.headerTitle}>{t('login.title')}</Text>
 
         {/* Close Button */}
         <TouchableOpacity

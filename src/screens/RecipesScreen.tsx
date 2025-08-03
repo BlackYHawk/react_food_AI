@@ -17,7 +17,6 @@ import AnimatedIOPSlide from '@/components/AnimatedIOPSlide.tsx';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
 import { rem } from '@/styles/dimension'
 import { useTranslation } from '@/hooks/useTranslation';
-import ReactAxios from '@/apis/reactAxios.tsx';
 import cookIopData from '@/mock/cookbook.json';
 import cookHotcatData from '@/mock/cookbook-hotcat.json';
 

@@ -114,7 +114,7 @@ const LiveStreamScreen = ({ navigation }: RootStackScreenProps<'LiveStream'>) =>
                             {item.chef.name}
                         </Text>
                         <Text style={[styles.chefFollowers, { color: theme.textLight }]}>
-                            {formatFollowers(item.chef.followers)} followers
+                            {formatFollowers(item.chef.followers)} {t('livestream.followers')}
                         </Text>
                     </View>
 
@@ -146,7 +146,7 @@ const LiveStreamScreen = ({ navigation }: RootStackScreenProps<'LiveStream'>) =>
                     <Icon name="arrow-back" size={24} color={theme.textPrimary} tvParallaxProperties={{}} />
                 </TouchableOpacity>
                 <Text style={[styles.headerTitle, { color: theme.textPrimary }]}>
-                    Live Cooking
+                    {t('livestream.title')}
                 </Text>
                 <TouchableOpacity>
                     <Icon name="videocam" size={24} color={theme.primaryColor} tvParallaxProperties={{}} />

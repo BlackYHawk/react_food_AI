@@ -137,7 +137,7 @@ const LoginComponent = () => {
         
         // 显示成功消息
         Alert.alert(
-          t('login.loginSuccess') || '登录成功',
+          t('login.loginSuccess'),
           '',
           [
             {
@@ -150,11 +150,11 @@ const LoginComponent = () => {
           ]
         );
       } else {
-        Alert.alert(t('login.loginFailed') || '登录失败');
+        Alert.alert(t('login.loginFailed'));
       }
     } catch (error) {
       console.error('Biometric authentication error:', error);
-      Alert.alert(t('login.loginFailed') || '登录失败');
+      Alert.alert(t('login.loginFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -163,7 +163,7 @@ const LoginComponent = () => {
   // Handle sending verification code for phone login
   const handleSendCode = () => {
     if (!phone || phone.length < 10) {
-      Alert.alert(t('login.error'), 'Please enter a valid phone number');
+      Alert.alert(t('login.error'), t('login.invalidPhoneNumber'));
       return;
     }
     
@@ -180,7 +180,7 @@ const LoginComponent = () => {
   // Handle login with email/password or phone/code
   const handleLogin = () => {
     if (!privacyChecked) {
-      Alert.alert(t('login.error'), 'Please agree to the terms and privacy policy');
+      Alert.alert(t('login.error'), t('login.agreeToTerms'));
       return;
     }
     
@@ -189,7 +189,7 @@ const LoginComponent = () => {
     try {
       if (loginMethod === 'email') {
         if (!email || !password) {
-          Alert.alert(t('login.error'), 'Please enter both email and password.');
+          Alert.alert(t('login.error'), t('login.enterEmailPassword'));
           setIsLoading(false);
           return;
         }
@@ -217,7 +217,7 @@ const LoginComponent = () => {
           
           // 显示成功消息
           Alert.alert(
-            t('login.loginSuccess') || '登录成功',
+            t('login.loginSuccess'),
             '',
             [
               {
@@ -233,13 +233,13 @@ const LoginComponent = () => {
       } 
       else if (loginMethod === 'phone') {
         if (!phone || !code) {
-          Alert.alert(t('login.error'), 'Please enter both phone number and verification code.');
+          Alert.alert(t('login.error'), t('login.enterPhoneCode'));
           setIsLoading(false);
           return;
         }
         
         if (!codeSent) {
-          Alert.alert(t('login.error'), 'Please send verification code first.');
+          Alert.alert(t('login.error'), t('login.sendCodeFirst'));
           setIsLoading(false);
           return;
         }
@@ -267,7 +267,7 @@ const LoginComponent = () => {
           
           // 显示成功消息
           Alert.alert(
-            t('login.loginSuccess') || '登录成功',
+            t('login.loginSuccess'),
             '',
             [
               {

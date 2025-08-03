@@ -5,6 +5,8 @@ import ReactAxios from '@/apis/reactAxios.tsx';
 import { useTheme } from '@/styles/ThemeProvider.tsx';
 import { rem } from '@/styles/dimension'
 
+import { useTranslation } from '@/hooks/useTranslation';
+
 interface CookbookItem {
   id: string;
   name: string;
@@ -19,26 +21,27 @@ interface CookbookListResponse {
 
 const RecentAnalysis = () => {
   const {theme} = useTheme();
+  const { t } = useTranslation();
   const [recentData, setRecentData] = useState<CookbookItem[]>([
     {
       id: '1',
       name: '清炒西兰花',
-      favorites: '78 卡路里',
-      burdens: '今天 12:30',
+      favorites: `78 ${t('home.calories')}`,
+      burdens: `${t('nutrition.today')} 12:30`,
       img: '🥬',
     },
     {
       id: '2',
       name: '红烧排骨',
-      favorites: '450 卡路里',
-      burdens: '今天 08:15',
+      favorites: `450 ${t('home.calories')}`,
+      burdens: `${t('nutrition.today')} 08:15`,
       img: '🍖',
     },
     {
       id: '3',
       name: '水煮青菜',
-      favorites: '45 卡路里',
-      burdens: '昨天 19:20',
+      favorites: `45 ${t('home.calories')}`,
+      burdens: `${t('nutrition.yesterday')} 19:20`,
       img: '🥬',
     },
   ]);
@@ -110,7 +113,7 @@ const RecentAnalysis = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>最近分析</Text>
+      <Text style={styles.title}>{t('home.recentScans')}</Text>
       <FlatList
         data={recentData}
         keyExtractor={(item) => item.id.toString()}

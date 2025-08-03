@@ -27,10 +27,16 @@ export default {
     phonePlaceholder: '请输入手机号',
     biometricLogin: '生物',
     fingerprintLogin: '指纹登录',
+    biometricPrompt: '指纹登录',
     agreementText: '登录即代表同意',
     agreementLink: '用户协议',
     privacyLink: '隐私政策',
     login: '登录',
+    invalidPhoneNumber: '请输入有效的手机号码',
+    agreeToTerms: '请同意条款和隐私政策',
+    enterEmailPassword: '请输入电子邮件和密码。',
+    enterPhoneCode: '请输入电话号码和验证码。',
+    sendCodeFirst: '请先发送验证码。',
   },
   home: {
     title: 'AI 食物助手',
@@ -54,6 +60,12 @@ export default {
       assessment: '营养分析'
     }
   },
+  camera: {
+    needsPermission: '需要相机权限',
+    requestPermission: '请求权限',
+    flipCamera: '翻转摄像头',
+    takePicture: '拍照',
+  },
   foodScan: {
     title: '扫描食物',
     analyzing: '正在分析食物...',
@@ -69,6 +81,10 @@ export default {
     savedSuccess: '食物分析已保存到您的历史记录！',
     error: '错误',
     errorTakingPicture: '拍照失败',
+    grantPermission: '授予权限',
+    success: '成功',
+    nutritionInfo: '营养信息',
+    scannedOn: '扫描于',
   },
   recipes: {
     title: '营养食谱',
@@ -108,6 +124,9 @@ export default {
     yesterday: '昨天',
     thisWeek: '本周',
     lastWeek: '上周',
+    daily: '每日',
+    weekly: '每周',
+    monthly: '每月',
   },
   profile: {
     myProfile: '我的资料',
@@ -132,6 +151,10 @@ export default {
       changePassword: '修改密码',
       twoFactorAuth: '两步验证'
     },
+    editProfileComingSoon: '编辑资料功能即将上线',
+    loginPrompt: '登录以使用更多功能',
+    userLoggedIn: '用户已登录',
+    loginToViewSocial: '登录后查看您的社交数据',
   },
   chat: {
     groups: '聊天群组',
@@ -153,6 +176,8 @@ export default {
     chat: '直播聊天',
     follow: '关注',
     share: '分享',
+    title: '直播烹饪',
+    followers: '粉丝',
   },
   foodHistory: {
     title: '扫描记录',
@@ -163,7 +188,10 @@ export default {
     theme: {
       title: '主题',
       lightMode: '浅色主题',
-      darkMode: '深色主题'
+      darkMode: '深色主题',
+      switchToLight: '切换到亮色模式',
+      switchToDark: '切换到暗色模式',
+      selectTheme: '选择主题',
     },
     skin: {
       title: '皮肤',

@@ -72,7 +72,7 @@ const SocialCard: React.FC<SocialCardProps> = ({ socialStyle }) => {
     return (
       <View style={styles.container}>
         <View style={styles.notLoggedInContainer}>
-          <Text style={styles.notLoggedInText}>登录后查看您的社交数据</Text>
+          <Text style={styles.notLoggedInText}>{t('profile.loginToViewSocial')}</Text>
         </View>
       </View>
     );

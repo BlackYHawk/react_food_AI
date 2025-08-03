@@ -132,7 +132,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
                     <View style={styles.metaItem}>
                         <Icon name="restaurant" size={16} color={theme.primaryColor} tvParallaxProperties={{}} />
                         <Text style={[styles.metaText, { color: theme.textSecondary }]}>
-                            {recipe.servings} servings
+                            {recipe.servings} {t('recipeDetail.servings')}
                         </Text>
                     </View>
 
@@ -150,7 +150,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
                             {recipe.calories}
                         </Text>
                         <Text style={[styles.nutritionLabel, { color: theme.textLight }]}>
-                            kcal
+                            {t('home.calories')}
                         </Text>
                     </View>
 
@@ -159,7 +159,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
                             {recipe.protein}g
                         </Text>
                         <Text style={[styles.nutritionLabel, { color: theme.textLight }]}>
-                            protein
+                            {t('home.protein')}
                         </Text>
                     </View>
 
@@ -168,7 +168,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
                             {recipe.carbs}g
                         </Text>
                         <Text style={[styles.nutritionLabel, { color: theme.textLight }]}>
-                            carbs
+                            {t('home.carbs')}
                         </Text>
                     </View>
                 </View>

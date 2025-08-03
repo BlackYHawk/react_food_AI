@@ -29,7 +29,7 @@ const UserComponent: React.FC<UserComponentProps> = ({ navigation }) => {
     // 导航到编辑资料页面
     // navigation.navigate('EditProfile');
     // 暂时只显示提示
-    alert('编辑资料功能即将上线');
+    alert(t('profile.editProfileComingSoon'));
   };
 
   const styles = StyleSheet.create({
@@ -101,12 +101,12 @@ const UserComponent: React.FC<UserComponentProps> = ({ navigation }) => {
           </View>
           <View style={styles.userTextContainer}>
             <Text style={styles.userName}>{t('profile.guest')}</Text>
-            <Text style={styles.userDetail}>登录以使用更多功能</Text>
+            <Text style={styles.userDetail}>{t('profile.loginPrompt')}</Text>
           </View>
         </View>
         <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Icon name="login" size={16} color="white" tvParallaxProperties={{}} />
-          <Text style={styles.loginText}>登录</Text>
+          <Text style={styles.loginText}>{t('login.login')}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -128,7 +128,7 @@ const UserComponent: React.FC<UserComponentProps> = ({ navigation }) => {
         <View style={styles.userTextContainer}>
           <Text style={styles.userName}>{profile.name}</Text>
           <Text style={styles.userDetail}>
-            {profile.email || profile.phone || '用户已登录'}
+            {profile.email || profile.phone || t('profile.userLoggedIn')}
           </Text>
         </View>
       </View>

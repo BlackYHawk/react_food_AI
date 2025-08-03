@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
-  ActivityIndicator,
+  ActivityIndicator, StatusBar,
 } from 'react-native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
@@ -36,7 +36,7 @@ const FoodScanScreen = ({ navigation }: RootStackScreenProps<'FoodScan'>) => {
         await analyzeFood(photo.uri);
       } catch (error) {
         console.error('Error taking picture:', error);
-        Alert.alert('Error', 'Failed to take picture');
+        Alert.alert(t('foodScan.error'), t('foodScan.errorTakingPicture'));
       } finally {
         setIsAnalyzing(false);
       }
@@ -82,7 +82,7 @@ const FoodScanScreen = ({ navigation }: RootStackScreenProps<'FoodScan'>) => {
     if (analysisResult) {
       // Save to Redux store
       dispatch(addScannedItem(analysisResult));
-      Alert.alert('Success', t('foodScan.savedSuccess'));
+      Alert.alert(t('foodScan.success'), t('foodScan.savedSuccess'));
       navigation.goBack();
     }
   };
@@ -91,6 +91,11 @@ const FoodScanScreen = ({ navigation }: RootStackScreenProps<'FoodScan'>) => {
     container: {
       flex: 1,
       backgroundColor: theme.backgroundColor,
+    },
+    grantContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     camera: {
       flex: 1,
@@ -194,26 +199,19 @@ const FoodScanScreen = ({ navigation }: RootStackScreenProps<'FoodScan'>) => {
     },
   });
 
-  if (!permission) {
-    // Camera permissions are still loading
-    return <View />;
-  }
-
-  if (!permission.granted) {
-    // Camera permissions are not granted yet
-    return (
-      <View style={styles.container}>
-        <Text style={{ color: theme.textPrimary }}>We need your permission to show the camera</Text>
-        <TouchableOpacity onPress={requestPermission}>
-          <Text style={{ color: theme.primaryColor }}>Grant permission</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-
   return (
     <SafeAreaView style={styles.container}>
-      <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
+      <StatusBar barStyle={theme.isDark ? 'light-content' : 'dark-content'} />
+
+      {(!permission || !permission.granted) && (
+        <View style={styles.grantContainer}>
+          <Text style={{ color: theme.textPrimary }}>{t('foodScan.noAccess')}</Text>
+          <TouchableOpacity onPress={requestPermission}>
+            <Text style={{ color: theme.primaryColor }}>{t('foodScan.grantPermission')}</Text>
+          </TouchableOpacity>
+        </View> )}
+
+      { permission && permission.granted && (<CameraView style={styles.camera} facing={facing} ref={cameraRef}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.galleryButton} onPress={pickImage}>
             <Icon name="photo-library" size={24} color="white" tvParallaxProperties={{}} />
@@ -231,12 +229,12 @@ const FoodScanScreen = ({ navigation }: RootStackScreenProps<'FoodScan'>) => {
             <Icon name="flip-camera-ios" size={24} color="white" tvParallaxProperties={{}} />
           </TouchableOpacity>
         </View>
-      </CameraView>
+      </CameraView>)}
 
       {isAnalyzing && (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={theme.primaryColor} />
-          <Text style={styles.loadingText}>Analyzing food...</Text>
+          <Text style={styles.loadingText}>{t('foodScan.analyzing')}</Text>
         </View>
       )}
 
@@ -245,31 +243,31 @@ const FoodScanScreen = ({ navigation }: RootStackScreenProps<'FoodScan'>) => {
           <Text style={styles.analysisTitle}>{analysisResult.name}</Text>
 
           <View style={styles.nutritionRow}>
-            <Text style={styles.nutritionLabel}>Calories:</Text>
+            <Text style={styles.nutritionLabel}>{t('foodScan.calories')}:</Text>
             <Text style={styles.nutritionValue}>{analysisResult.calories} kcal</Text>
           </View>
 
           <View style={styles.nutritionRow}>
-            <Text style={styles.nutritionLabel}>Carbohydrates:</Text>
+            <Text style={styles.nutritionLabel}>{t('foodScan.carbs')}:</Text>
             <Text style={styles.nutritionValue}>{analysisResult.carbs}g</Text>
           </View>
 
           <View style={styles.nutritionRow}>
-            <Text style={styles.nutritionLabel}>Protein:</Text>
+            <Text style={styles.nutritionLabel}>{t('foodScan.protein')}:</Text>
             <Text style={styles.nutritionValue}>{analysisResult.protein}g</Text>
           </View>
 
           <View style={styles.nutritionRow}>
-            <Text style={styles.nutritionLabel}>Fat:</Text>
+            <Text style={styles.nutritionLabel}>{t('foodScan.fat')}:</Text>
             <Text style={styles.nutritionValue}>{analysisResult.fat}g</Text>
           </View>
 
           <Text style={styles.confidenceText}>
-            Confidence: {Math.round(analysisResult.confidence * 100)}%
+            {t('foodScan.confidence')}: {Math.round(analysisResult.confidence * 100)}%
           </Text>
 
           <TouchableOpacity style={styles.saveButton} onPress={saveAnalysis}>
-            <Text style={styles.saveButtonText}>Save Analysis</Text>
+            <Text style={styles.saveButtonText}>{t('foodScan.saveAnalysis')}</Text>
           </TouchableOpacity>
         </View>
       )}

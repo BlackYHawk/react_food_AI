@@ -41,6 +41,11 @@ export default {
     verificationCodeSent: 'Verification code sent',
     invalidCredentials: 'Invalid credentials',
     chooseLoginMethod: 'Choose login method',
+    invalidPhoneNumber: 'Please enter a valid phone number',
+    agreeToTerms: 'Please agree to the terms and privacy policy',
+    enterEmailPassword: 'Please enter both email and password.',
+    enterPhoneCode: 'Please enter both phone number and verification code.',
+    sendCodeFirst: 'Please send verification code first.',
   },
   home: {
     title: 'FoodAI Assistant',
@@ -59,6 +64,12 @@ export default {
       placeholder: 'Search recipes, foods...',
     },
   },
+  camera: {
+    needsPermission: 'Camera permission is needed',
+    requestPermission: 'Request Permission',
+    flipCamera: 'Flip Camera',
+    takePicture: 'Take Picture',
+  },
   foodScan: {
     title: 'Scan Food',
     analyzing: 'Analyzing food...',
@@ -74,6 +85,10 @@ export default {
     savedSuccess: 'Food analysis saved to your history!',
     error: 'Error',
     errorTakingPicture: 'Failed to take picture',
+    grantPermission: 'Grant permission',
+    success: 'Success',
+    nutritionInfo: 'Nutrition Information',
+    scannedOn: 'Scanned on',
   },
   recipes: {
     popular: 'Popular Recipes',
@@ -112,6 +127,9 @@ export default {
     yesterday: 'Yesterday',
     thisWeek: 'This Week',
     lastWeek: 'Last Week',
+    daily: 'Daily',
+    weekly: 'Weekly',
+    monthly: 'Monthly',
   },
   profile: {
     myProfile: 'My Profile',
@@ -124,6 +142,10 @@ export default {
     logoutConfirm: 'Are you sure you want to logout?',
     notifications: 'Notifications',
     about: 'About',
+    editProfileComingSoon: 'Edit profile feature coming soon',
+    loginPrompt: 'Login to use more features',
+    userLoggedIn: 'User logged in',
+    loginToViewSocial: 'Login to view your social data',
   },
   settings: {
     account: 'Account',
@@ -131,7 +153,10 @@ export default {
     theme: {
       title: 'Theme',
       lightMode: 'Light Themes',
-      darkMode: 'Dark Themes'
+      darkMode: 'Dark Themes',
+      switchToLight: 'Switch to Light Mode',
+      switchToDark: 'Switch to Dark Mode',
+      selectTheme: 'Select Theme',
     },
     skin: {
       title: 'Skin Color',
@@ -185,6 +210,8 @@ export default {
     chat: 'Live Chat',
     follow: 'Follow',
     share: 'Share',
+    title: 'Live Cooking',
+    followers: 'followers',
   },
   common: {
     cancel: 'Cancel',

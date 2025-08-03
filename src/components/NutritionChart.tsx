@@ -160,7 +160,7 @@ const NutritionChart: React.FC<NutritionChartProps> = ({ type, chartType }) => {
   return (
     <View style={[styles.container, { backgroundColor: theme.cardBackground }]}>
       <Text style={[styles.title, { color: theme.textPrimary }]}>
-        {type === 'daily' ? 'Daily' : type === 'weekly' ? 'Weekly' : 'Monthly'} Calories
+        {type === 'daily' ? t('nutrition.daily') : type === 'weekly' ? t('nutrition.weekly') : t('nutrition.monthly')} {t('home.calories')}
       </Text>
 
       {lineData.length > 0 && lineData.some(item => item.value > 0) ? (

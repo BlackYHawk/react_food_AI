@@ -5,12 +5,15 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { CameraView, CameraType, CameraRatio, useCameraPermissions } from 'expo-camera';
 import { compressImageIfNeeded } from '@/libs/image_utils.tsx';
 
+import { useTranslation } from '@/hooks/useTranslation';
+
 const CameraScreen = () => {
   const cameraRef = useRef<CameraView | null>(null);
   const [permission, requestPermission] = useCameraPermissions();
   const [facing, setFacing] = useState<CameraType>('back');
   const [ratio, setRatio] = useState<CameraRatio>('16:9');
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   function toggleCameraFacing() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
@@ -36,9 +39,9 @@ const CameraScreen = () => {
   if (!permission?.granted) {
     return (
       <View style={styles.center}>
-        <Text>需要相机权限</Text>
+        <Text>{t('camera.needsPermission')}</Text>
         <TouchableOpacity onPress={requestPermission} style={styles.btn}>
-          <Text style={styles.btnText}>请求权限</Text>
+          <Text style={styles.btnText}>{t('camera.requestPermission')}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -48,12 +51,12 @@ const CameraScreen = () => {
       <CameraView ref={cameraRef} style={styles.camera} facing={facing} ratio={ratio}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
+            <Text style={styles.text}>{t('camera.flipCamera')}</Text>
           </TouchableOpacity>
         </View>
       </CameraView>
       <TouchableOpacity style={styles.captureBtn} onPress={takePicture}>
-        <Text style={styles.btnText}>拍照</Text>
+        <Text style={styles.btnText}>{t('camera.takePicture')}</Text>
       </TouchableOpacity>
     </View>
   );
