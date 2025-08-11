@@ -1,0 +1,60 @@
+{
+  "ret": true,
+  "data": [
+    {
+      "id": "cat1",
+      "img": "https://i3.meishichina.com/attachment/recipe/2015/09/16/c640_201509161442371783820.jpg?x-oss-process=style/c320",
+      "name": "家常菜"
+    },
+    {
+      "id": "cat2",
+      "img": "https://i3.meishichina.com/attachment/recipe/2018/11/20/2018112015426906295309702111.jpg?x-oss-process=style/c320",
+      "name": "汤"
+    },
+    {
+      "id": "cat3",
+      "img": "https://i3.meishichina.com/attachment/recipe/2015/01/05/c640_201501051420460072724.jpg?x-oss-process=style/c180",
+      "name": "川菜"
+    },
+    {
+      "id": "cat4",
+      "img": "https://i3.meishichina.com/attachment/recipe/2018/04/24/20180424152455529414313.jpg?x-oss-process=style/c180",
+      "name": "粤菜"
+    },
+    {
+      "id": "cat5",
+      "img": "https://i3.meishichina.com/attachment/recipe/2018/04/24/20180424152455503391713.jpg?x-oss-process=style/c180",
+      "name": "早餐"
+    },
+    {
+      "id": "cat6",
+      "img": "https://i3.meishichina.com/attachment/recipe/2017/07/31/20170731150146877350813.jpg?x-oss-process=style/c320",
+      "name": "火锅"
+    },
+    {
+      "id": "cat7",
+      "img": "https://i3.meishichina.com/attachment/recipe/2018/04/24/20180424152456373531113.jpg?x-oss-process=style/c180",
+      "name": "素菜"
+    },
+    {
+      "id": "cat8",
+      "img": "https://i3.meishichina.com/attachment/recipe/2015/01/21/c640_201501211421826764156.jpg?x-oss-process=style/c180",
+      "name": "粥"
+    },
+    {
+      "id": "cat9",
+      "img": "https://i3.meishichina.com/attachment/recipe/2017/10/11/20171011150770405975413.jpg?x-oss-process=style/c180",
+      "name": "凉菜"
+    },
+    {
+      "id": "cat10",
+      "img": "https://i3.meishichina.com/attachment/recipe/2018/04/25/20180425152464324522913.jpg?x-oss-process=style/c180",
+      "name": "烘焙"
+    },
+    {
+      "id": "cat11",
+      "img": "https://i3.meishichina.com/attachment/recipe/2015/07/27/c640_201507271437975925472.jpg?x-oss-process=style/c180",
+      "name": "饮品"
+    }
+  ]
+}
