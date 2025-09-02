@@ -1,14 +1,33 @@
 {
   "expo": {
+    "name": "react_food_AI",
+    "slug": "food_ai",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/icon.png",
+    "scheme": "foodai",
     "jsEngine": "hermes",
     "android": {
-      "package": "com.leqinde.react_food_ai"
+      "package": "com.leqinde.react_food_ai",
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/home_cuts.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.USE_BIOMETRIC",
+        "android.permission.USE_FINGERPRINT"
+      ]
     },
     "ios": {
       "bundleIdentifier": "com.leqinde.react-food-ai"
     },
-    "name": "react_food_AI",
-    "slug": "food_ai",
     "plugins": [
       "expo-localization",
       [
@@ -40,6 +59,14 @@
           "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b403048d-98bc-423c-8306-8e2c0bda389a"
+      }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/b403048d-98bc-423c-8306-8e2c0bda389a"
+    }
   }
 }

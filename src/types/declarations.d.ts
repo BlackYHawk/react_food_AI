@@ -8,10 +8,3 @@ declare module '*.json' {
   const value: any;
   export default value;
 }
-
-declare module 'i18n-js' {
-  interface I18n {
-    changeLanguage(locale: string): void;
-    language: string;
-  }
-}

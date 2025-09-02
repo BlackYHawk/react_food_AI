@@ -1,12 +1,17 @@
 {
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
-      "jsx": "react",
-      "baseUrl": ".",
-      "useUnknownInCatchVariables": false,
-      "paths": {
-        "@/*": ["src/*"]
-      }
+    "jsx": "react",
+    "baseUrl": ".",
+    "useUnknownInCatchVariables": false,
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    }
   },
-  "extends": "@react-native/typescript-config/tsconfig.json",
-  "include": ["./src/types/react-native-elements.d.ts", "./src/types/declarations.d.ts", "./src/types/navigation.d.ts"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }
